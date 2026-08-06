@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Babür Önceler — Görsel Tasarım Stüdyosu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#121016;
+    --ink-2:#1c1a24;
+    --ink-3:#26232f;
+    --paper:#f4f1ea;
+    --line: rgba(244,241,234,0.14);
+
+    --c-grafik:#ff5a36;
+    --c-animasyon:#ffd23f;
+    --c-karakter:#ff3d81;
+    --c-3d:#3dbbff;
+    --c-ui:#7c5cff;
+    --c-poster:#4be3ac;
+
+    --accent:#ff5a36;
+    --accent-soft: rgba(255,90,54,0.16);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+    position:relative;
+    transition: background 0.6s ease;
+  }
+
+  ::selection{ background:var(--accent); color:var(--ink); }
+
+  /* grain overlay */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    z-index:999;
+    pointer-events:none;
+    opacity:0.05;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  a{color:inherit; text-decoration:none;}
+
+  .wrap{ max-width:1240px; margin:0 auto; padding:0 32px; }
+
+  /* ---------- cursor blob ---------- */
+  .blob{
+    position:fixed;
+    width:420px; height:420px;
+    border-radius:50%;
+    background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+    opacity:0.22;
+    pointer-events:none;
+    z-index:0;
+    filter: blur(10px);
+    transition: background 0.6s ease, opacity 0.4s ease;
+    transform: translate(-50%,-50%);
+    left:50%; top:30%;
+    will-change:left, top;
+  }
+
+  /* ---------- nav ---------- */
+  header{
+    position:sticky; top:0; z-index:100;
+    backdrop-filter: blur(14px);
+    background: rgba(18,16,22,0.72);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:20px; padding-bottom:20px;
+  }
+  .logo{
+    font-family:'Unbounded', sans-serif;
+    font-weight:700;
+    font-size:17px;
+    letter-spacing:0.02em;
+    display:flex; align-items:center; gap:10px;
+  }
+  .logo .dot{
+    width:10px; height:10px; border-radius:50%;
+    background:var(--accent);
+    transition: background 0.6s ease;
+    box-shadow: 0 0 16px var(--accent);
+  }
+  .navlinks{ display:flex; gap:36px; font-size:14px; font-weight:500; }
+  .navlinks a{ opacity:0.75; transition:opacity .2s ease, color .2s ease; position:relative;}
+  .navlinks a:hover{ opacity:1; color:var(--accent); }
+  .nav-cta{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    border:1px solid var(--line);
+    padding:9px 16px;
+    border-radius:100px;
+    transition: border-color .2s ease, background .2s ease;
+  }
+  .nav-cta:hover{ border-color:var(--accent); background:var(--accent-soft); }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    z-index:1;
+    padding:120px 0 70px;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    color:var(--accent);
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    margin-bottom:26px;
+    display:flex; align-items:center; gap:12px;
+    transition: color 0.6s ease;
+  }
+  .eyebrow::before{
+    content:"";
+    width:34px; height:1px;
+    background:var(--accent);
+    transition: background 0.6s ease;
+  }
+
+  h1.title{
+    font-family:'Unbounded', sans-serif;
+    font-weight:900;
+    line-height:0.94;
+    font-size: clamp(52px, 9.4vw, 138px);
+    letter-spacing:-0.01em;
+    display:flex; flex-wrap:wrap;
+  }
+  h1.title .row{ display:flex; }
+  h1.title span{
+    display:inline-block;
+    opacity:0;
+    transform: translateY(40px) rotate(3deg);
+    animation: rise 0.8s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  @keyframes rise{ to{ opacity:1; transform:translateY(0) rotate(0);} }
+
+  .hero-sub{
+    max-width:560px;
+    margin-top:34px;
+    font-size:18px;
+    line-height:1.6;
+    color:rgba(244,241,234,0.72);
+  }
+  .hero-sub b{ color:var(--paper); font-weight:600; }
+
+  .hero-bottom{
+    margin-top:56px;
+    display:flex; align-items:center; gap:22px; flex-wrap:wrap;
+  }
+  .btn-primary{
+    font-family:'Unbounded', sans-serif;
+    font-weight:500;
+    font-size:14.5px;
+    background:var(--accent);
+    color:var(--ink);
+    padding:16px 30px;
+    border-radius:100px;
+    transition: transform .25s ease, background 0.6s ease;
+    display:inline-flex; align-items:center; gap:10px;
+  }
+  .btn-primary:hover{ transform: translateY(-2px) scale(1.02); }
+  .hero-meta{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    color:rgba(244,241,234,0.55);
+    line-height:1.7;
+  }
+
+  /* ---------- marquee ---------- */
+  .marquee{
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+    padding:18px 0;
+    white-space:nowrap;
+    position:relative; z-index:1;
+  }
+  .marquee-track{
+    display:inline-flex;
+    gap:48px;
+    animation: scroll 26s linear infinite;
+  }
+  .marquee-track span{
+    font-family:'Unbounded', sans-serif;
+    font-size:15px;
+    font-weight:500;
+    opacity:0.5;
+    display:flex; align-items:center; gap:48px;
+  }
+  .marquee-track span::after{
+    content:"◆";
+    font-size:10px;
+    color:var(--accent);
+    opacity:1;
+    transition: color 0.6s ease;
+  }
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* ---------- filter tabs ---------- */
+  .work{ padding:110px 0 60px; position:relative; z-index:1; }
+  .work-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-bottom:44px; flex-wrap:wrap; gap:24px;
+  }
+  .work-head h2{
+    font-family:'Unbounded', sans-serif;
+    font-size:clamp(30px,4vw,44px);
+    font-weight:700;
+  }
+  .work-head p{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    color:rgba(244,241,234,0.5);
+    max-width:280px;
+    text-align:right;
+  }
+
+  .tabs{
+    display:flex; gap:10px; flex-wrap:wrap;
+    margin-bottom:56px;
+  }
+  .tab{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    padding:10px 18px;
+    border-radius:100px;
+    border:1px solid var(--line);
+    cursor:pointer;
+    display:flex; align-items:center; gap:8px;
+    transition: all .25s ease;
+    background:transparent;
+    color:var(--paper);
+  }
+  .tab .sw{ width:8px; height:8px; border-radius:50%; }
+  .tab:hover{ border-color:rgba(244,241,234,0.4); }
+  .tab.active{
+    background:var(--tab-color, var(--accent));
+    border-color:transparent;
+    color:var(--ink);
+    font-weight:500;
+  }
+
+  /* ---------- gallery ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:22px;
+  }
+  .card{
+    position:relative;
+    border-radius:18px;
+    overflow:hidden;
+    background:var(--ink-2);
+    border:1px solid var(--line);
+    aspect-ratio: 4/5;
+    cursor:pointer;
+    transition: transform .3s ease, opacity .3s ease, border-color .3s ease;
+  }
+  .card.big{ grid-row: span 2; aspect-ratio:4/9.4; }
+  .card.wide{ grid-column: span 2; aspect-ratio: 16/9.6; }
+  .card:hover{ transform:translateY(-6px); border-color: var(--card-color); }
+  .card.hidden{ display:none; }
+
+  .card-art{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .card-art svg{ width:38%; height:38%; opacity:0.9; }
+
+  .card-tag{
+    position:absolute; top:16px; left:16px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    background:rgba(18,16,22,0.55);
+    backdrop-filter:blur(6px);
+    padding:6px 12px;
+    border-radius:100px;
+    display:flex; align-items:center; gap:7px;
+    z-index:2;
+  }
+  .card-tag .sw{ width:6px; height:6px; border-radius:50%; }
+
+  .card-info{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:20px;
+    background: linear-gradient(to top, rgba(10,9,12,0.92), transparent);
+    z-index:2;
+  }
+  .card-info h3{
+    font-family:'Unbounded', sans-serif;
+    font-size:16px; font-weight:500;
+    margin-bottom:4px;
+  }
+  .card-info span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    opacity:0.6;
+  }
+
+  /* ---------- game jam ---------- */
+  .jam{ padding:10px 0 40px; position:relative; z-index:1; }
+  .jam-card{
+    border:1px solid var(--line);
+    border-radius:24px;
+    overflow:hidden;
+    display:grid;
+    grid-template-columns:0.9fr 1.3fr;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(124,92,255,0.16), transparent 55%),
+      var(--ink-2);
+  }
+  .jam-art{
+    display:flex; align-items:center; justify-content:center;
+    padding:50px;
+    background: radial-gradient(circle at 35% 35%, rgba(124,92,255,0.22), transparent 65%);
+    border-right:1px solid var(--line);
+  }
+  .jam-art svg{ width:62%; color:var(--c-ui); }
+  .jam-content{ padding:52px 52px 52px 44px; }
+  .jam-theme{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--c-ui);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin-bottom:16px;
+  }
+  .jam-content h2{
+    font-family:'Unbounded', sans-serif;
+    font-weight:700;
+    font-size:clamp(24px,3vw,34px);
+    margin-bottom:16px;
+    line-height:1.2;
+  }
+  .jam-content p{
+    font-size:15px;
+    line-height:1.75;
+    color:rgba(244,241,234,0.72);
+    max-width:480px;
+  }
+  .jam-tags{ margin-top:24px; }
+
+  @media (max-width:860px){
+    .jam-card{ grid-template-columns:1fr; }
+    .jam-art{ border-right:none; border-bottom:1px solid var(--line); padding:40px; }
+    .jam-content{ padding:40px 28px; }
+  }
+
+  /* ---------- experience list ---------- */
+  .exp-list{
+    margin-top:34px;
+    display:flex; flex-direction:column;
+    gap:20px;
+  }
+  .exp-item{
+    padding-left:18px;
+    border-left:2px solid var(--line);
+  }
+  .exp-item .exp-tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    transition:color 0.6s ease;
+  }
+  .exp-item h4{
+    font-family:'Unbounded', sans-serif;
+    font-size:15px;
+    font-weight:500;
+    margin:6px 0 5px;
+  }
+  .exp-item p{
+    font-size:14px;
+    line-height:1.6;
+    color:rgba(244,241,234,0.62);
+    margin:0;
+  }
+
+  /* ---------- about ---------- */
+  .about{
+    padding:130px 0;
+    position:relative; z-index:1;
+    border-top:1px solid var(--line);
+  }
+  .about-grid{
+    display:grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap:80px;
+    align-items:start;
+  }
+  .about h2{
+    font-family:'Unbounded', sans-serif;
+    font-size:clamp(28px,3.6vw,40px);
+    line-height:1.25;
+    font-weight:500;
+  }
+  .about h2 em{
+    font-style:normal;
+    color:var(--accent);
+    transition: color 0.6s ease;
+  }
+  .about-side p{
+    font-size:16px;
+    line-height:1.75;
+    color:rgba(244,241,234,0.72);
+    margin-bottom:22px;
+  }
+  .skills{
+    display:flex; flex-wrap:wrap; gap:10px;
+    margin-top:28px;
+  }
+  .skill{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    padding:8px 14px;
+    border:1px solid var(--line);
+    border-radius:8px;
+  }
+
+  .stats{
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:20px; margin-top:60px;
+  }
+  .stat b{
+    font-family:'Unbounded', sans-serif;
+    font-size:38px; font-weight:700;
+    display:block;
+    color:var(--accent);
+    transition: color 0.6s ease;
+  }
+  .stat span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    opacity:0.55;
+  }
+
+  /* ---------- contact ---------- */
+  .contact{
+    padding:110px 0 60px;
+    border-top:1px solid var(--line);
+    position:relative; z-index:1;
+    text-align:center;
+  }
+  .contact .eyebrow{ justify-content:center; }
+  .contact .eyebrow::before{ display:none; }
+  .contact h2{
+    font-family:'Unbounded', sans-serif;
+    font-weight:900;
+    font-size:clamp(38px,7vw,84px);
+    line-height:1;
+  }
+  .contact a.mail{
+    display:inline-block;
+    margin-top:8px;
+    transition: color 0.6s ease;
+  }
+  .contact a.mail:hover{ color:var(--accent); }
+
+  .contact-links{
+    display:flex; justify-content:center; gap:26px;
+    margin-top:46px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+  }
+  .contact-links a{ opacity:0.65; transition:opacity .2s ease, color .2s ease; }
+  .contact-links a:hover{ opacity:1; color:var(--accent); }
+
+  footer{
+    margin-top:90px;
+    padding:26px 0;
+    border-top:1px solid var(--line);
+    display:flex; justify-content:space-between;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    opacity:0.5;
+    flex-wrap:wrap; gap:10px;
+  }
+
+  @media (max-width: 860px){
+    .about-grid{ grid-template-columns:1fr; gap:40px; }
+    .grid{ grid-template-columns:repeat(2,1fr); }
+    .card.wide{ grid-column:span 2; }
+    .card.big{ grid-row:span 1; aspect-ratio:4/5; }
+    .navlinks{ display:none; }
+    .work-head p{ text-align:left; }
+    .blob{ display:none; }
+  }
+  @media (max-width: 520px){
+    .grid{ grid-template-columns:1fr; }
+    .card.wide, .card.big{ grid-column:span 1; grid-row:span 1; aspect-ratio:4/5; }
+    .stats{ grid-template-columns:1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+
+  :focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="blob" id="blob"></div>
+
+<header>
+  <nav class="wrap">
+    <div class="logo"><span class="dot" id="navdot"></span>BABÜR ÖNCELER</div>
+    <div class="navlinks">
+      <a href="#work">İşler</a>
+      <a href="#gamejam">Game Jam</a>
+      <a href="#about">Hakkımda</a>
+      <a href="#contact">İletişim</a>
+    </div>
+    <a href="#contact" class="nav-cta">İş birliği →</a>
+  </nav>
+</header>
+
+<section class="hero wrap">
+  <div class="eyebrow">Görsel Tasarım · İllüstrasyon · 3D</div>
+  <h1 class="title" id="heroTitle">
+    <div class="row"></div>
+  </h1>
+  <p class="hero-sub">
+    Grafik tasarımdan karakter tasarımına, 3D modellemeden arayüz tasarımına —
+    <b>fikri görünür kılan</b> işler üretiyorum. Aşağıdaki disiplin
+    etiketlerine tıklayarak vitrini filtreleyebilir, her alanın kendi
+    rengini keşfedebilirsin.
+  </p>
+  <div class="hero-bottom">
+    <a href="#work" class="btn-primary">Çalışmaları gör ↓</a>
+    <div class="hero-meta">
+      İstanbul, Türkiye — Serbest çalışıyor<br>
+      Yeni projelere açık
+    </div>
+  </div>
+</section>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Grafik Tasarım<span>Animasyon<span>Karakter Tasarımı<span>3D Modelleme<span>UI Tasarım<span>Poster Art
+    <span>Grafik Tasarım<span>Animasyon<span>Karakter Tasarımı<span>3D Modelleme<span>UI Tasarım<span>Poster Art
+  </div>
+</div>
+
+<section class="work wrap" id="work">
+  <div class="work-head">
+    <h2>Seçilmiş<br>çalışmalar</h2>
+    <p>Her proje bir disipline ait — filtrele ve o rengin dünyasına gir.</p>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-filter="all">● Tümü</button>
+    <button class="tab" data-filter="grafik" style="--tab-color:var(--c-grafik)"><span class="sw" style="background:var(--c-grafik)"></span>Grafik Tasarım</button>
+    <button class="tab" data-filter="animasyon" style="--tab-color:var(--c-animasyon)"><span class="sw" style="background:var(--c-animasyon)"></span>Animasyon</button>
+    <button class="tab" data-filter="karakter" style="--tab-color:var(--c-karakter)"><span class="sw" style="background:var(--c-karakter)"></span>Karakter Tasarımı</button>
+    <button class="tab" data-filter="3d" style="--tab-color:var(--c-3d)"><span class="sw" style="background:var(--c-3d)"></span>3D Modelleme</button>
+    <button class="tab" data-filter="ui" style="--tab-color:var(--c-ui)"><span class="sw" style="background:var(--c-ui)"></span>UI Tasarım</button>
+    <button class="tab" data-filter="poster" style="--tab-color:var(--c-poster)"><span class="sw" style="background:var(--c-poster)"></span>Poster Art</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</section>
+
+<section class="jam wrap" id="gamejam">
+  <div class="jam-card">
+    <div class="jam-art">
+      <svg viewBox="0 0 64 64" fill="none">
+        <path d="M16 24 H48 Q56 24 56 34 V40 Q56 48 48 46 L42 40 H22 L16 46 Q8 48 8 40 V34 Q8 24 16 24 Z" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linejoin="round"/>
+        <path d="M19 30 V38 M15 34 H23" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        <circle cx="42" cy="31" r="1.8" fill="currentColor"/>
+        <circle cx="47" cy="35" r="1.8" fill="currentColor"/>
+        <circle cx="42" cy="39" r="1.8" fill="currentColor"/>
+        <circle cx="37" cy="35" r="1.8" fill="currentColor"/>
+      </svg>
+    </div>
+    <div class="jam-content">
+      <div class="jam-theme">Game Jam Teması — “A World Without X”</div>
+      <h2>Oyun Adı Buraya Gelecek</h2>
+      <p>Kısıtlı bir sürede, verilen “A World Without X” temasına göre
+      bir takımla tasarlanıp geliştirilen bir game jam projesi. Bu vitrinde
+      karakter tasarımı, arayüz ve görsel yönlendirme gibi üstlendiğim
+      alanlar öne çıkıyor — oyunun görselleri ve oynanış videosu yakında
+      burada yerini alacak.</p>
+      <div class="skills jam-tags">
+        <span class="skill">Game Jam</span>
+        <span class="skill">Takım Projesi</span>
+        <span class="skill">Karakter & UI Tasarımı</span>
+        <span class="skill">Unity</span>
+      </div>
+      <a href="#" class="btn-primary" style="margin-top:28px;">Oyunu oyna ↗</a>
+    </div>
+  </div>
+</section>
+
+<section class="about wrap" id="about">
+  <div class="about-grid">
+    <h2>Karakterden arayüze,<br>posterden <em>3D</em>'ye —<br>tek bir bakış açısı.</h2>
+    <div class="about-side">
+      <p>Merhaba, ben <b style="color:var(--paper); font-weight:600;">Babür Önceler</b>. Farklı disiplinler arasında
+      geçiş yapmayı değil, onları aynı fikrin farklı yüzleri olarak görmeyi
+      seviyorum. Bir posterde denediğim bir renk paleti, bir hafta sonra
+      karakter tasarımında ya da arayüzde karşınıza çıkabilir.</p>
+      <p>Bu site, o disiplinler arası dolaşımın bir kesiti. Placeholder
+      görsellerle kurulan bu vitrin, gerçek projelerle güncellendikçe
+      büyüyecek.</p>
+
+      <div class="exp-list">
+        <div class="exp-item">
+          <span class="exp-tag">Eğitim</span>
+          <h4>İstanbul Aydın Üniversitesi</h4>
+          <p>Çizgi Film ve Animasyon — 2027 mezunu</p>
+        </div>
+        <div class="exp-item">
+          <span class="exp-tag">Deneyim</span>
+          <h4>Grafik Tasarım — Staj</h4>
+          <p>Bir grafik tasarım şirketinde görsel kimlik, baskı ve dijital
+          tasarım süreçlerinde yer aldı.</p>
+        </div>
+        <div class="exp-item">
+          <span class="exp-tag">Deneyim</span>
+          <h4>Oyun Geliştirme — Görsel Tasarım</h4>
+          <p>Bir oyun geliştirme şirketinde karakter, arayüz ve görsel
+          içerik üretimi üzerine çalıştı.</p>
+        </div>
+      </div>
+
+      <div class="skills">
+        <span class="skill">Adobe Illustrator</span>
+        <span class="skill">Photoshop</span>
+        <span class="skill">After Effects</span>
+        <span class="skill">Blender</span>
+        <span class="skill">Figma</span>
+        <span class="skill">Procreate</span>
+        <span class="skill">Cinema 4D</span>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>40+</b><span>Tamamlanan proje</span></div>
+        <div class="stat"><b>6</b><span>Aktif disiplin</span></div>
+        <div class="stat"><b>3</b><span>Yıllık deneyim</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact wrap" id="contact">
+  <div class="eyebrow">Birlikte çalışalım</div>
+  <h2>Bir proje mi<br>var aklında?</h2>
+  <a class="mail" href="mailto:merhaba@baburonceler.com" style="font-family:'Unbounded',sans-serif; font-size:18px; margin-top:20px;">merhaba@baburonceler.com</a>
+  <div class="contact-links">
+    <a href="#">Instagram</a>
+    <a href="#">Behance</a>
+    <a href="#">ArtStation</a>
+    <a href="#">LinkedIn</a>
+  </div>
+  <footer class="wrap" style="max-width:100%; margin-top:70px;">
+    <span>© 2026 Babür Önceler</span>
+    <span>Tasarım & kod — placeholder içerikle kuruldu</span>
+  </footer>
+</section>
+
+<script>
+  const colors = {
+    grafik:   getComputedStyle(document.documentElement).getPropertyValue('--c-grafik').trim(),
+    animasyon:getComputedStyle(document.documentElement).getPropertyValue('--c-animasyon').trim(),
+    karakter: getComputedStyle(document.documentElement).getPropertyValue('--c-karakter').trim(),
+    "3d":     getComputedStyle(document.documentElement).getPropertyValue('--c-3d').trim(),
+    ui:       getComputedStyle(document.documentElement).getPropertyValue('--c-ui').trim(),
+    poster:   getComputedStyle(document.documentElement).getPropertyValue('--c-poster').trim(),
+  };
+  const labels = {
+    grafik:"Grafik Tasarım", animasyon:"Animasyon", karakter:"Karakter Tasarımı",
+    "3d":"3D Modelleme", ui:"UI Tasarım", poster:"Poster Art"
+  };
+
+  // simple icon set per discipline
+  const icons = {
+    grafik: `<path d="M4 44 L34 14 M34 14 L44 4 L52 12 L42 22 M34 14 L42 22" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="10" cy="46" r="3" fill="currentColor"/>`,
+    animasyon: `<circle cx="28" cy="28" r="22" stroke="currentColor" stroke-width="2.4" fill="none"/><path d="M22 18 L40 28 L22 38 Z" fill="currentColor"/>`,
+    karakter: `<circle cx="28" cy="20" r="12" stroke="currentColor" stroke-width="2.4" fill="none"/><path d="M8 50 Q28 30 48 50" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/>`,
+    "3d": `<path d="M28 4 L50 16 V40 L28 52 L6 40 V16 Z" stroke="currentColor" stroke-width="2.2" fill="none"/><path d="M6 16 L28 28 L50 16 M28 28 V52" stroke="currentColor" stroke-width="2.2" fill="none"/>`,
+    ui: `<rect x="6" y="10" width="44" height="34" rx="4" stroke="currentColor" stroke-width="2.4" fill="none"/><path d="M6 20 H50" stroke="currentColor" stroke-width="2.4"/><circle cx="13" cy="15" r="1.6" fill="currentColor"/><circle cx="19" cy="15" r="1.6" fill="currentColor"/>`,
+    poster: `<rect x="10" y="4" width="32" height="44" rx="2" stroke="currentColor" stroke-width="2.4" fill="none"/><path d="M16 34 L24 22 L30 30 L36 18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
+  };
+
+  const projects = [
+    {cat:"karakter", title:"Kalabalık Şehir Serisi", note:"Karakter tasarımı", size:"big"},
+    {cat:"3d", title:"Seramik Formlar", note:"3D modelleme", size:""},
+    {cat:"grafik", title:"Kimlik Sistemi — Nova", note:"Grafik tasarım", size:""},
+    {cat:"poster", title:"Gece Konseri Afişi", note:"Poster art", size:"wide"},
+    {cat:"ui", title:"Sesli Not Uygulaması", note:"UI tasarım", size:""},
+    {cat:"animasyon", title:"Logo Animasyonu — Orbit", note:"Animasyon", size:""},
+    {cat:"karakter", title:"Yan Karakter Setleri", note:"Karakter tasarımı", size:""},
+    {cat:"3d", title:"Ürün Render Denemesi", note:"3D modelleme", size:"big"},
+    {cat:"ui", title:"Gösterge Paneli — Akış", note:"UI tasarım", size:"wide"},
+    {cat:"grafik", title:"Dergi İç Sayfa Düzeni", note:"Grafik tasarım", size:""},
+    {cat:"poster", title:"Film Festivali Serisi", note:"Poster art", size:""},
+    {cat:"animasyon", title:"Karakter Yürüyüş Döngüsü", note:"Animasyon", size:""},
+  ];
+
+  const grid = document.getElementById('grid');
+  projects.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'card' + (p.size ? ' ' + p.size : '');
+    card.dataset.cat = p.cat;
+    card.style.setProperty('--card-color', colors[p.cat]);
+    const hue = colors[p.cat];
+    card.innerHTML = `
+      <div class="card-art" style="background:
+        radial-gradient(circle at ${20 + (i*13)%60}% ${20 + (i*29)%60}%, ${hue}33, transparent 60%),
+        conic-gradient(from ${i*47}deg at 50% 50%, ${hue}22, transparent 40%, ${hue}18);
+        color:${hue};">
+        <svg viewBox="0 0 56 56" fill="none">${icons[p.cat]}</svg>
+      </div>
+      <div class="card-tag"><span class="sw" style="background:${hue}"></span>${labels[p.cat]}</div>
+      <div class="card-info">
+        <h3>${p.title}</h3>
+        <span>${p.note} — placeholder</span>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // tabs
+  const tabs = document.querySelectorAll('.tab');
+  const root = document.documentElement;
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const filter = tab.dataset.filter;
+
+      document.querySelectorAll('.card').forEach(card => {
+        card.classList.toggle('hidden', filter !== 'all' && card.dataset.cat !== filter);
+      });
+
+      const newAccent = filter === 'all' ? '#ff5a36' : colors[filter];
+      root.style.setProperty('--accent', newAccent);
+    });
+  });
+
+  // hero letter reveal
+  const name = "BABÜR ÖNCELER";
+  const row = document.querySelector('#heroTitle .row');
+  const accentCycle = ['#ff5a36','#ffd23f','#ff3d81','#3dbbff','#7c5cff','#4be3ac'];
+  [...name].forEach((ch, i) => {
+    const span = document.createElement('span');
+    span.textContent = ch === " " ? "\u00A0" : ch;
+    span.style.animationDelay = (i * 0.035) + 's';
+    if (ch !== " ") span.style.color = accentCycle[i % accentCycle.length];
+    row.appendChild(span);
+  });
+
+  // cursor blob
+  const blob = document.getElementById('blob');
+  window.addEventListener('pointermove', e => {
+    blob.style.left = e.clientX + 'px';
+    blob.style.top = e.clientY + 'px';
+  });
+</script>
+
+</body>
+</html>
