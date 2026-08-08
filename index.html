@@ -462,6 +462,39 @@
     z-index:1001;
   }
   .lightbox-close:hover{ background:var(--accent); color:var(--ink); border-color:transparent; }
+
+  .lightbox-nav{
+    position:fixed;
+    top:50%;
+    transform:translateY(-50%);
+    width:52px; height:52px;
+    border-radius:50%;
+    background:rgba(244,241,234,0.08);
+    border:1px solid var(--line);
+    color:var(--paper);
+    font-size:26px;
+    cursor:pointer;
+    display:none;
+    align-items:center; justify-content:center;
+    z-index:1001;
+    transition:background .2s ease;
+  }
+  .lightbox-nav.show{ display:flex; }
+  .lightbox-nav:hover{ background:var(--accent); color:var(--ink); border-color:transparent; }
+  .lightbox-prev{ left:26px; }
+  .lightbox-next{ right:26px; }
+  @media (max-width:760px){
+    .lightbox-nav{ width:40px; height:40px; font-size:20px; }
+    .lightbox-prev{ left:8px; }
+    .lightbox-next{ right:8px; }
+  }
+
+  .lightbox-counter{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:rgba(244,241,234,0.5);
+    float:right;
+  }
   .card-play{
     position:absolute; top:16px; right:16px;
     width:34px; height:34px;
@@ -663,10 +696,13 @@
 
 <div class="lightbox" id="lightbox">
   <button class="lightbox-close" id="lightboxClose">✕</button>
+  <button class="lightbox-nav lightbox-prev" id="lightboxPrev">‹</button>
+  <button class="lightbox-nav lightbox-next" id="lightboxNext">›</button>
   <div class="lightbox-box">
     <div class="lightbox-media" id="lightboxMedia"></div>
     <div class="lightbox-info">
       <div class="tag" id="lightboxTag"></div>
+      <span class="lightbox-counter" id="lightboxCounter"></span>
       <h3 id="lightboxTitle"></h3>
       <p id="lightboxDesc"></p>
     </div>
@@ -799,7 +835,7 @@
     {cat:"grafik", title:"Kimlik Sistemi — Nova", note:"Grafik tasarım", size:""},
     {cat:"poster", cats:["poster","animasyon"], title:"Yalnız Yumurta", note:"Poster art", size:"wide",
       img:"assets/yalniz-yumurta-poster.jpg",
-      lightboxImg:"assets/yalniz-yumurta-mockup.jpg",
+      images:["assets/yalniz-yumurta-poster.jpg","assets/yalniz-yumurta-mockup.jpg"],
       video:"assets/yalniz-yumurta-video.mp4",
       desc:"\"Her yumurta ait olduğu yeri bulamaz.\" Linol baskı dokusu ve retro afiş diliyle kurulmuş, bir penguen yavrusu ve yumurtası üzerinden aidiyet temasını işleyen bir poster çalışması. Hareketli versiyonu da bulunuyor."},
     {cat:"ui", title:"Sesli Not Uygulaması", note:"UI tasarım", size:""},
@@ -807,9 +843,9 @@
     {cat:"karakter", title:"Yan Karakter Setleri", note:"Karakter tasarımı", size:""},
     {cat:"3d", title:"Ürün Render Denemesi", note:"3D modelleme", size:"big"},
     {cat:"ui", title:"Gösterge Paneli — Akış", note:"UI tasarım", size:"wide"},
-    {cat:"grafik", title:"Han Erlik", note:"Grafik tasarım", size:"big",
+    {cat:"grafik", title:"Han Erlik", note:"Grafik tasarım", size:"",
       img:"assets/han-erlik-cover.jpg",
-      lightboxImg:"assets/han-erlik-mockup.jpg",
+      images:["assets/han-erlik-cover.jpg","assets/han-erlik-mockup.jpg"],
       desc:"Türk mitolojisinden yola çıkan bir çizgi roman kapağı çalışması. Han Erlik karakteri, propaganda posteri estetiğinde güneş motifleri ve boynuz detaylarıyla işlendi; ISBN, barkod ve fiyat etiketi gibi gerçek bir kapağın tüm katmanlarıyla tasarlandı."},
     {cat:"poster", title:"Film Festivali Serisi", note:"Poster art", size:""},
     {cat:"animasyon", title:"Karakter Yürüyüş Döngüsü", note:"Animasyon", size:""},
@@ -862,33 +898,77 @@
   const lightbox = document.getElementById('lightbox');
   const lightboxMedia = document.getElementById('lightboxMedia');
   const lightboxTag = document.getElementById('lightboxTag');
+  const lightboxCounter = document.getElementById('lightboxCounter');
   const lightboxTitle = document.getElementById('lightboxTitle');
   const lightboxDesc = document.getElementById('lightboxDesc');
   const lightboxClose = document.getElementById('lightboxClose');
+  const lightboxPrev = document.getElementById('lightboxPrev');
+  const lightboxNext = document.getElementById('lightboxNext');
+
+  let currentMedia = [];
+  let currentIndex = 0;
+
+  function buildMedia(p) {
+    const items = [];
+    if (p.video) items.push({ type: 'video', src: p.video, poster: (p.images && p.images[0]) || p.img || '' });
+    if (p.images && p.images.length) {
+      p.images.forEach(src => items.push({ type: 'image', src }));
+    } else if (p.img) {
+      items.push({ type: 'image', src: p.img });
+    }
+    return items;
+  }
+
+  function renderMedia() {
+    const item = currentMedia[currentIndex];
+    if (!item) return;
+    if (item.type === 'video') {
+      lightboxMedia.innerHTML = `<video src="${item.src}" controls autoplay poster="${item.poster || ''}"></video>`;
+    } else {
+      lightboxMedia.innerHTML = `<img src="${item.src}" alt="">`;
+    }
+    const multi = currentMedia.length > 1;
+    lightboxPrev.classList.toggle('show', multi);
+    lightboxNext.classList.toggle('show', multi);
+    lightboxCounter.textContent = multi ? `${currentIndex + 1} / ${currentMedia.length}` : '';
+  }
 
   function openLightbox(p) {
     lightboxTag.textContent = labels[p.cat];
     lightboxTitle.textContent = p.title;
     lightboxDesc.textContent = p.desc || '';
-    if (p.video) {
-      lightboxMedia.innerHTML = `<video src="${p.video}" controls autoplay poster="${p.lightboxImg || p.img || ''}"></video>`;
-    } else if (p.lightboxImg || p.img) {
-      lightboxMedia.innerHTML = `<img src="${p.lightboxImg || p.img}" alt="${p.title}">`;
-    }
+    currentMedia = buildMedia(p);
+    currentIndex = 0;
+    renderMedia();
     lightbox.classList.add('open');
   }
 
   function closeLightbox() {
     lightbox.classList.remove('open');
     lightboxMedia.innerHTML = '';
+    currentMedia = [];
+  }
+
+  function showPrev() {
+    if (currentMedia.length < 2) return;
+    currentIndex = (currentIndex - 1 + currentMedia.length) % currentMedia.length;
+    renderMedia();
+  }
+
+  function showNext() {
+    if (currentMedia.length < 2) return;
+    currentIndex = (currentIndex + 1) % currentMedia.length;
+    renderMedia();
   }
 
   lightboxClose.addEventListener('click', closeLightbox);
+  lightboxPrev.addEventListener('click', showPrev);
+  lightboxNext.addEventListener('click', showNext);
 
   // game jam trailer
   const jamData = {
     cat: null,
-    title: "Lexicon — Fragman",
+    title: "Lexicon",
     desc: "GOAT Jam 2025 kapsamında 48 saatte geliştirilen Lexicon'dan oynanış görüntüleri.",
     img: "assets/lexicon-cover.jpg",
     video: "assets/lexicon-video.mp4"
@@ -898,13 +978,20 @@
     lightboxTag.textContent = "Game Jam";
     lightboxTitle.textContent = jamData.title;
     lightboxDesc.textContent = jamData.desc;
-    lightboxMedia.innerHTML = `<video src="${jamData.video}" controls autoplay poster="${jamData.img}"></video>`;
+    currentMedia = buildMedia(jamData);
+    currentIndex = 0;
+    renderMedia();
     lightbox.classList.add('open');
   }
   document.getElementById('jamArt').addEventListener('click', openJamLightbox);
   document.getElementById('jamTrailerBtn').addEventListener('click', openJamLightbox);
   lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
-  window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+  window.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') showPrev();
+    if (e.key === 'ArrowRight') showNext();
+  });
 
   // tabs
   const tabs = document.querySelectorAll('.tab');
