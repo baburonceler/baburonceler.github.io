@@ -392,6 +392,87 @@
     margin:0;
   }
 
+  /* ---------- lightbox ---------- */
+  .lightbox{
+    position:fixed; inset:0;
+    z-index:1000;
+    background:rgba(10,9,12,0.92);
+    backdrop-filter:blur(10px);
+    display:none;
+    align-items:center; justify-content:center;
+    padding:40px 24px;
+  }
+  .lightbox.open{ display:flex; }
+  .lightbox-box{
+    max-width:900px;
+    width:100%;
+    max-height:90vh;
+    overflow-y:auto;
+    background:var(--ink-2);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:0;
+  }
+  .lightbox-media{
+    width:100%;
+    background:#000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    max-height:70vh;
+    overflow:hidden;
+  }
+  .lightbox-media img, .lightbox-media video{
+    width:100%;
+    height:auto;
+    max-height:70vh;
+    object-fit:contain;
+    display:block;
+  }
+  .lightbox-info{ padding:28px 32px 32px; }
+  .lightbox-info .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+  }
+  .lightbox-info h3{
+    font-family:'Unbounded', sans-serif;
+    font-size:22px;
+    font-weight:500;
+    margin:10px 0 12px;
+  }
+  .lightbox-info p{
+    font-size:14.5px;
+    line-height:1.7;
+    color:rgba(244,241,234,0.72);
+  }
+  .lightbox-close{
+    position:absolute;
+    top:26px; right:26px;
+    width:42px; height:42px;
+    border-radius:50%;
+    background:rgba(244,241,234,0.08);
+    border:1px solid var(--line);
+    color:var(--paper);
+    font-size:18px;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    z-index:1001;
+  }
+  .lightbox-close:hover{ background:var(--accent); color:var(--ink); border-color:transparent; }
+  .card-play{
+    position:absolute; top:16px; right:16px;
+    width:34px; height:34px;
+    border-radius:50%;
+    background:rgba(18,16,22,0.6);
+    backdrop-filter:blur(6px);
+    display:flex; align-items:center; justify-content:center;
+    z-index:2;
+  }
+  .card-play svg{ width:14px; height:14px; }
+
   /* ---------- about ---------- */
   .about{
     padding:130px 0;
@@ -580,33 +661,46 @@
   <div class="grid" id="grid"></div>
 </section>
 
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">✕</button>
+  <div class="lightbox-box">
+    <div class="lightbox-media" id="lightboxMedia"></div>
+    <div class="lightbox-info">
+      <div class="tag" id="lightboxTag"></div>
+      <h3 id="lightboxTitle"></h3>
+      <p id="lightboxDesc"></p>
+    </div>
+  </div>
+</div>
+
 <section class="jam wrap" id="gamejam">
   <div class="jam-card">
-    <div class="jam-art">
-      <svg viewBox="0 0 64 64" fill="none">
-        <path d="M16 24 H48 Q56 24 56 34 V40 Q56 48 48 46 L42 40 H22 L16 46 Q8 48 8 40 V34 Q8 24 16 24 Z" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linejoin="round"/>
-        <path d="M19 30 V38 M15 34 H23" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        <circle cx="42" cy="31" r="1.8" fill="currentColor"/>
-        <circle cx="47" cy="35" r="1.8" fill="currentColor"/>
-        <circle cx="42" cy="39" r="1.8" fill="currentColor"/>
-        <circle cx="37" cy="35" r="1.8" fill="currentColor"/>
-      </svg>
+    <div class="jam-art" id="jamArt" style="cursor:pointer; background-image:url('assets/lexicon-cover.jpg'); background-size:cover; background-position:center; position:relative;">
+      <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(18,16,22,0.55), rgba(18,16,22,0.1));"></div>
+      <div style="position:relative; z-index:1; width:64px; height:64px; border-radius:50%; background:rgba(18,16,22,0.55); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="white" style="width:22px; height:22px;"><path d="M8 5v14l11-7z"/></svg>
+      </div>
     </div>
     <div class="jam-content">
-      <div class="jam-theme">Game Jam Teması — “A World Without X”</div>
-      <h2>Oyun Adı Buraya Gelecek</h2>
-      <p>Kısıtlı bir sürede, verilen “A World Without X” temasına göre
-      bir takımla tasarlanıp geliştirilen bir game jam projesi. Bu vitrinde
-      karakter tasarımı, arayüz ve görsel yönlendirme gibi üstlendiğim
-      alanlar öne çıkıyor — oyunun görselleri ve oynanış videosu yakında
-      burada yerini alacak.</p>
+      <div class="jam-theme">GOAT Jam 2025 — Tema: "A World Without X"</div>
+      <h2>Lexicon</h2>
+      <p>Antik bir müzede mitolojik bir Pan heykeli gizemli şekilde canlanır
+      ve harabe müzeden çıkış yolunu aramaya başlar. Karşısına çıkan kutu,
+      raf, heykel gibi engeller fiziksel yollarla aşılamaz — tek çözüm,
+      onların ismini doğru yazmaktır. "Bir şeyi tanımlayamıyorsanız, onunla
+      baş edemezsiniz" fikrinden yola çıkan bir kelime-platform bulmacası.
+      Ekipte <b style="color:var(--paper);">3D Generalist / UI Artist</b>
+      olarak yer aldım.</p>
       <div class="skills jam-tags">
-        <span class="skill">Game Jam</span>
-        <span class="skill">Takım Projesi</span>
-        <span class="skill">Karakter & UI Tasarımı</span>
+        <span class="skill">Game Jam — 48 Saat</span>
+        <span class="skill">Puzzle / Platformer</span>
+        <span class="skill">3D & UI — Babür Önceler</span>
         <span class="skill">Unity</span>
       </div>
-      <a href="#" class="btn-primary" style="margin-top:28px;">Oyunu oyna ↗</a>
+      <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:28px;">
+        <a href="https://tahafurkan.itch.io/lexicon" target="_blank" rel="noopener" class="btn-primary">Oyunu oyna ↗</a>
+        <a href="#" id="jamTrailerBtn" class="btn-primary" style="background:transparent; border:1px solid var(--line); color:var(--paper);">Fragmanı izle ▶</a>
+      </div>
     </div>
   </div>
 </section>
@@ -664,12 +758,10 @@
 <section class="contact wrap" id="contact">
   <div class="eyebrow">Birlikte çalışalım</div>
   <h2>Bir proje mi<br>var aklında?</h2>
-  <a class="mail" href="mailto:merhaba@baburonceler.com" style="font-family:'Unbounded',sans-serif; font-size:18px; margin-top:20px;">merhaba@baburonceler.com</a>
+  <a class="mail" href="mailto:oncelerbabur@gmail.com" style="font-family:'Unbounded',sans-serif; font-size:18px; margin-top:20px;">oncelerbabur@gmail.com</a>
   <div class="contact-links">
-    <a href="#">Instagram</a>
-    <a href="#">Behance</a>
-    <a href="#">ArtStation</a>
-    <a href="#">LinkedIn</a>
+    <a href="https://www.artstation.com/babur" target="_blank" rel="noopener">ArtStation</a>
+    <a href="https://www.linkedin.com/in/babur-onceler/" target="_blank" rel="noopener">LinkedIn</a>
   </div>
   <footer class="wrap" style="max-width:100%; margin-top:70px;">
     <span>© 2026 Babür Önceler</span>
@@ -705,13 +797,18 @@
     {cat:"karakter", title:"Kalabalık Şehir Serisi", note:"Karakter tasarımı", size:"big"},
     {cat:"3d", title:"Seramik Formlar", note:"3D modelleme", size:""},
     {cat:"grafik", title:"Kimlik Sistemi — Nova", note:"Grafik tasarım", size:""},
-    {cat:"poster", title:"Gece Konseri Afişi", note:"Poster art", size:"wide"},
+    {cat:"poster", cats:["poster","animasyon"], title:"Yalnız Yumurta", note:"Poster art", size:"wide",
+      img:"assets/yalniz-yumurta-poster.jpg",
+      video:"assets/yalniz-yumurta-video.mp4",
+      desc:"\"Her yumurta ait olduğu yeri bulamaz.\" Linol baskı dokusu ve retro afiş diliyle kurulmuş, bir penguen yavrusu ve yumurtası üzerinden aidiyet temasını işleyen bir poster çalışması. Hareketli versiyonu da bulunuyor."},
     {cat:"ui", title:"Sesli Not Uygulaması", note:"UI tasarım", size:""},
     {cat:"animasyon", title:"Logo Animasyonu — Orbit", note:"Animasyon", size:""},
     {cat:"karakter", title:"Yan Karakter Setleri", note:"Karakter tasarımı", size:""},
     {cat:"3d", title:"Ürün Render Denemesi", note:"3D modelleme", size:"big"},
     {cat:"ui", title:"Gösterge Paneli — Akış", note:"UI tasarım", size:"wide"},
-    {cat:"grafik", title:"Dergi İç Sayfa Düzeni", note:"Grafik tasarım", size:""},
+    {cat:"grafik", title:"Han Erlik", note:"Grafik tasarım", size:"big",
+      img:"assets/han-erlik-cover.jpg",
+      desc:"Türk mitolojisinden yola çıkan bir çizgi roman kapağı çalışması. Han Erlik karakteri, propaganda posteri estetiğinde güneş motifleri ve boynuz detaylarıyla işlendi; ISBN, barkod ve fiyat etiketi gibi gerçek bir kapağın tüm katmanlarıyla tasarlandı."},
     {cat:"poster", title:"Film Festivali Serisi", note:"Poster art", size:""},
     {cat:"animasyon", title:"Karakter Yürüyüş Döngüsü", note:"Animasyon", size:""},
   ];
@@ -721,23 +818,91 @@
     const card = document.createElement('div');
     card.className = 'card' + (p.size ? ' ' + p.size : '');
     card.dataset.cat = p.cat;
+    card.dataset.cats = (p.cats || [p.cat]).join(',');
     card.style.setProperty('--card-color', colors[p.cat]);
     const hue = colors[p.cat];
-    card.innerHTML = `
-      <div class="card-art" style="background:
-        radial-gradient(circle at ${20 + (i*13)%60}% ${20 + (i*29)%60}%, ${hue}33, transparent 60%),
-        conic-gradient(from ${i*47}deg at 50% 50%, ${hue}22, transparent 40%, ${hue}18);
-        color:${hue};">
-        <svg viewBox="0 0 56 56" fill="none">${icons[p.cat]}</svg>
-      </div>
-      <div class="card-tag"><span class="sw" style="background:${hue}"></span>${labels[p.cat]}</div>
-      <div class="card-info">
-        <h3>${p.title}</h3>
-        <span>${p.note} — placeholder</span>
-      </div>
-    `;
+
+    if (p.img) {
+      // real project image
+      card.innerHTML = `
+        <div class="card-art" style="background-image:url('${p.img}'); background-size:cover; background-position:center;"></div>
+        ${p.video ? `<div class="card-play"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>` : ''}
+        <div class="card-tag"><span class="sw" style="background:${hue}"></span>${labels[p.cat]}</div>
+        <div class="card-info">
+          <h3>${p.title}</h3>
+          <span>${p.note}</span>
+        </div>
+      `;
+    } else {
+      card.innerHTML = `
+        <div class="card-art" style="background:
+          radial-gradient(circle at ${20 + (i*13)%60}% ${20 + (i*29)%60}%, ${hue}33, transparent 60%),
+          conic-gradient(from ${i*47}deg at 50% 50%, ${hue}22, transparent 40%, ${hue}18);
+          color:${hue};">
+          <svg viewBox="0 0 56 56" fill="none">${icons[p.cat]}</svg>
+        </div>
+        <div class="card-tag"><span class="sw" style="background:${hue}"></span>${labels[p.cat]}</div>
+        <div class="card-info">
+          <h3>${p.title}</h3>
+          <span>${p.note} — placeholder</span>
+        </div>
+      `;
+    }
+
+    if (p.img || p.video) {
+      card.addEventListener('click', () => openLightbox(p));
+    }
+
     grid.appendChild(card);
   });
+
+  // lightbox
+  const lightbox = document.getElementById('lightbox');
+  const lightboxMedia = document.getElementById('lightboxMedia');
+  const lightboxTag = document.getElementById('lightboxTag');
+  const lightboxTitle = document.getElementById('lightboxTitle');
+  const lightboxDesc = document.getElementById('lightboxDesc');
+  const lightboxClose = document.getElementById('lightboxClose');
+
+  function openLightbox(p) {
+    lightboxTag.textContent = labels[p.cat];
+    lightboxTitle.textContent = p.title;
+    lightboxDesc.textContent = p.desc || '';
+    if (p.video) {
+      lightboxMedia.innerHTML = `<video src="${p.video}" controls autoplay poster="${p.img || ''}"></video>`;
+    } else if (p.img) {
+      lightboxMedia.innerHTML = `<img src="${p.img}" alt="${p.title}">`;
+    }
+    lightbox.classList.add('open');
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    lightboxMedia.innerHTML = '';
+  }
+
+  lightboxClose.addEventListener('click', closeLightbox);
+
+  // game jam trailer
+  const jamData = {
+    cat: null,
+    title: "Lexicon — Fragman",
+    desc: "GOAT Jam 2025 kapsamında 48 saatte geliştirilen Lexicon'dan oynanış görüntüleri.",
+    img: "assets/lexicon-cover.jpg",
+    video: "assets/lexicon-video.mp4"
+  };
+  function openJamLightbox(e) {
+    e.preventDefault();
+    lightboxTag.textContent = "Game Jam";
+    lightboxTitle.textContent = jamData.title;
+    lightboxDesc.textContent = jamData.desc;
+    lightboxMedia.innerHTML = `<video src="${jamData.video}" controls autoplay poster="${jamData.img}"></video>`;
+    lightbox.classList.add('open');
+  }
+  document.getElementById('jamArt').addEventListener('click', openJamLightbox);
+  document.getElementById('jamTrailerBtn').addEventListener('click', openJamLightbox);
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 
   // tabs
   const tabs = document.querySelectorAll('.tab');
@@ -749,7 +914,8 @@
       const filter = tab.dataset.filter;
 
       document.querySelectorAll('.card').forEach(card => {
-        card.classList.toggle('hidden', filter !== 'all' && card.dataset.cat !== filter);
+        const cardCats = card.dataset.cats.split(',');
+        card.classList.toggle('hidden', filter !== 'all' && !cardCats.includes(filter));
       });
 
       const newAccent = filter === 'all' ? '#ff5a36' : colors[filter];
