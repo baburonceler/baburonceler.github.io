@@ -799,6 +799,7 @@
     {cat:"grafik", title:"Kimlik Sistemi — Nova", note:"Grafik tasarım", size:""},
     {cat:"poster", cats:["poster","animasyon"], title:"Yalnız Yumurta", note:"Poster art", size:"wide",
       img:"assets/yalniz-yumurta-poster.jpg",
+      lightboxImg:"assets/yalniz-yumurta-mockup.jpg",
       video:"assets/yalniz-yumurta-video.mp4",
       desc:"\"Her yumurta ait olduğu yeri bulamaz.\" Linol baskı dokusu ve retro afiş diliyle kurulmuş, bir penguen yavrusu ve yumurtası üzerinden aidiyet temasını işleyen bir poster çalışması. Hareketli versiyonu da bulunuyor."},
     {cat:"ui", title:"Sesli Not Uygulaması", note:"UI tasarım", size:""},
@@ -808,6 +809,7 @@
     {cat:"ui", title:"Gösterge Paneli — Akış", note:"UI tasarım", size:"wide"},
     {cat:"grafik", title:"Han Erlik", note:"Grafik tasarım", size:"big",
       img:"assets/han-erlik-cover.jpg",
+      lightboxImg:"assets/han-erlik-mockup.jpg",
       desc:"Türk mitolojisinden yola çıkan bir çizgi roman kapağı çalışması. Han Erlik karakteri, propaganda posteri estetiğinde güneş motifleri ve boynuz detaylarıyla işlendi; ISBN, barkod ve fiyat etiketi gibi gerçek bir kapağın tüm katmanlarıyla tasarlandı."},
     {cat:"poster", title:"Film Festivali Serisi", note:"Poster art", size:""},
     {cat:"animasyon", title:"Karakter Yürüyüş Döngüsü", note:"Animasyon", size:""},
@@ -869,9 +871,9 @@
     lightboxTitle.textContent = p.title;
     lightboxDesc.textContent = p.desc || '';
     if (p.video) {
-      lightboxMedia.innerHTML = `<video src="${p.video}" controls autoplay poster="${p.img || ''}"></video>`;
-    } else if (p.img) {
-      lightboxMedia.innerHTML = `<img src="${p.img}" alt="${p.title}">`;
+      lightboxMedia.innerHTML = `<video src="${p.video}" controls autoplay poster="${p.lightboxImg || p.img || ''}"></video>`;
+    } else if (p.lightboxImg || p.img) {
+      lightboxMedia.innerHTML = `<img src="${p.lightboxImg || p.img}" alt="${p.title}">`;
     }
     lightbox.classList.add('open');
   }
