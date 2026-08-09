@@ -259,6 +259,7 @@
   .grid{
     display:grid;
     grid-template-columns:repeat(3, 1fr);
+    grid-auto-flow:dense;
     gap:22px;
   }
   .card{
@@ -832,26 +833,6 @@
   };
 
   const projects = [
-    {cat:"karakter", title:"Kalabalık Şehir Serisi", note:"Karakter tasarımı", size:"big"},
-    {cat:"3d", cats:["3d","animasyon"], title:"3D Animasyon Egzersizleri", note:"3D modelleme", size:"",
-      img:"assets/reel-cover.jpg",
-      video:"assets/3d-exercises-reel.mp4",
-      videoCaption:"Timing, Yay Hareketi & Form Değişimi",
-      desc:"Zıplayan top ve form değişimi üzerine kurulu temel 3D animasyon egzersizleri. Ağırlık, zamanlama, yay hareketi (arc) ve squash & stretch gibi animasyonun temel prensiplerini pekiştirmek için yapılan çalışmalardan bir derleme."},
-    {cat:"grafik", cats:["grafik","animasyon"], title:"Çikolata — Bilgi Grafiği", note:"Grafik tasarım", size:"wide",
-      img:"assets/cikolata-cover.jpg",
-      video:"assets/cikolata-infografik.mp4",
-      videoCaption:"Bilgi Grafiği Animasyonu",
-      desc:"Çikolatanın türlerini, üretici ülkelerin hacmini ve sağlık üzerindeki etkilerini anlatan, karakter illüstrasyonları ve veri görselleştirmeyle desteklenmiş animasyonlu bir bilgi grafiği (infografik) çalışması."},
-    {cat:"poster", cats:["poster","animasyon"], title:"Yalnız Yumurta", note:"Poster art", size:"",
-      img:"assets/yalniz-yumurta-poster.jpg",
-      videoCaption:"Hareketli Versiyon",
-      images:[
-        {src:"assets/yalniz-yumurta-poster.jpg", caption:"Poster Tasarımı"},
-        {src:"assets/yalniz-yumurta-mockup.jpg", caption:"Baskı Sunumu"}
-      ],
-      video:"assets/yalniz-yumurta-video.mp4",
-      desc:"\"Her yumurta ait olduğu yeri bulamaz.\" Linol baskı dokusu ve retro afiş diliyle kurulmuş, bir penguen yavrusu ve yumurtası üzerinden aidiyet temasını işleyen bir poster çalışması. Hareketli versiyonu da bulunuyor."},
     {cat:"ui", title:"Sakabank — Mobil Bankacılık Uygulaması", note:"UI tasarım", size:"big",
       img:"assets/sakabank-2-anasayfa.jpg",
       images:[
@@ -863,10 +844,6 @@
         {src:"assets/sakabank-6-profil.jpg", caption:"Profil & Ayarlar"}
       ],
       desc:"Uçtan uca tasarlanan bir mobil bankacılık uygulaması arayüzü. Karşılama ekranından hesap hareketlerine, fatura ödemelerinden profil yönetimine kadar tutarlı bir tasarım sistemiyle kurulan 6 ekranlık bir akış."},
-    {cat:"animasyon", title:"Logo Animasyonu — Orbit", note:"Animasyon", size:""},
-    {cat:"karakter", title:"Yan Karakter Setleri", note:"Karakter tasarımı", size:""},
-    {cat:"3d", title:"Ürün Render Denemesi", note:"3D modelleme", size:"big"},
-    {cat:"ui", title:"Gösterge Paneli — Akış", note:"UI tasarım", size:"wide"},
     {cat:"grafik", cats:["grafik","poster"], title:"Han Erlik", note:"Grafik tasarım", size:"",
       img:"assets/han-erlik-cover.jpg",
       images:[
@@ -874,6 +851,15 @@
         {src:"assets/han-erlik-mockup.jpg", caption:"Baskı Sunumu"}
       ],
       desc:"Türk mitolojisinden yola çıkan bir çizgi roman kapağı çalışması. Han Erlik karakteri, propaganda posteri estetiğinde güneş motifleri ve boynuz detaylarıyla işlendi; ISBN, barkod ve fiyat etiketi gibi gerçek bir kapağın tüm katmanlarıyla tasarlandı."},
+    {cat:"poster", cats:["poster","animasyon"], title:"Yalnız Yumurta", note:"Poster art", size:"",
+      img:"assets/yalniz-yumurta-poster.jpg",
+      videoCaption:"Hareketli Versiyon",
+      images:[
+        {src:"assets/yalniz-yumurta-poster.jpg", caption:"Poster Tasarımı"},
+        {src:"assets/yalniz-yumurta-mockup.jpg", caption:"Baskı Sunumu"}
+      ],
+      video:"assets/yalniz-yumurta-video.mp4",
+      desc:"\"Her yumurta ait olduğu yeri bulamaz.\" Linol baskı dokusu ve retro afiş diliyle kurulmuş, bir penguen yavrusu ve yumurtası üzerinden aidiyet temasını işleyen bir poster çalışması. Hareketli versiyonu da bulunuyor."},
     {cat:"grafik", title:"Moğollar — Bir Şey Yapmalı", note:"Grafik tasarım", size:"wide",
       img:"assets/mogollar-plak-kapak.jpg",
       images:[
@@ -884,6 +870,19 @@
         {src:"assets/mogollar-bilet.png", caption:"Etkinlik Bileti"}
       ],
       desc:"Moğollar için tasarlanan \"Bir Şey Yapmalı\" plak kapağı ve akordiyon katlamalı iç kitapçık çalışması. Kimliğin devamında sticker'lar ve etkinlik bileti de aynı tek renkli çizgi dilinde tasarlandı, grubun sahne enerjisini panel panel anlatan bütünlüklü bir görsel kimlik kuruldu."},
+    {cat:"grafik", cats:["grafik","animasyon"], title:"Çikolata — Bilgi Grafiği", note:"Grafik tasarım", size:"wide",
+      img:"assets/cikolata-cover.jpg",
+      video:"assets/cikolata-infografik.mp4",
+      videoCaption:"Bilgi Grafiği Animasyonu",
+      desc:"Çikolatanın türlerini, üretici ülkelerin hacmini ve sağlık üzerindeki etkilerini anlatan, karakter illüstrasyonları ve veri görselleştirmeyle desteklenmiş animasyonlu bir bilgi grafiği (infografik) çalışması."},
+    {cat:"poster", title:"Konstrüktivizm — Geçmişteki Gücü Kullan", note:"Poster art", size:"",
+      img:"assets/konstruktivizm-poster.jpg",
+      desc:"Sovyet konstrüktivizminden ilham alan, güneş motifi ve yumruk imgesiyle kurulu bir tipografi posteri. \"Geçmişteki gücü kullanarak geleceği inşa et\" mesajını keskin renk kontrastı ve blok tipografiyle aktarıyor."},
+    {cat:"animasyon", title:"2D Karakter Yürüyüş Döngüsü", note:"Animasyon", size:"",
+      img:"assets/walk-cycle-cover.jpg",
+      video:"assets/walk-cycle-video.mp4",
+      videoCaption:"Yürüyüş Döngüsü — After Effects",
+      desc:"After Effects'te kare kare oluşturulan 2D karakter yürüyüş döngüsü (walk cycle) çalışması. Ağırlık aktarımı, zamanlama ve abartı gibi animasyon temel prensipleri üzerine kurulu bir egzersiz."},
     {cat:"grafik", title:"Moğollar — İç Kitapçık Tasarımı", note:"Grafik tasarım", size:"wide",
       img:"assets/mogollar-kitapcik-1.jpg",
       images:[
@@ -893,14 +892,16 @@
         {src:"assets/mogollar-kitapcik-4.jpg", caption:"Sayfa 4 — Sonuç"}
       ],
       desc:"A6 ebadında tasarlanan albüm iç kitapçığı. Moğollar'ın 1967'den bu yana Anadolu rock'ına öncülük eden hikayesini ve \"Bir Şey Yapmalı\" şarkısının umut, dayanışma ve harekete geçme temasını, panel panel ilerleyen illüstratif bir anlatımla aktarıyor."},
-    {cat:"poster", title:"Konstrüktivizm — Geçmişteki Gücü Kullan", note:"Poster art", size:"",
-      img:"assets/konstruktivizm-poster.jpg",
-      desc:"Sovyet konstrüktivizminden ilham alan, güneş motifi ve yumruk imgesiyle kurulu bir tipografi posteri. \"Geçmişteki gücü kullanarak geleceği inşa et\" mesajını keskin renk kontrastı ve blok tipografiyle aktarıyor."},
-    {cat:"animasyon", title:"2D Karakter Yürüyüş Döngüsü", note:"Animasyon", size:"",
-      img:"assets/walk-cycle-cover.jpg",
-      video:"assets/walk-cycle-video.mp4",
-      videoCaption:"Yürüyüş Döngüsü — After Effects",
-      desc:"After Effects'te kare kare oluşturulan 2D karakter yürüyüş döngüsü (walk cycle) çalışması. Ağırlık aktarımı, zamanlama ve abartı gibi animasyon temel prensipleri üzerine kurulu bir egzersiz."},
+    {cat:"3d", cats:["3d","animasyon"], title:"3D Animasyon Egzersizleri", note:"3D modelleme", size:"",
+      img:"assets/reel-cover.jpg",
+      video:"assets/3d-exercises-reel.mp4",
+      videoCaption:"Timing, Yay Hareketi & Form Değişimi",
+      desc:"Zıplayan top ve form değişimi üzerine kurulu temel 3D animasyon egzersizleri. Ağırlık, zamanlama, yay hareketi (arc) ve squash & stretch gibi animasyonun temel prensiplerini pekiştirmek için yapılan çalışmalardan bir derleme."},
+    {cat:"karakter", title:"Kalabalık Şehir Serisi", note:"Karakter tasarımı", size:"big"},
+    {cat:"ui", title:"Gösterge Paneli — Akış", note:"UI tasarım", size:"wide"},
+    {cat:"animasyon", title:"Logo Animasyonu — Orbit", note:"Animasyon", size:""},
+    {cat:"karakter", title:"Yan Karakter Setleri", note:"Karakter tasarımı", size:""},
+    {cat:"3d", title:"Ürün Render Denemesi", note:"3D modelleme", size:"big"},
   ];
 
   const grid = document.getElementById('grid');
