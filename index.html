@@ -490,10 +490,12 @@
   }
 
   .lightbox-counter{
-    font-family:'JetBrains Mono', monospace;
-    font-size:12px;
-    color:rgba(244,241,234,0.5);
-    float:right;
+    font-family:'Unbounded', sans-serif;
+    font-size:16px;
+    font-weight:500;
+    color:var(--accent);
+    display:block;
+    margin-bottom:14px;
   }
   .card-play{
     position:absolute; top:16px; right:16px;
@@ -833,9 +835,13 @@
     {cat:"karakter", title:"Kalabalık Şehir Serisi", note:"Karakter tasarımı", size:"big"},
     {cat:"3d", title:"Seramik Formlar", note:"3D modelleme", size:""},
     {cat:"grafik", title:"Kimlik Sistemi — Nova", note:"Grafik tasarım", size:""},
-    {cat:"poster", cats:["poster","animasyon"], title:"Yalnız Yumurta", note:"Poster art", size:"wide",
+    {cat:"poster", cats:["poster","animasyon"], title:"Yalnız Yumurta", note:"Poster art", size:"",
       img:"assets/yalniz-yumurta-poster.jpg",
-      images:["assets/yalniz-yumurta-poster.jpg","assets/yalniz-yumurta-mockup.jpg"],
+      videoCaption:"Hareketli Versiyon",
+      images:[
+        {src:"assets/yalniz-yumurta-poster.jpg", caption:"Poster Tasarımı"},
+        {src:"assets/yalniz-yumurta-mockup.jpg", caption:"Baskı Sunumu"}
+      ],
       video:"assets/yalniz-yumurta-video.mp4",
       desc:"\"Her yumurta ait olduğu yeri bulamaz.\" Linol baskı dokusu ve retro afiş diliyle kurulmuş, bir penguen yavrusu ve yumurtası üzerinden aidiyet temasını işleyen bir poster çalışması. Hareketli versiyonu da bulunuyor."},
     {cat:"ui", title:"Sesli Not Uygulaması", note:"UI tasarım", size:""},
@@ -845,8 +851,18 @@
     {cat:"ui", title:"Gösterge Paneli — Akış", note:"UI tasarım", size:"wide"},
     {cat:"grafik", title:"Han Erlik", note:"Grafik tasarım", size:"",
       img:"assets/han-erlik-cover.jpg",
-      images:["assets/han-erlik-cover.jpg","assets/han-erlik-mockup.jpg"],
+      images:[
+        {src:"assets/han-erlik-cover.jpg", caption:"Kapak Tasarımı"},
+        {src:"assets/han-erlik-mockup.jpg", caption:"Baskı Sunumu"}
+      ],
       desc:"Türk mitolojisinden yola çıkan bir çizgi roman kapağı çalışması. Han Erlik karakteri, propaganda posteri estetiğinde güneş motifleri ve boynuz detaylarıyla işlendi; ISBN, barkod ve fiyat etiketi gibi gerçek bir kapağın tüm katmanlarıyla tasarlandı."},
+    {cat:"grafik", title:"Moğollar — Bir Şey Yapmalı", note:"Grafik tasarım", size:"wide",
+      img:"assets/mogollar-plak-kapak.jpg",
+      images:[
+        {src:"assets/mogollar-plak-kapak.jpg", caption:"Plak Kapağı & Etiket"},
+        {src:"assets/mogollar-akordiyon.jpg", caption:"İç Katlamalı Sayfa"}
+      ],
+      desc:"Moğollar için tasarlanan \"Bir Şey Yapmalı\" plak kapağı ve akordiyon katlamalı iç kitapçık çalışması. Tek renkli çizgi illüstrasyonlarla, grubun sahne enerjisini panel panel anlatan bir görsel hikaye kuruldu."},
     {cat:"poster", title:"Film Festivali Serisi", note:"Poster art", size:""},
     {cat:"animasyon", title:"Karakter Yürüyüş Döngüsü", note:"Animasyon", size:""},
   ];
@@ -910,11 +926,11 @@
 
   function buildMedia(p) {
     const items = [];
-    if (p.video) items.push({ type: 'video', src: p.video, poster: (p.images && p.images[0]) || p.img || '' });
+    if (p.video) items.push({ type: 'video', src: p.video, poster: (p.images && p.images[0] && p.images[0].src) || p.img || '', caption: p.videoCaption || '' });
     if (p.images && p.images.length) {
-      p.images.forEach(src => items.push({ type: 'image', src }));
+      p.images.forEach(im => items.push({ type: 'image', src: im.src, caption: im.caption || '' }));
     } else if (p.img) {
-      items.push({ type: 'image', src: p.img });
+      items.push({ type: 'image', src: p.img, caption: '' });
     }
     return items;
   }
@@ -930,7 +946,16 @@
     const multi = currentMedia.length > 1;
     lightboxPrev.classList.toggle('show', multi);
     lightboxNext.classList.toggle('show', multi);
-    lightboxCounter.textContent = multi ? `${currentIndex + 1} / ${currentMedia.length}` : '';
+    if (multi || item.caption) {
+      const parts = [];
+      if (multi) parts.push(`${currentIndex + 1} / ${currentMedia.length}`);
+      if (item.caption) parts.push(item.caption);
+      lightboxCounter.textContent = parts.join(' — ');
+      lightboxCounter.style.display = 'block';
+    } else {
+      lightboxCounter.textContent = '';
+      lightboxCounter.style.display = 'none';
+    }
   }
 
   function openLightbox(p) {
