@@ -804,7 +804,7 @@
   </div>
   <footer class="wrap" style="max-width:100%; margin-top:70px;">
     <span>© 2026 Babür Önceler</span>
-    <span>Tasarım & kod — placeholder içerikle kuruldu</span>
+    <span>Tasarım & kod</span>
   </footer>
 </section>
 
@@ -893,6 +893,11 @@
       video:"assets/walk-cycle-video.mp4",
       videoCaption:"Yürüyüş Döngüsü — After Effects",
       desc:"After Effects'te kare kare oluşturulan 2D karakter yürüyüş döngüsü (walk cycle) çalışması. Ağırlık aktarımı, zamanlama ve abartı gibi animasyon temel prensipleri üzerine kurulu bir egzersiz."},
+    {cat:"animasyon", title:"2D Parallax Animasyon", note:"Animasyon", size:"",
+      img:"assets/parallax-cover.jpg",
+      video:"assets/parallax-video.mp4",
+      videoCaption:"Parallax Sahne — After Effects",
+      desc:"After Effects'te katmanlı illüstrasyon öğeleri kullanılarak oluşturulan bir 2D parallax animasyon çalışması. Ön plan, orta plan ve arka plan katmanlarının farklı hızlarda hareketiyle derinlik hissi yaratılan bir sahne kurgusu."},
     {cat:"grafik", title:"Moğollar — İç Kitapçık Tasarımı", note:"Grafik tasarım", size:"wide",
       img:"assets/mogollar-kitapcik-1.jpg",
       images:[
@@ -905,12 +910,46 @@
     {cat:"3d", cats:["3d","animasyon"], title:"3D Animasyon Egzersizleri", note:"3D modelleme", size:"",
       img:"assets/reel-cover.jpg",
       video:"assets/3d-exercises-reel.mp4",
-      videoCaption:"Timing, Yay Hareketi & Form Değişimi",
-      desc:"Zıplayan top ve form değişimi üzerine kurulu temel 3D animasyon egzersizleri. Ağırlık, zamanlama, yay hareketi (arc) ve squash & stretch gibi animasyonun temel prensiplerini pekiştirmek için yapılan çalışmalardan bir derleme."},
-    {cat:"karakter", title:"Kalabalık Şehir Serisi", note:"Karakter tasarımı", size:"big"},
-    {cat:"animasyon", title:"Logo Animasyonu — Orbit", note:"Animasyon", size:""},
-    {cat:"karakter", title:"Yan Karakter Setleri", note:"Karakter tasarımı", size:""},
-    {cat:"3d", title:"Ürün Render Denemesi", note:"3D modelleme", size:"big"},
+      videoCaption:"Timing, Yay Hareketi, Form Değişimi & Kamera Takibi",
+      desc:"Zıplayan top, form değişimi ve dinamik kamera takibi üzerine kurulu temel 3D animasyon egzersizleri. Ağırlık, zamanlama, yay hareketi (arc), squash & stretch ve hareketli bir nesneyi kamerayla takip etme gibi temel prensipleri pekiştirmek için yapılan çalışmalardan bir derleme."},
+    {cat:"karakter", cats:["karakter","animasyon"], title:"Sembiyotik Yaratık — Spine Animasyonu", note:"Karakter tasarımı", size:"wide",
+      img:"assets/symbiotic-cover.jpg",
+      video:"assets/symbiotic-video.mp4",
+      videoCaption:"Rigleme & Yürüyüş Döngüsü — Spine",
+      desc:"İllüstrasyonu çizilen sembiyotik/yaratık karakterin Spine uygulamasında kemik tabanlı rigleme (skeletal rig) ile hareketlendirilmesi. Çene, uzuvlar ve kuyruk ayrı ayrı riglenerek döngüsel bir yürüyüş animasyonu (walk cycle) oluşturuldu."},
+    {cat:"3d", cats:["3d","grafik"], title:"Olips — Ambalaj Tasarımı (2D → 3D)", note:"3D modelleme", size:"",
+      img:"assets/olips-kutu.jpg",
+      desc:"2D bir ambalaj tasarımını detaylı bir 3D illüstrasyona dönüştürdüğüm bir çalışma. Süreç, düz başlangıç tasarımını üç boyutlu uzaya taşımayı; derinlik, doku ve gerçekçi ışıklandırma eklemeyi kapsadı. Sonuç, basit bir 2D konseptin nasıl görsel olarak dinamik ve sürükleyici bir 3D temsile dönüşebileceğini gösteriyor."},
+    {cat:"grafik", cats:["grafik","karakter"], title:"Peanutman — Karakter & Ambalaj Tasarımı", note:"Grafik tasarım", size:"wide",
+      img:"assets/peanutman-final.jpg",
+      images:[
+        {src:"assets/peanutman-trace.jpg", caption:"Çizim Taslağı (Trace)"},
+        {src:"assets/peanutman-final.jpg", caption:"Final Tasarım & Ambalaj Mockup'ı"}
+      ],
+      desc:"\"Fıstıkçı\" markası için tasarlanan maskot karakter ve ambalaj çalışması. Çizgi taslaktan renkli final illüstrasyona, oradan ürün ambalajı mockup'ına uzanan tam bir tasarım süreci."},
+    {cat:"3d", title:"Riglenmiş Bisiklet — Maya", note:"3D modelleme", size:"wide",
+      img:"assets/bisiklet-2-perspektif.jpg",
+      images:[
+        {src:"assets/bisiklet-2-perspektif.jpg", caption:"Perspektif Görünüm"},
+        {src:"assets/bisiklet-1-yan.jpg", caption:"Yan Görünüm"},
+        {src:"assets/bisiklet-3-detay.jpg", caption:"Detay Görünüm"}
+      ],
+      desc:"Maya'da modellenen ve mekanik olarak riglenen bir bisiklet çalışması. Pedal mekaniği zincirle eşgüdümlü çalışacak, iki tekerlek de birbiriyle senkronize dönecek şekilde riglendi — gerçek bir bisikletin hareket mantığını birebir simüle eden bir rig sistemi."},
+    {cat:"3d", cats:["3d","karakter"], title:"Gargalius — ZBrush Karakter", note:"3D modelleme", size:"big",
+      img:"assets/gargalius-cover.jpg",
+      video:"assets/gargalius-video.mp4",
+      videoCaption:"360° Görünüm — ZBrush",
+      desc:"ZBrush'ta heykellenen, iki başlı ve dört kollu bir savaşçı yaratık karakteri. Deri dokusu, kürk (fiber) detayları ve zincir/silah aksesuarlarıyla desteklenmiş yüksek detaylı bir karakter sculpt çalışması."},
+    {cat:"3d", cats:["3d","karakter"], title:"Alien — ZBrush Karakter", note:"3D modelleme", size:"big",
+      img:"assets/alien-1-on.jpg",
+      images:[
+        {src:"assets/alien-1-on.jpg", caption:"Ön Görünüm"},
+        {src:"assets/alien-2-on-studio.jpg", caption:"Stüdyo Işıklandırma"},
+        {src:"assets/alien-3-yan.jpg", caption:"Yan Görünüm"},
+        {src:"assets/alien-4-arka.jpg", caption:"Arka Görünüm"},
+        {src:"assets/alien-5-detay.jpg", caption:"Detay Görünüm"}
+      ],
+      desc:"ZBrush'ta heykellenen, ince uzuvlu ve antenli bir uzaylı karakter tasarımı. Yumuşak organik formlar ile kauçuk dokulu eldiven/antenlerin kontrastı üzerine kurulu bir karakter çalışması."},
   ];
 
   const grid = document.getElementById('grid');
