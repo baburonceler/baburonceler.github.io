@@ -59,10 +59,10 @@
   /* ---------- cursor blob ---------- */
   .blob{
     position:fixed;
-    width:420px; height:420px;
+    width:378px; height:378px;
     border-radius:50%;
     background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-    opacity:0.22;
+    opacity:0.176;
     pointer-events:none;
     z-index:0;
     filter: blur(10px);
@@ -752,15 +752,20 @@
       geçiş yapmayı değil, onları aynı fikrin farklı yüzleri olarak görmeyi
       seviyorum. Bir posterde denediğim bir renk paleti, bir hafta sonra
       karakter tasarımında ya da arayüzde karşınıza çıkabilir.</p>
-      <p>Bu site, o disiplinler arası dolaşımın bir kesiti. Placeholder
-      görsellerle kurulan bu vitrin, gerçek projelerle güncellendikçe
-      büyüyecek.</p>
+      <p>Bu site, o disiplinler arası dolaşımın bir kesiti — okul projelerinden
+      kişisel çalışmalara, gerçek markalar için kurgulanan denemelerden
+      game jam'lere uzanan bir seçki. Yeni işler oldukça büyümeye devam edecek.</p>
 
       <div class="exp-list">
         <div class="exp-item">
           <span class="exp-tag">Eğitim</span>
+          <h4>İstanbul Topkapı Üniversitesi</h4>
+          <p>Bilgisayar Destekli Tasarım ve Animasyon (BDTA) — 2024 mezunu</p>
+        </div>
+        <div class="exp-item">
+          <span class="exp-tag">Eğitim</span>
           <h4>İstanbul Aydın Üniversitesi</h4>
-          <p>Çizgi Film ve Animasyon — 2027 mezunu</p>
+          <p>Çizgi Film ve Animasyon — Tam Burslu, 2027 mezunu</p>
         </div>
         <div class="exp-item">
           <span class="exp-tag">Deneyim</span>
@@ -777,13 +782,16 @@
       </div>
 
       <div class="skills">
+        <span class="skill">Maya</span>
         <span class="skill">Adobe Illustrator</span>
         <span class="skill">Photoshop</span>
         <span class="skill">After Effects</span>
+        <span class="skill">Premiere Pro</span>
+        <span class="skill">Animate</span>
+        <span class="skill">Spine</span>
+        <span class="skill">Unity</span>
         <span class="skill">Blender</span>
-        <span class="skill">Figma</span>
         <span class="skill">Procreate</span>
-        <span class="skill">Cinema 4D</span>
       </div>
       <div class="stats">
         <div class="stat"><b>40+</b><span>Tamamlanan proje</span></div>
@@ -861,15 +869,9 @@
         {src:"assets/han-erlik-mockup.jpg", caption:"Baskı Sunumu"}
       ],
       desc:"Türk mitolojisinden yola çıkan bir çizgi roman kapağı çalışması. Han Erlik karakteri, propaganda posteri estetiğinde güneş motifleri ve boynuz detaylarıyla işlendi; ISBN, barkod ve fiyat etiketi gibi gerçek bir kapağın tüm katmanlarıyla tasarlandı."},
-    {cat:"poster", cats:["poster","animasyon"], title:"Yalnız Yumurta", note:"Poster art", size:"",
-      img:"assets/yalniz-yumurta-poster.jpg",
-      videoCaption:"Hareketli Versiyon",
-      images:[
-        {src:"assets/yalniz-yumurta-poster.jpg", caption:"Poster Tasarımı"},
-        {src:"assets/yalniz-yumurta-mockup.jpg", caption:"Baskı Sunumu"}
-      ],
-      video:"assets/yalniz-yumurta-video.mp4",
-      desc:"\"Her yumurta ait olduğu yeri bulamaz.\" Linol baskı dokusu ve retro afiş diliyle kurulmuş, bir penguen yavrusu ve yumurtası üzerinden aidiyet temasını işleyen bir poster çalışması. Hareketli versiyonu da bulunuyor."},
+    {cat:"poster", title:"Konstrüktivizm — Geçmişteki Gücü Kullan", note:"Poster art", size:"",
+      img:"assets/konstruktivizm-poster.jpg",
+      desc:"Sovyet konstrüktivizminden ilham alan, güneş motifi ve yumruk imgesiyle kurulu bir tipografi posteri. \"Geçmişteki gücü kullanarak geleceği inşa et\" mesajını keskin renk kontrastı ve blok tipografiyle aktarıyor."},
     {cat:"grafik", title:"Moğollar — Bir Şey Yapmalı", note:"Grafik tasarım", size:"wide",
       img:"assets/mogollar-plak-kapak.jpg",
       images:[
@@ -880,14 +882,39 @@
         {src:"assets/mogollar-bilet.png", caption:"Etkinlik Bileti"}
       ],
       desc:"Moğollar için tasarlanan \"Bir Şey Yapmalı\" plak kapağı ve akordiyon katlamalı iç kitapçık çalışması. Kimliğin devamında sticker'lar ve etkinlik bileti de aynı tek renkli çizgi dilinde tasarlandı, grubun sahne enerjisini panel panel anlatan bütünlüklü bir görsel kimlik kuruldu."},
+    {cat:"grafik", title:"Moğollar — İç Kitapçık Tasarımı", note:"Grafik tasarım", size:"wide",
+      img:"assets/mogollar-kitapcik-2.jpg",
+      images:[
+        {src:"assets/mogollar-kitapcik-1.jpg", caption:"Sayfa 1 — İç Kapak & Grup Bilgisi"},
+        {src:"assets/mogollar-kitapcik-2.jpg", caption:"Sayfa 2 — Hikaye Başlangıcı"},
+        {src:"assets/mogollar-kitapcik-3.jpg", caption:"Sayfa 3 — Gelişme"},
+        {src:"assets/mogollar-kitapcik-4.jpg", caption:"Sayfa 4 — Sonuç"}
+      ],
+      desc:"A6 ebadında tasarlanan albüm iç kitapçığı. Moğollar'ın 1967'den bu yana Anadolu rock'ına öncülük eden hikayesini ve \"Bir Şey Yapmalı\" şarkısının umut, dayanışma ve harekete geçme temasını, panel panel ilerleyen illüstratif bir anlatımla aktarıyor."},
+    {cat:"poster", cats:["poster","animasyon"], title:"Yalnız Yumurta", note:"Poster art", size:"",
+      img:"assets/yalniz-yumurta-poster.jpg",
+      videoCaption:"Hareketli Versiyon",
+      images:[
+        {src:"assets/yalniz-yumurta-poster.jpg", caption:"Poster Tasarımı"},
+        {src:"assets/yalniz-yumurta-mockup.jpg", caption:"Baskı Sunumu"}
+      ],
+      video:"assets/yalniz-yumurta-video.mp4",
+      desc:"\"Her yumurta ait olduğu yeri bulamaz.\" Linol baskı dokusu ve retro afiş diliyle kurulmuş, bir penguen yavrusu ve yumurtası üzerinden aidiyet temasını işleyen bir poster çalışması. Hareketli versiyonu da bulunuyor."},
+    {cat:"grafik", cats:["grafik","karakter"], title:"Peanutman — Karakter & Ambalaj Tasarımı", note:"Grafik tasarım", size:"wide",
+      img:"assets/peanutman-final.jpg",
+      images:[
+        {src:"assets/peanutman-trace.jpg", caption:"Çizim Taslağı (Trace)"},
+        {src:"assets/peanutman-final.jpg", caption:"Final Tasarım & Ambalaj Mockup'ı"}
+      ],
+      desc:"\"Fıstıkçı\" markası için tasarlanan maskot karakter ve ambalaj çalışması. Çizgi taslaktan renkli final illüstrasyona, oradan ürün ambalajı mockup'ına uzanan tam bir tasarım süreci."},
+    {cat:"3d", cats:["3d","grafik"], title:"Olips — Ambalaj Tasarımı (2D → 3D)", note:"3D modelleme", size:"",
+      img:"assets/olips-kutu.jpg",
+      desc:"2D bir ambalaj tasarımını detaylı bir 3D illüstrasyona dönüştürdüğüm bir çalışma. Süreç, düz başlangıç tasarımını üç boyutlu uzaya taşımayı; derinlik, doku ve gerçekçi ışıklandırma eklemeyi kapsadı. Sonuç, basit bir 2D konseptin nasıl görsel olarak dinamik ve sürükleyici bir 3D temsile dönüşebileceğini gösteriyor."},
     {cat:"grafik", cats:["grafik","animasyon"], title:"Çikolata — Bilgi Grafiği", note:"Grafik tasarım", size:"wide",
       img:"assets/cikolata-cover.jpg",
       video:"assets/cikolata-infografik.mp4",
       videoCaption:"Bilgi Grafiği Animasyonu",
       desc:"Çikolatanın türlerini, üretici ülkelerin hacmini ve sağlık üzerindeki etkilerini anlatan, karakter illüstrasyonları ve veri görselleştirmeyle desteklenmiş animasyonlu bir bilgi grafiği (infografik) çalışması."},
-    {cat:"poster", title:"Konstrüktivizm — Geçmişteki Gücü Kullan", note:"Poster art", size:"",
-      img:"assets/konstruktivizm-poster.jpg",
-      desc:"Sovyet konstrüktivizminden ilham alan, güneş motifi ve yumruk imgesiyle kurulu bir tipografi posteri. \"Geçmişteki gücü kullanarak geleceği inşa et\" mesajını keskin renk kontrastı ve blok tipografiyle aktarıyor."},
     {cat:"animasyon", title:"2D Karakter Yürüyüş Döngüsü", note:"Animasyon", size:"",
       img:"assets/walk-cycle-cover.jpg",
       video:"assets/walk-cycle-video.mp4",
@@ -898,15 +925,6 @@
       video:"assets/parallax-video.mp4",
       videoCaption:"Parallax Sahne — After Effects",
       desc:"After Effects'te katmanlı illüstrasyon öğeleri kullanılarak oluşturulan bir 2D parallax animasyon çalışması. Ön plan, orta plan ve arka plan katmanlarının farklı hızlarda hareketiyle derinlik hissi yaratılan bir sahne kurgusu."},
-    {cat:"grafik", title:"Moğollar — İç Kitapçık Tasarımı", note:"Grafik tasarım", size:"wide",
-      img:"assets/mogollar-kitapcik-1.jpg",
-      images:[
-        {src:"assets/mogollar-kitapcik-1.jpg", caption:"Sayfa 1 — İç Kapak & Grup Bilgisi"},
-        {src:"assets/mogollar-kitapcik-2.jpg", caption:"Sayfa 2 — Hikaye Başlangıcı"},
-        {src:"assets/mogollar-kitapcik-3.jpg", caption:"Sayfa 3 — Gelişme"},
-        {src:"assets/mogollar-kitapcik-4.jpg", caption:"Sayfa 4 — Sonuç"}
-      ],
-      desc:"A6 ebadında tasarlanan albüm iç kitapçığı. Moğollar'ın 1967'den bu yana Anadolu rock'ına öncülük eden hikayesini ve \"Bir Şey Yapmalı\" şarkısının umut, dayanışma ve harekete geçme temasını, panel panel ilerleyen illüstratif bir anlatımla aktarıyor."},
     {cat:"3d", cats:["3d","animasyon"], title:"3D Animasyon Egzersizleri", note:"3D modelleme", size:"",
       img:"assets/reel-cover.jpg",
       video:"assets/3d-exercises-reel.mp4",
@@ -917,16 +935,6 @@
       video:"assets/symbiotic-video.mp4",
       videoCaption:"Rigleme & Yürüyüş Döngüsü — Spine",
       desc:"İllüstrasyonu çizilen sembiyotik/yaratık karakterin Spine uygulamasında kemik tabanlı rigleme (skeletal rig) ile hareketlendirilmesi. Çene, uzuvlar ve kuyruk ayrı ayrı riglenerek döngüsel bir yürüyüş animasyonu (walk cycle) oluşturuldu."},
-    {cat:"3d", cats:["3d","grafik"], title:"Olips — Ambalaj Tasarımı (2D → 3D)", note:"3D modelleme", size:"",
-      img:"assets/olips-kutu.jpg",
-      desc:"2D bir ambalaj tasarımını detaylı bir 3D illüstrasyona dönüştürdüğüm bir çalışma. Süreç, düz başlangıç tasarımını üç boyutlu uzaya taşımayı; derinlik, doku ve gerçekçi ışıklandırma eklemeyi kapsadı. Sonuç, basit bir 2D konseptin nasıl görsel olarak dinamik ve sürükleyici bir 3D temsile dönüşebileceğini gösteriyor."},
-    {cat:"grafik", cats:["grafik","karakter"], title:"Peanutman — Karakter & Ambalaj Tasarımı", note:"Grafik tasarım", size:"wide",
-      img:"assets/peanutman-final.jpg",
-      images:[
-        {src:"assets/peanutman-trace.jpg", caption:"Çizim Taslağı (Trace)"},
-        {src:"assets/peanutman-final.jpg", caption:"Final Tasarım & Ambalaj Mockup'ı"}
-      ],
-      desc:"\"Fıstıkçı\" markası için tasarlanan maskot karakter ve ambalaj çalışması. Çizgi taslaktan renkli final illüstrasyona, oradan ürün ambalajı mockup'ına uzanan tam bir tasarım süreci."},
     {cat:"3d", title:"Riglenmiş Bisiklet — Maya", note:"3D modelleme", size:"wide",
       img:"assets/bisiklet-2-perspektif.jpg",
       images:[
@@ -983,7 +991,7 @@
         <div class="card-tag"><span class="sw" style="background:${hue}"></span>${labels[p.cat]}</div>
         <div class="card-info">
           <h3>${p.title}</h3>
-          <span>${p.note} — placeholder</span>
+          <span>${p.note}</span>
         </div>
       `;
     }
