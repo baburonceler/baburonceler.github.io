@@ -256,6 +256,29 @@
   }
 
   /* ---------- gallery ---------- */
+  .cat-section{ margin-bottom:56px; }
+  .cat-section:last-child{ margin-bottom:0; }
+  .cat-section-head{
+    display:flex; align-items:baseline; gap:14px;
+    margin-bottom:22px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--line);
+  }
+  .cat-section-head .dot{
+    width:9px; height:9px; border-radius:50%;
+    flex-shrink:0;
+  }
+  .cat-section-head h3{
+    font-family:'Unbounded', sans-serif;
+    font-size:19px;
+    font-weight:500;
+  }
+  .cat-section-head .count{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:rgba(244,241,234,0.4);
+  }
+
   .grid{
     display:grid;
     grid-template-columns:repeat(3, 1fr);
@@ -694,7 +717,7 @@
     <button class="tab" data-filter="poster" style="--tab-color:var(--c-poster)"><span class="sw" style="background:var(--c-poster)"></span>Poster Art</button>
   </div>
 
-  <div class="grid" id="grid"></div>
+  <div id="gridContainer"></div>
 </section>
 
 <div class="lightbox" id="lightbox">
@@ -769,15 +792,17 @@
         </div>
         <div class="exp-item">
           <span class="exp-tag">Deneyim</span>
-          <h4>Grafik Tasarım — Staj</h4>
-          <p>Bir grafik tasarım şirketinde görsel kimlik, baskı ve dijital
-          tasarım süreçlerinde yer aldı.</p>
+          <h4>Grafik Tasarım — Reklam Ajansı & Medya</h4>
+          <p>Grafik tasarım alanında stajla başlayıp, bir reklam ajansı
+          ve medya sektöründe bir yılı aşkın süredir devam eden bir iş
+          deneyimi sürdürüyor.</p>
         </div>
         <div class="exp-item">
           <span class="exp-tag">Deneyim</span>
-          <h4>Oyun Geliştirme — Görsel Tasarım</h4>
-          <p>Bir oyun geliştirme şirketinde karakter, arayüz ve görsel
-          içerik üretimi üzerine çalıştı.</p>
+          <h4>Oyun Geliştirme — 3D & Animasyon</h4>
+          <p>Bir oyun geliştirme şirketinde uzun soluklu bir staj sürecinde
+          yer aldı; 3D modelleme, 3D animasyon ve Spine ile 2D karakter
+          animasyonu çalışmalarına katkı sağladı.</p>
         </div>
       </div>
 
@@ -862,7 +887,7 @@
         {src:"assets/qatar-5-eglence.jpg", caption:"Film & Dizi Platformu"}
       ],
       desc:"Qatar Airways markası üzerinden kurgulanan, uçtan uca bir uçak içi eğlence sistemi (IFE) arayüz tasarımı. Dil seçiminden uçuş rotası takibine, yemek siparişinden film/dizi platformuna kadar 5 ekranlık tutarlı bir deneyim akışı."},
-    {cat:"karakter", cats:["karakter","3d"], title:"Scout — Karakter Tasarımı", note:"Karakter tasarımı", size:"big",
+    {cat:"karakter", cats:["karakter","3d"], title:"Scout — Karakter Tasarımı", note:"Karakter tasarımı", size:"wide",
       img:"assets/scout-2-sahne-render.jpg",
       images:[
         {src:"assets/scout-1-concept.jpg", caption:"Konsept & Karakter Sayfası"},
@@ -919,7 +944,7 @@
         {src:"assets/peanutman-final.jpg", caption:"Final Tasarım & Ambalaj Mockup'ı"}
       ],
       desc:"\"Fıstıkçı\" markası için tasarlanan maskot karakter ve ambalaj çalışması. Çizgi taslaktan renkli final illüstrasyona, oradan ürün ambalajı mockup'ına uzanan tam bir tasarım süreci."},
-    {cat:"grafik", cats:["grafik","3d"], title:"Olips — Ambalaj Tasarımı (2D → 3D)", note:"Grafik tasarım", size:"",
+    {cat:"grafik", cats:["grafik","3d"], title:"Olips — Ambalaj Tasarımı (2D → 3D)", note:"Grafik tasarım", size:"wide",
       img:"assets/olips-kutu.jpg",
       desc:"2D bir ambalaj tasarımını detaylı bir 3D illüstrasyona dönüştürdüğüm bir çalışma. Süreç, düz başlangıç tasarımını üç boyutlu uzaya taşımayı; derinlik, doku ve gerçekçi ışıklandırma eklemeyi kapsadı. Sonuç, basit bir 2D konseptin nasıl görsel olarak dinamik ve sürükleyici bir 3D temsile dönüşebileceğini gösteriyor."},
     {cat:"grafik", cats:["grafik","animasyon"], title:"Çikolata — Bilgi Grafiği", note:"Grafik tasarım", size:"wide",
@@ -932,7 +957,7 @@
       video:"assets/walk-cycle-video.mp4",
       videoCaption:"Yürüyüş Döngüsü — After Effects",
       desc:"After Effects'te kare kare oluşturulan 2D karakter yürüyüş döngüsü (walk cycle) çalışması. Ağırlık aktarımı, zamanlama ve abartı gibi animasyon temel prensipleri üzerine kurulu bir egzersiz."},
-    {cat:"animasyon", title:"2D Parallax Animasyon", note:"Animasyon", size:"",
+    {cat:"animasyon", title:"2D Parallax Animasyon", note:"Animasyon", size:"wide",
       img:"assets/parallax-cover.jpg",
       video:"assets/parallax-video.mp4",
       videoCaption:"Parallax Sahne — After Effects",
@@ -972,8 +997,9 @@
       desc:"ZBrush'ta heykellenen, ince uzuvlu ve antenli bir uzaylı karakter tasarımı. Yumuşak organik formlar ile kauçuk dokulu eldiven/antenlerin kontrastı üzerine kurulu bir karakter çalışması."},
   ];
 
-  const grid = document.getElementById('grid');
-  projects.forEach((p, i) => {
+  const gridContainer = document.getElementById('gridContainer');
+
+  function createCard(p, i) {
     const card = document.createElement('div');
     card.className = 'card' + (p.size ? ' ' + p.size : '');
     card.dataset.cat = p.cat;
@@ -982,7 +1008,6 @@
     const hue = colors[p.cat];
 
     if (p.img) {
-      // real project image
       card.innerHTML = `
         <div class="card-art" style="background-image:url('${p.img}'); background-size:cover; background-position:center;"></div>
         ${p.video ? `<div class="card-play"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>` : ''}
@@ -1011,9 +1036,50 @@
     if (p.img || p.video) {
       card.addEventListener('click', () => openLightbox(p));
     }
+    return card;
+  }
 
-    grid.appendChild(card);
-  });
+  const catOrder = ['grafik', 'animasyon', 'karakter', '3d', 'ui', 'poster'];
+
+  function renderAll() {
+    gridContainer.innerHTML = '';
+    catOrder.forEach(catKey => {
+      const items = projects.filter(p => p.cat === catKey);
+      if (!items.length) return;
+
+      const section = document.createElement('div');
+      section.className = 'cat-section';
+
+      const head = document.createElement('div');
+      head.className = 'cat-section-head';
+      head.innerHTML = `
+        <span class="dot" style="background:${colors[catKey]}"></span>
+        <h3>${labels[catKey]}</h3>
+        <span class="count">${items.length}</span>
+      `;
+      section.appendChild(head);
+
+      const grid = document.createElement('div');
+      grid.className = 'grid';
+      items.forEach((p, i) => grid.appendChild(createCard(p, i)));
+      section.appendChild(grid);
+
+      gridContainer.appendChild(section);
+    });
+  }
+
+  function renderFiltered(filter) {
+    gridContainer.innerHTML = '';
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    projects.forEach((p, i) => {
+      const cats = p.cats || [p.cat];
+      if (cats.includes(filter)) grid.appendChild(createCard(p, i));
+    });
+    gridContainer.appendChild(grid);
+  }
+
+  renderAll();
 
   // lightbox
   const lightbox = document.getElementById('lightbox');
@@ -1132,10 +1198,11 @@
       tab.classList.add('active');
       const filter = tab.dataset.filter;
 
-      document.querySelectorAll('.card').forEach(card => {
-        const cardCats = card.dataset.cats.split(',');
-        card.classList.toggle('hidden', filter !== 'all' && !cardCats.includes(filter));
-      });
+      if (filter === 'all') {
+        renderAll();
+      } else {
+        renderFiltered(filter);
+      }
 
       const newAccent = filter === 'all' ? '#ff5a36' : colors[filter];
       root.style.setProperty('--accent', newAccent);
