@@ -21,6 +21,7 @@
     --c-3d:#3dbbff;
     --c-ui:#7c5cff;
     --c-poster:#4be3ac;
+    --c-katalog:#ffb84d;
 
     --accent:#ff5a36;
     --accent-soft: rgba(255,90,54,0.16);
@@ -40,6 +41,13 @@
   }
 
   ::selection{ background:var(--accent); color:var(--ink); }
+
+  img, video{
+    -webkit-user-drag:none;
+    user-drag:none;
+    -webkit-touch-callout:none;
+    user-select:none;
+  }
 
   /* grain overlay */
   body::before{
@@ -757,6 +765,7 @@
     <button class="tab" data-filter="3d" style="--tab-color:var(--c-3d)"><span class="sw" style="background:var(--c-3d)"></span>3D Modelleme</button>
     <button class="tab" data-filter="ui" style="--tab-color:var(--c-ui)"><span class="sw" style="background:var(--c-ui)"></span>UI Tasarım</button>
     <button class="tab" data-filter="poster" style="--tab-color:var(--c-poster)"><span class="sw" style="background:var(--c-poster)"></span>Poster Art</button>
+    <button class="tab" data-filter="katalog" style="--tab-color:var(--c-katalog)"><span class="sw" style="background:var(--c-katalog)"></span>Katalog / Kurumsal</button>
   </div>
 
   <div id="gridContainer"></div>
@@ -891,10 +900,11 @@
     "3d":     getComputedStyle(document.documentElement).getPropertyValue('--c-3d').trim(),
     ui:       getComputedStyle(document.documentElement).getPropertyValue('--c-ui').trim(),
     poster:   getComputedStyle(document.documentElement).getPropertyValue('--c-poster').trim(),
+    katalog:  getComputedStyle(document.documentElement).getPropertyValue('--c-katalog').trim(),
   };
   const labels = {
     grafik:"Grafik Tasarım", animasyon:"Animasyon", karakter:"Karakter Tasarımı",
-    "3d":"3D Modelleme", ui:"UI Tasarım", poster:"Poster Art"
+    "3d":"3D Modelleme", ui:"UI Tasarım", poster:"Poster Art", katalog:"Katalog / Kurumsal"
   };
 
   // simple icon set per discipline
@@ -904,10 +914,42 @@
     karakter: `<circle cx="28" cy="20" r="12" stroke="currentColor" stroke-width="2.4" fill="none"/><path d="M8 50 Q28 30 48 50" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/>`,
     "3d": `<path d="M28 4 L50 16 V40 L28 52 L6 40 V16 Z" stroke="currentColor" stroke-width="2.2" fill="none"/><path d="M6 16 L28 28 L50 16 M28 28 V52" stroke="currentColor" stroke-width="2.2" fill="none"/>`,
     ui: `<rect x="6" y="10" width="44" height="34" rx="4" stroke="currentColor" stroke-width="2.4" fill="none"/><path d="M6 20 H50" stroke="currentColor" stroke-width="2.4"/><circle cx="13" cy="15" r="1.6" fill="currentColor"/><circle cx="19" cy="15" r="1.6" fill="currentColor"/>`,
-    poster: `<rect x="10" y="4" width="32" height="44" rx="2" stroke="currentColor" stroke-width="2.4" fill="none"/><path d="M16 34 L24 22 L30 30 L36 18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
+    poster: `<rect x="10" y="4" width="32" height="44" rx="2" stroke="currentColor" stroke-width="2.4" fill="none"/><path d="M16 34 L24 22 L30 30 L36 18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+    katalog: `<rect x="8" y="6" width="30" height="40" rx="2" stroke="currentColor" stroke-width="2.2" fill="none"/><path d="M16 16 H30 M16 24 H30 M16 32 H24" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><rect x="16" y="6" width="30" height="40" rx="2" stroke="currentColor" stroke-width="2.2" fill="none" opacity="0.5"/>`
   };
 
   const projects = [
+    {cat:"katalog", title:"SAF Zemin Mühendislik — Geoteknik Katalog 2025", note:"Grafik tasarım / Katalog", size:"wide",
+      img:"assets/saf-zemin-katalog-1-kapak.jpg",
+      images:[
+        {src:"assets/saf-zemin-katalog-1-kapak.jpg", caption:"Kapak Tasarımı"},
+        {src:"assets/saf-zemin-katalog-2-hakkimizda.jpg", caption:"Hakkımızda & Vizyon"},
+        {src:"assets/saf-zemin-katalog-3-derin-kazilar.jpg", caption:"Derin Kazılar & İksa Sistemi"},
+        {src:"assets/saf-zemin-katalog-4-zemin-iyilestirme.jpg", caption:"Zemin İyileştirme Yöntemleri"},
+        {src:"assets/saf-zemin-katalog-5-makina-parkuru.jpg", caption:"Makina Parkuru"},
+        {src:"assets/saf-zemin-katalog-6-projelerimiz.jpg", caption:"Projelerimiz & Referanslar"}
+      ],
+      desc:"SAF Zemin Mühendislik için hazırlanan, teslim edilmiş 2025 Geoteknik Katalogu. Derin kazı, derin temel, zemin iyileştirme ve şev stabilizesi gibi teknik hizmetlerin numaralı sistemle anlatıldığı; makina parkuru ve metro/GES/karayolu gibi büyük ölçekli referans projelerin sahadan görsellerle desteklendiği çok sayfalı bir kurumsal yayın tasarımı."},
+    {cat:"katalog", title:"İskenderun Beton-Bims — Ürün Kataloğu", note:"Grafik tasarım / Katalog", size:"wide",
+      img:"assets/iskenderun-bims-katalog-1-kapak.jpg",
+      images:[
+        {src:"assets/iskenderun-bims-katalog-1-kapak.jpg", caption:"Kapak Tasarımı"},
+        {src:"assets/iskenderun-bims-katalog-2-hakkimizda.jpg", caption:"Hakkımızda, Misyon & Vizyon"},
+        {src:"assets/iskenderun-bims-katalog-3-urunler.jpg", caption:"Ürün Çeşitleri & Bims Duvar"},
+        {src:"assets/iskenderun-bims-katalog-4-neden-biz.jpg", caption:"Ürün Kalitemiz & Neden Biz"}
+      ],
+      desc:"İskenderun Beton-Bims için hazırlanan, teslim edilmiş kurumsal ürün kataloğu. Firma kimliğine uygun turuncu-mavi gradyan sistemi üzerinden; hakkımızda, ürün çeşitleri (10'luk–30'luk bims ölçüleri) ve teknik avantajların anlatıldığı, izometrik tesis illüstrasyonuyla desteklenen çok sayfalı bir kurumsal tasarım çalışması."},
+    {cat:"katalog", title:"Yeşilyurt Zemin & Roza Enerji — Kurumsal Katalog", note:"Grafik tasarım / Katalog", size:"wide",
+      img:"assets/yesilyurt-roza-katalog-1-kapak.jpg",
+      images:[
+        {src:"assets/yesilyurt-roza-katalog-1-kapak.jpg", caption:"Kapak Tasarımı"},
+        {src:"assets/yesilyurt-roza-katalog-2-icindekiler.jpg", caption:"Biz Kimiz & İçindekiler"},
+        {src:"assets/yesilyurt-roza-katalog-3-projelerimiz.jpg", caption:"Tamamlanan GES Projeleri"},
+        {src:"assets/yesilyurt-roza-katalog-4-ekipmanlar.jpg", caption:"Rok Makinaları & Ekipmanlar"},
+        {src:"assets/yesilyurt-roza-katalog-5-delgi-referans.jpg", caption:"Delgi İşlemleri & Referanslar"},
+        {src:"assets/yesilyurt-roza-katalog-6-mobil-cevre.jpg", caption:"Mobil Beton & Çevre Güvenliği"}
+      ],
+      desc:"Yeşilyurt Zemin İnşaat Makine ve Roza Enerji markalarının ortak kimliğiyle hazırlanan, teslim edilmiş kurumsal tanıtım kataloğu. Jeoteknik zemin çalışmalarından GES (güneş enerjisi santrali) kurulumuna uzanan hizmet yelpazesini; tamamlanmış proje referansları, ekipman detayları ve saha görselleriyle anlatan çok sayfalı bir yayın tasarımı."},
     {cat:"ui", title:"Sakabank — Mobil Bankacılık Uygulaması", note:"UI tasarım", size:"big",
       img:"assets/sakabank-2-anasayfa.jpg",
       images:[
@@ -1013,11 +1055,6 @@
       video:"assets/walk-cycle-video.mp4",
       videoCaption:"Yürüyüş Döngüsü — After Effects",
       desc:"After Effects'te kare kare oluşturulan 2D karakter yürüyüş döngüsü (walk cycle) çalışması. Ağırlık aktarımı, zamanlama ve abartı gibi animasyon temel prensipleri üzerine kurulu bir egzersiz."},
-    {cat:"animasyon", cats:["animasyon","grafik"], title:"Anyong — Sosyal Medya Reklam Videosu", note:"Animasyon", size:"big",
-      img:"assets/anyong-cover.jpg",
-      video:"assets/anyong-video.mp4",
-      videoCaption:"Ürün Reklamı — Sosyal Medya Formatı",
-      desc:"\"Anyong Acne Clear Serum\" için alınan gerçek bir iş — teslim edilmiş, dikey format (Reels/Stories) bir sosyal medya reklam videosu. Ürün çekimleri, makro serum detayları ve marka kimliğinin bir araya getirildiği kısa, akıcı bir reklam kurgusu."},
     {cat:"animasyon", title:"2D Parallax Animasyon", note:"Animasyon", size:"wide",
       img:"assets/parallax-cover.jpg",
       video:"assets/parallax-video.mp4",
@@ -1188,6 +1225,18 @@
 
   renderAll();
 
+  // İçerik koruması: sağ tık ile "görseli kaydet" ve sürükle-kaydet engeli
+  document.addEventListener('contextmenu', (e) => {
+    if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO' || e.target.closest('.card-art')) {
+      e.preventDefault();
+    }
+  });
+  document.addEventListener('dragstart', (e) => {
+    if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') {
+      e.preventDefault();
+    }
+  });
+
   // lightbox
   const lightbox = document.getElementById('lightbox');
   const lightboxMedia = document.getElementById('lightboxMedia');
@@ -1217,7 +1266,7 @@
     const item = currentMedia[currentIndex];
     if (!item) return;
     if (item.type === 'video') {
-      lightboxMedia.innerHTML = `<video src="${item.src}" controls autoplay poster="${item.poster || ''}"></video>`;
+      lightboxMedia.innerHTML = `<video src="${item.src}" controls autoplay controlsList="nodownload noremoteplayback" disablePictureInPicture oncontextmenu="return false" poster="${item.poster || ''}"></video>`;
     } else {
       lightboxMedia.innerHTML = `<img src="${item.src}" alt="">`;
     }
