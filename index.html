@@ -816,6 +816,35 @@
       </div>
     </div>
   </div>
+
+  <div class="jam-card" style="margin-top:24px;">
+    <div class="jam-art" id="jamArt2" style="cursor:pointer; background-image:url('assets/shattered-1.jpg'); background-size:cover; background-position:center; position:relative;">
+      <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(18,16,22,0.55), rgba(18,16,22,0.1));"></div>
+      <div style="position:relative; z-index:1; width:64px; height:64px; border-radius:50%; background:rgba(18,16,22,0.55); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="white" style="width:22px; height:22px;"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </div>
+    <div class="jam-content">
+      <div class="jam-theme">Isometric Horror Escape</div>
+      <h2>Shattered</h2>
+      <p>Deneysel bir tesiste uyanan isimsiz bir hastanın, izometrik bir
+      hastane/laboratuvar koridorunda gerçeklik ile kabus arasında geçiş
+      yaparak çıkış yolunu aradığı psikolojik korku kaçış oyunu. Ortam,
+      oyuncu ilerledikçe sakin hastane atmosferinden kanlı, çarpıtılmış bir
+      kabusa dönüşüyor. Projede <b style="color:var(--paper);">3D Generalist / Ortam ve UI Tasarımı</b>
+      olarak yer aldım.</p>
+      <div class="skills jam-tags">
+        <span class="skill">Isometric / 3D</span>
+        <span class="skill">Horror / Escape</span>
+        <span class="skill">3D & UI — Babür Önceler</span>
+        <span class="skill">Unity</span>
+      </div>
+      <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:28px;">
+        <a href="https://fiuby.com/games/shattered" target="_blank" rel="noopener" class="btn-primary">Oyunu oyna ↗</a>
+        <a href="#" id="jamTrailerBtn2" class="btn-primary" style="background:transparent; border:1px solid var(--line); color:var(--paper);">Görselleri gör ▶</a>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="about wrap" id="about">
@@ -1337,6 +1366,33 @@
   }
   document.getElementById('jamArt').addEventListener('click', openJamLightbox);
   document.getElementById('jamTrailerBtn').addEventListener('click', openJamLightbox);
+
+  const jamData2 = {
+    cat: null,
+    title: "Shattered",
+    desc: "Isometric bir hastane/laboratuvar ortamında geçen psikolojik korku kaçış oyunu Shattered'dan oynanış görüntüleri.",
+    img: "assets/shattered-1.jpg",
+    images: [
+      {src:"assets/shattered-1.jpg", caption:"Koridor — kapı etkileşimi"},
+      {src:"assets/shattered-2.jpg", caption:"Bekleme alanı ve hasta odaları"},
+      {src:"assets/shattered-3.jpg", caption:"Gerçeklik kayması — kanlı koridor"},
+      {src:"assets/shattered-4.jpg", caption:"Kabus hali — bozulmuş ortam"},
+      {src:"assets/shattered-5.jpg", caption:"Deney #1 başarıyla kaçtı"}
+    ]
+  };
+  function openJamLightbox2(e) {
+    e.preventDefault();
+    lightboxTag.textContent = "Game Dev";
+    lightboxTitle.textContent = jamData2.title;
+    lightboxDesc.textContent = jamData2.desc;
+    currentMedia = buildMedia(jamData2);
+    currentIndex = 0;
+    renderMedia();
+    lightbox.classList.add('open');
+  }
+  document.getElementById('jamArt2').addEventListener('click', openJamLightbox2);
+  document.getElementById('jamTrailerBtn2').addEventListener('click', openJamLightbox2);
+
   lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
   window.addEventListener('keydown', (e) => {
     if (!lightbox.classList.contains('open')) return;
