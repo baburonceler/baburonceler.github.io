@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Babür Önceler — Görsel Tasarım Stüdyosu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#121016;
+    --ink-2:#1c1a24;
+    --ink-3:#26232f;
+    --paper:#f4f1ea;
+    --line: rgba(244,241,234,0.14);
+
+    --c-grafik:#ff5a36;
+    --c-animasyon:#ffd23f;
+    --c-karakter:#ff3d81;
+    --c-3d:#3dbbff;
+    --c-ui:#7c5cff;
+    --c-poster:#4be3ac;
+    --c-katalog:#ffb84d;
+
+    --accent:#ff5a36;
+    --accent-soft: rgba(255,90,54,0.16);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+    position:relative;
+    transition: background 0.6s ease;
+  }
+
+  ::selection{ background:var(--accent); color:var(--ink); }
+
+  img, video{
+    -webkit-user-drag:none;
+    user-drag:none;
+    -webkit-touch-callout:none;
+    user-select:none;
+  }
+
+  /* grain overlay */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    z-index:999;
+    pointer-events:none;
+    opacity:0.05;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  a{color:inherit; text-decoration:none;}
+
+  .wrap{ max-width:1240px; margin:0 auto; padding:0 32px; }
+
+  /* ---------- cursor blob ---------- */
+  .blob{
+    position:fixed;
+    width:378px; height:378px;
+    border-radius:50%;
+    background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+    opacity:0.176;
+    pointer-events:none;
+    z-index:0;
+    filter: blur(10px);
+    transition: background 0.6s ease, opacity 0.4s ease;
+    transform: translate(-50%,-50%);
+    left:50%; top:30%;
+    will-change:left, top;
+  }
+
+  /* ---------- nav ---------- */
+  header{
+    position:sticky; top:0; z-index:100;
+    backdrop-filter: blur(14px);
+    background: rgba(18,16,22,0.72);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:20px; padding-bottom:20px;
+  }
+  .logo{
+    font-family:'Unbounded', sans-serif;
+    font-weight:700;
+    font-size:17px;
+    letter-spacing:0.02em;
+    display:flex; align-items:center; gap:10px;
+  }
+  .logo .dot{
+    width:10px; height:10px; border-radius:50%;
+    background:var(--accent);
+    transition: background 0.6s ease;
+    box-shadow: 0 0 16px var(--accent);
+  }
+  .navlinks{ display:flex; gap:36px; font-size:14px; font-weight:500; }
+  .navlinks a{ opacity:0.75; transition:opacity .2s ease, color .2s ease; position:relative;}
+  .navlinks a:hover{ opacity:1; color:var(--accent); }
+  .nav-cta{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    border:1px solid var(--line);
+    padding:9px 16px;
+    border-radius:100px;
+    transition: border-color .2s ease, background .2s ease;
+  }
+  .nav-cta:hover{ border-color:var(--accent); background:var(--accent-soft); }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    z-index:1;
+    padding:120px 0 70px;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    color:var(--accent);
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    margin-bottom:26px;
+    display:flex; align-items:center; gap:12px;
+    transition: color 0.6s ease;
+  }
+  .eyebrow::before{
+    content:"";
+    width:34px; height:1px;
+    background:var(--accent);
+    transition: background 0.6s ease;
+  }
+
+  h1.title{
+    font-family:'Unbounded', sans-serif;
+    font-weight:900;
+    line-height:0.94;
+    font-size: clamp(52px, 8.4vw, 116px);
+    letter-spacing:-0.01em;
+    display:flex; flex-wrap:wrap;
+  }
+  h1.title .row{ display:flex; }
+  h1.title span{
+    display:inline-block;
+    opacity:0;
+    transform: translateY(40px) rotate(3deg);
+    animation: rise 0.8s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  @keyframes rise{ to{ opacity:1; transform:translateY(0) rotate(0);} }
+
+  .hero-sub{
+    max-width:560px;
+    margin-top:34px;
+    font-size:18px;
+    line-height:1.6;
+    color:rgba(244,241,234,0.72);
+  }
+  .hero-sub b{ color:var(--paper); font-weight:600; }
+
+  .hero-bottom{
+    margin-top:56px;
+    display:flex; align-items:center; gap:22px; flex-wrap:wrap;
+  }
+  .btn-primary{
+    font-family:'Unbounded', sans-serif;
+    font-weight:500;
+    font-size:14.5px;
+    background:var(--accent);
+    color:var(--ink);
+    padding:16px 30px;
+    border-radius:100px;
+    transition: transform .25s ease, background 0.6s ease;
+    display:inline-flex; align-items:center; gap:10px;
+  }
+  .btn-primary:hover{ transform: translateY(-2px) scale(1.02); }
+  .hero-meta{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    color:rgba(244,241,234,0.55);
+    line-height:1.7;
+  }
+
+  /* ---------- marquee ---------- */
+  .marquee{
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+    padding:18px 0;
+    white-space:nowrap;
+    position:relative; z-index:1;
+  }
+  .marquee-track{
+    display:inline-flex;
+    gap:48px;
+    animation: scroll 26s linear infinite;
+  }
+  .marquee-track span{
+    font-family:'Unbounded', sans-serif;
+    font-size:15px;
+    font-weight:500;
+    opacity:0.85;
+    display:flex; align-items:center; gap:48px;
+  }
+  .marquee-track span::after{
+    content:"◆";
+    font-size:10px;
+    color:var(--accent);
+    opacity:1;
+    transition: color 0.6s ease;
+  }
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* ---------- filter tabs ---------- */
+  .work{ padding:110px 0 60px; position:relative; z-index:1; }
+  .work-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-bottom:44px; flex-wrap:wrap; gap:24px;
+  }
+  .work-head h2{
+    font-family:'Unbounded', sans-serif;
+    font-size:clamp(30px,4vw,44px);
+    font-weight:700;
+  }
+  .work-head p{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    color:rgba(244,241,234,0.5);
+    max-width:280px;
+    text-align:right;
+  }
+
+  .tabs{
+    display:flex; gap:10px; flex-wrap:wrap;
+    margin-bottom:56px;
+  }
+  .tab{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    padding:10px 18px;
+    border-radius:100px;
+    border:1px solid var(--line);
+    cursor:pointer;
+    display:flex; align-items:center; gap:8px;
+    transition: all .25s ease;
+    background:transparent;
+    color:var(--paper);
+  }
+  .tab .sw{ width:8px; height:8px; border-radius:50%; }
+  .tab:hover{ border-color:rgba(244,241,234,0.4); }
+  .tab.active{
+    background:var(--tab-color, var(--accent));
+    border-color:transparent;
+    color:var(--ink);
+    font-weight:500;
+  }
+
+  /* ---------- gallery ---------- */
+  .cat-section{ margin-bottom:56px; }
+  .cat-section:last-child{ margin-bottom:0; }
+  .cat-section-head{
+    display:flex; align-items:baseline; gap:14px;
+    margin-bottom:22px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--line);
+  }
+  .cat-section-head .dot{
+    width:9px; height:9px; border-radius:50%;
+    flex-shrink:0;
+  }
+  .cat-section-head h3{
+    font-family:'Unbounded', sans-serif;
+    font-size:19px;
+    font-weight:500;
+  }
+  .cat-section-head .count{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:rgba(244,241,234,0.4);
+  }
+
+  .series-block{ margin-bottom:32px; }
+  .series-block-head{
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:16px;
+    font-family:'Unbounded', sans-serif;
+    font-size:14px;
+    font-weight:500;
+    color:var(--accent);
+    transition:color 0.6s ease;
+  }
+  .series-block-head::before{
+    content:"";
+    width:22px; height:1px;
+    background:var(--accent);
+    transition:background 0.6s ease;
+  }
+  .series-grid{ margin-bottom:0; }
+  .series-grid .card{ aspect-ratio: 9/16; }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    grid-auto-flow:dense;
+    gap:22px;
+  }
+  .card{
+    position:relative;
+    border-radius:18px;
+    overflow:hidden;
+    background:var(--ink-2);
+    border:1px solid var(--line);
+    aspect-ratio: 4/5;
+    cursor:pointer;
+    transition: transform .3s ease, opacity .3s ease, border-color .3s ease;
+  }
+  .card.big{ grid-row: span 2; aspect-ratio:4/9.4; }
+  .card.wide{ grid-column: span 2; aspect-ratio: 16/9.6; }
+  .card.ultrawide{ grid-column: 1 / -1; aspect-ratio: 4/1; }
+  .card:hover{ transform:translateY(-6px); border-color: var(--card-color); }
+
+  .card-slot{
+    display:flex;
+    flex-direction:column;
+    aspect-ratio: 4/5;
+  }
+  .card-slot.big{ grid-row: span 2; aspect-ratio:4/9.4; }
+  .card-slot.wide{ grid-column: span 2; aspect-ratio: 16/9.6; }
+  .card-slot.ultrawide{ grid-column: 1 / -1; aspect-ratio: 4/1; }
+  .card-slot-label{
+    display:flex; align-items:center; gap:8px;
+    margin-bottom:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:rgba(244,241,234,0.55);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .card-slot-label .sw{ width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+  .card-slot .card{ flex:1; min-height:0; aspect-ratio:auto; }
+  .card.hidden{ display:none; }
+
+  .card-art{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .card-art svg{ width:38%; height:38%; opacity:0.9; }
+
+  .card-tag{
+    position:absolute; top:16px; left:16px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    background:rgba(18,16,22,0.55);
+    backdrop-filter:blur(6px);
+    padding:6px 12px;
+    border-radius:100px;
+    display:flex; align-items:center; gap:7px;
+    z-index:2;
+  }
+  .card-tag .sw{ width:6px; height:6px; border-radius:50%; }
+
+  .card-info{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:20px;
+    background: linear-gradient(to top, rgba(10,9,12,0.92), transparent);
+    z-index:2;
+  }
+  .card-info h3{
+    font-family:'Unbounded', sans-serif;
+    font-size:16px; font-weight:500;
+    margin-bottom:4px;
+  }
+  .card-info span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    opacity:0.6;
+  }
+
+  /* ---------- game jam ---------- */
+  .jam{ padding:10px 0 40px; position:relative; z-index:1; }
+  .jam-card{
+    border:1px solid var(--line);
+    border-radius:24px;
+    overflow:hidden;
+    display:grid;
+    grid-template-columns:0.9fr 1.3fr;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(124,92,255,0.16), transparent 55%),
+      var(--ink-2);
+  }
+  .jam-art{
+    display:flex; align-items:center; justify-content:center;
+    padding:50px;
+    background: radial-gradient(circle at 35% 35%, rgba(124,92,255,0.22), transparent 65%);
+    border-right:1px solid var(--line);
+  }
+  .jam-art svg{ width:62%; color:var(--c-ui); }
+  .jam-content{ padding:52px 52px 52px 44px; }
+  .jam-theme{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--c-ui);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin-bottom:16px;
+  }
+  .jam-content h2{
+    font-family:'Unbounded', sans-serif;
+    font-weight:700;
+    font-size:clamp(24px,3vw,34px);
+    margin-bottom:16px;
+    line-height:1.2;
+  }
+  .jam-content p{
+    font-size:15px;
+    line-height:1.75;
+    color:rgba(244,241,234,0.72);
+    max-width:480px;
+  }
+  .jam-tags{ margin-top:24px; }
+
+  @media (max-width:860px){
+    .jam-card{ grid-template-columns:1fr; }
+    .jam-art{ border-right:none; border-bottom:1px solid var(--line); padding:40px; }
+    .jam-content{ padding:40px 28px; }
+  }
+
+  /* ---------- experience list ---------- */
+  .exp-list{
+    margin-top:34px;
+    display:flex; flex-direction:column;
+    gap:20px;
+  }
+  .exp-item{
+    padding-left:18px;
+    border-left:2px solid var(--line);
+  }
+  .exp-item .exp-tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    transition:color 0.6s ease;
+  }
+  .exp-item h4{
+    font-family:'Unbounded', sans-serif;
+    font-size:15px;
+    font-weight:500;
+    margin:6px 0 5px;
+  }
+  .exp-item p{
+    font-size:14px;
+    line-height:1.6;
+    color:rgba(244,241,234,0.62);
+    margin:0;
+  }
+
+  /* ---------- lightbox ---------- */
+  .lightbox{
+    position:fixed; inset:0;
+    z-index:1000;
+    background:rgba(10,9,12,0.92);
+    backdrop-filter:blur(10px);
+    display:none;
+    align-items:center; justify-content:center;
+    padding:40px 24px;
+  }
+  .lightbox.open{ display:flex; }
+  .lightbox-box{
+    max-width:900px;
+    width:100%;
+    max-height:90vh;
+    overflow-y:auto;
+    background:var(--ink-2);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:0;
+  }
+  .lightbox-media{
+    width:100%;
+    background:#000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    max-height:70vh;
+    overflow:hidden;
+  }
+  .lightbox-media img, .lightbox-media video{
+    width:100%;
+    height:auto;
+    max-height:70vh;
+    object-fit:contain;
+    display:block;
+  }
+  .lightbox-info{ padding:28px 32px 32px; }
+  .lightbox-info .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+  }
+  .lightbox-info h3{
+    font-family:'Unbounded', sans-serif;
+    font-size:22px;
+    font-weight:500;
+    margin:10px 0 12px;
+  }
+  .lightbox-info p{
+    font-size:14.5px;
+    line-height:1.7;
+    color:rgba(244,241,234,0.72);
+  }
+  .lightbox-close{
+    position:absolute;
+    top:26px; right:26px;
+    width:42px; height:42px;
+    border-radius:50%;
+    background:rgba(244,241,234,0.08);
+    border:1px solid var(--line);
+    color:var(--paper);
+    font-size:18px;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    z-index:1001;
+  }
+  .lightbox-close:hover{ background:var(--accent); color:var(--ink); border-color:transparent; }
+
+  .lightbox-nav{
+    position:fixed;
+    top:50%;
+    transform:translateY(-50%);
+    width:52px; height:52px;
+    border-radius:50%;
+    background:rgba(244,241,234,0.08);
+    border:1px solid var(--line);
+    color:var(--paper);
+    font-size:26px;
+    cursor:pointer;
+    display:none;
+    align-items:center; justify-content:center;
+    z-index:1001;
+    transition:background .2s ease;
+  }
+  .lightbox-nav.show{ display:flex; }
+  .lightbox-nav:hover{ background:var(--accent); color:var(--ink); border-color:transparent; }
+  .lightbox-prev{ left:26px; }
+  .lightbox-next{ right:26px; }
+  @media (max-width:760px){
+    .lightbox-nav{ width:40px; height:40px; font-size:20px; }
+    .lightbox-prev{ left:8px; }
+    .lightbox-next{ right:8px; }
+  }
+
+  .lightbox-counter{
+    font-family:'Unbounded', sans-serif;
+    font-size:16px;
+    font-weight:500;
+    color:var(--accent);
+    display:block;
+    margin-bottom:14px;
+  }
+  .card-play{
+    position:absolute; top:16px; right:16px;
+    width:34px; height:34px;
+    border-radius:50%;
+    background:rgba(18,16,22,0.6);
+    backdrop-filter:blur(6px);
+    display:flex; align-items:center; justify-content:center;
+    z-index:2;
+  }
+  .card-play svg{ width:14px; height:14px; }
+
+  /* ---------- about ---------- */
+  .about{
+    padding:130px 0;
+    position:relative; z-index:1;
+    border-top:1px solid var(--line);
+  }
+  .about-grid{
+    display:grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap:80px;
+    align-items:start;
+  }
+  .about h2{
+    font-family:'Unbounded', sans-serif;
+    font-size:clamp(28px,3.6vw,40px);
+    line-height:1.25;
+    font-weight:500;
+  }
+  .about h2 em{
+    font-style:normal;
+    color:var(--accent);
+    transition: color 0.6s ease;
+  }
+  .about-side p{
+    font-size:16px;
+    line-height:1.75;
+    color:rgba(244,241,234,0.72);
+    margin-bottom:22px;
+  }
+  .skills{
+    display:flex; flex-wrap:wrap; gap:10px;
+    margin-top:28px;
+  }
+  .skill{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    padding:8px 14px;
+    border:1px solid var(--line);
+    border-radius:8px;
+  }
+
+  .stats{
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:20px; margin-top:60px;
+  }
+  .stat b{
+    font-family:'Unbounded', sans-serif;
+    font-size:38px; font-weight:700;
+    display:block;
+    color:var(--accent);
+    transition: color 0.6s ease;
+  }
+  .stat span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    opacity:0.55;
+  }
+
+  /* ---------- contact ---------- */
+  .contact{
+    padding:110px 0 60px;
+    border-top:1px solid var(--line);
+    position:relative; z-index:1;
+    text-align:center;
+  }
+  .contact .eyebrow{ justify-content:center; }
+  .contact .eyebrow::before{ display:none; }
+  .contact h2{
+    font-family:'Unbounded', sans-serif;
+    font-weight:900;
+    font-size:clamp(38px,7vw,84px);
+    line-height:1;
+  }
+  .contact a.mail{
+    display:inline-block;
+    margin-top:8px;
+    transition: color 0.6s ease;
+  }
+  .contact a.mail:hover{ color:var(--accent); }
+
+  .contact-links{
+    display:flex; justify-content:center; gap:26px;
+    margin-top:46px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+  }
+  .contact-links a{ opacity:0.65; transition:opacity .2s ease, color .2s ease; }
+  .contact-links a:hover{ opacity:1; color:var(--accent); }
+
+  footer{
+    margin-top:90px;
+    padding:26px 0;
+    border-top:1px solid var(--line);
+    display:flex; justify-content:space-between;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    opacity:0.5;
+    flex-wrap:wrap; gap:10px;
+  }
+
+  @media (max-width: 860px){
+    .about-grid{ grid-template-columns:1fr; gap:40px; }
+    .grid{ grid-template-columns:repeat(2,1fr); }
+    .card.wide{ grid-column:span 2; }
+    .card.big{ grid-row:span 1; aspect-ratio:4/5; }
+    .card-slot.wide{ grid-column:span 2; }
+    .card-slot.big{ grid-row:span 1; aspect-ratio:4/5; }
+    .navlinks{ display:none; }
+    .work-head p{ text-align:left; }
+    .blob{ display:none; }
+  }
+  @media (max-width: 520px){
+    .grid{ grid-template-columns:1fr; }
+    .card.wide, .card.big{ grid-column:span 1; grid-row:span 1; aspect-ratio:4/5; }
+    .card-slot.wide, .card-slot.big{ grid-column:span 1; grid-row:span 1; aspect-ratio:4/5; }
+    .stats{ grid-template-columns:1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+
+  /* ---------- side LED bounce (left/right margins) ---------- */
+  .side-flow{
+    position:fixed;
+    top:0;
+    height:100vh;
+    width:70px;
+    z-index:0;
+    pointer-events:none;
+    display:none;
+  }
+  .side-flow.left{ left:0; }
+  .side-flow.right{ right:0; }
+  @media (min-width:1400px){
+    .side-flow{ display:block; }
+  }
+
+  :focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+  }
+</style>
+</head>
+<body>
+
+<canvas class="side-flow left" id="sideFlowLeft" aria-hidden="true"></canvas>
+<canvas class="side-flow right" id="sideFlowRight" aria-hidden="true"></canvas>
+
+<div class="blob" id="blob"></div>
+
+<header>
+  <nav class="wrap">
+    <div class="logo"><span class="dot" id="navdot"></span>BABÜR ÖNCELER</div>
+    <div class="navlinks">
+      <a href="#work">İşler</a>
+      <a href="#gamejam">Game Jam</a>
+      <a href="#about">Hakkımda</a>
+      <a href="#contact">İletişim</a>
+    </div>
+    <a href="#contact" class="nav-cta">İş birliği →</a>
+  </nav>
+</header>
+
+<section class="hero wrap">
+  <div class="eyebrow">Görsel Tasarım · İllüstrasyon · 3D</div>
+  <h1 class="title" id="heroTitle">
+    <div class="row"></div>
+  </h1>
+  <p class="hero-sub">
+    Grafik tasarımdan karakter tasarımına, 3D modellemeden arayüz tasarımına —
+    <b>fikri görünür kılan</b> işler üretiyorum. Aşağıdaki disiplin
+    etiketlerine tıklayarak vitrini filtreleyebilir, her alanın kendi
+    rengini keşfedebilirsin.
+  </p>
+  <div class="hero-bottom">
+    <a href="#work" class="btn-primary">Çalışmaları gör ↓</a>
+    <div class="hero-meta">
+      İstanbul, Türkiye — Serbest çalışıyor<br>
+      Yeni projelere açık
+    </div>
+  </div>
+</section>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Grafik Tasarım<span>Animasyon<span>Karakter Tasarımı<span>3D Modelleme<span>UI Tasarım<span>Poster Art
+    <span>Grafik Tasarım<span>Animasyon<span>Karakter Tasarımı<span>3D Modelleme<span>UI Tasarım<span>Poster Art
+  </div>
+</div>
+
+<section class="work wrap" id="work">
+  <div class="work-head">
+    <h2>Seçilmiş<br>çalışmalar</h2>
+    <p>Her proje bir disipline ait — filtrele ve o rengin dünyasına gir.</p>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-filter="all">● Tümü</button>
+    <button class="tab" data-filter="grafik" style="--tab-color:var(--c-grafik)"><span class="sw" style="background:var(--c-grafik)"></span>Grafik Tasarım</button>
+    <button class="tab" data-filter="animasyon" style="--tab-color:var(--c-animasyon)"><span class="sw" style="background:var(--c-animasyon)"></span>Animasyon</button>
+    <button class="tab" data-filter="karakter" style="--tab-color:var(--c-karakter)"><span class="sw" style="background:var(--c-karakter)"></span>Karakter Tasarımı</button>
+    <button class="tab" data-filter="3d" style="--tab-color:var(--c-3d)"><span class="sw" style="background:var(--c-3d)"></span>3D Modelleme</button>
+    <button class="tab" data-filter="ui" style="--tab-color:var(--c-ui)"><span class="sw" style="background:var(--c-ui)"></span>UI Tasarım</button>
+    <button class="tab" data-filter="poster" style="--tab-color:var(--c-poster)"><span class="sw" style="background:var(--c-poster)"></span>Poster Art</button>
+    <button class="tab" data-filter="katalog" style="--tab-color:var(--c-katalog)"><span class="sw" style="background:var(--c-katalog)"></span>Katalog / Kurumsal</button>
+  </div>
+
+  <div id="gridContainer"></div>
+</section>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">✕</button>
+  <button class="lightbox-nav lightbox-prev" id="lightboxPrev">‹</button>
+  <button class="lightbox-nav lightbox-next" id="lightboxNext">›</button>
+  <div class="lightbox-box">
+    <div class="lightbox-media" id="lightboxMedia"></div>
+    <div class="lightbox-info">
+      <div class="tag" id="lightboxTag"></div>
+      <span class="lightbox-counter" id="lightboxCounter"></span>
+      <h3 id="lightboxTitle"></h3>
+      <p id="lightboxDesc"></p>
+    </div>
+  </div>
+</div>
+
+<section class="jam wrap" id="gamejam">
+  <div class="jam-card">
+    <div class="jam-art" id="jamArt" style="cursor:pointer; background-image:url('assets/lexicon-cover.jpg'); background-size:cover; background-position:center; position:relative;">
+      <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(18,16,22,0.55), rgba(18,16,22,0.1));"></div>
+      <div style="position:relative; z-index:1; width:64px; height:64px; border-radius:50%; background:rgba(18,16,22,0.55); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="white" style="width:22px; height:22px;"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </div>
+    <div class="jam-content">
+      <div class="jam-theme">GOAT Jam 2025 — Tema: "A World Without X"</div>
+      <h2>Lexicon</h2>
+      <p>Antik bir müzede mitolojik bir Pan heykeli gizemli şekilde canlanır
+      ve harabe müzeden çıkış yolunu aramaya başlar. Karşısına çıkan kutu,
+      raf, heykel gibi engeller fiziksel yollarla aşılamaz — tek çözüm,
+      onların ismini doğru yazmaktır. "Bir şeyi tanımlayamıyorsanız, onunla
+      baş edemezsiniz" fikrinden yola çıkan bir kelime-platform bulmacası.
+      Ekipte <b style="color:var(--paper);">3D Generalist / UI Artist</b>
+      olarak yer aldım.</p>
+      <div class="skills jam-tags">
+        <span class="skill">Game Jam — 48 Saat</span>
+        <span class="skill">Puzzle / Platformer</span>
+        <span class="skill">3D & UI — Babür Önceler</span>
+        <span class="skill">Unity</span>
+      </div>
+      <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:28px;">
+        <a href="https://tahafurkan.itch.io/lexicon" target="_blank" rel="noopener" class="btn-primary">Oyunu oyna ↗</a>
+        <a href="#" id="jamTrailerBtn" class="btn-primary" style="background:transparent; border:1px solid var(--line); color:var(--paper);">Fragmanı izle ▶</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="jam-card" style="margin-top:24px;">
+    <div class="jam-art" id="jamArt2" style="cursor:pointer; background-image:url('assets/shattered-1.jpg'); background-size:cover; background-position:center; position:relative;">
+      <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(18,16,22,0.55), rgba(18,16,22,0.1));"></div>
+      <div style="position:relative; z-index:1; width:64px; height:64px; border-radius:50%; background:rgba(18,16,22,0.55); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="white" style="width:22px; height:22px;"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </div>
+    <div class="jam-content">
+      <div class="jam-theme">Isometric Horror Escape</div>
+      <h2>Shattered</h2>
+      <p>Deneysel bir tesiste uyanan isimsiz bir hastanın, izometrik bir
+      hastane/laboratuvar koridorunda gerçeklik ile kabus arasında geçiş
+      yaparak çıkış yolunu aradığı psikolojik korku kaçış oyunu. Ortam,
+      oyuncu ilerledikçe sakin hastane atmosferinden kanlı, çarpıtılmış bir
+      kabusa dönüşüyor. Projede <b style="color:var(--paper);">3D Generalist / Ortam ve UI Tasarımı</b>
+      olarak yer aldım.</p>
+      <div class="skills jam-tags">
+        <span class="skill">Isometric / 3D</span>
+        <span class="skill">Horror / Escape</span>
+        <span class="skill">3D & UI — Babür Önceler</span>
+        <span class="skill">Unity</span>
+      </div>
+      <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:28px;">
+        <a href="https://fiuby.com/games/shattered" target="_blank" rel="noopener" class="btn-primary">Oyunu oyna ↗</a>
+        <a href="#" id="jamTrailerBtn2" class="btn-primary" style="background:transparent; border:1px solid var(--line); color:var(--paper);">Görselleri gör ▶</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about wrap" id="about">
+  <div class="about-grid">
+    <h2>Karakterden arayüze,<br>posterden <em>3D</em>'ye —<br>tek bir bakış açısı.</h2>
+    <div class="about-side">
+      <p>Merhaba, ben <b style="color:var(--paper); font-weight:600;">Babür Önceler</b>. Farklı disiplinler arasında
+      geçiş yapmayı değil, onları aynı fikrin farklı yüzleri olarak görmeyi
+      seviyorum. Bir posterde denediğim bir renk paleti, bir hafta sonra
+      karakter tasarımında ya da arayüzde karşınıza çıkabilir.</p>
+      <p>Bu site, o disiplinler arası dolaşımın bir kesiti — okul projelerinden
+      kişisel çalışmalara, gerçek markalar için kurgulanan denemelerden
+      game jam'lere uzanan bir seçki. Yeni işler oldukça büyümeye devam edecek.</p>
+
+      <div class="exp-list">
+        <div class="exp-item">
+          <span class="exp-tag">Eğitim</span>
+          <h4>İstanbul Topkapı Üniversitesi</h4>
+          <p>Bilgisayar Destekli Tasarım ve Animasyon (BDTA) — 2024 mezunu</p>
+        </div>
+        <div class="exp-item">
+          <span class="exp-tag">Eğitim</span>
+          <h4>İstanbul Aydın Üniversitesi</h4>
+          <p>Çizgi Film ve Animasyon — Tam Burslu, 2027 mezunu</p>
+        </div>
+        <div class="exp-item">
+          <span class="exp-tag">Deneyim</span>
+          <h4>Grafik Tasarım — Reklam Ajansı & Medya</h4>
+          <p>Grafik tasarım alanında stajla başlayıp, bir reklam ajansı
+          ve medya sektöründe bir yılı aşkın süredir devam eden bir iş
+          deneyimi sürdürüyor.</p>
+        </div>
+        <div class="exp-item">
+          <span class="exp-tag">Deneyim</span>
+          <h4>Oyun Geliştirme — 3D & Animasyon</h4>
+          <p>Bir oyun geliştirme şirketinde uzun soluklu bir staj sürecinde
+          yer aldı; 3D modelleme, 3D animasyon ve Spine ile 2D karakter
+          animasyonu çalışmalarına katkı sağladı.</p>
+        </div>
+      </div>
+
+      <div class="skills">
+        <span class="skill">Maya</span>
+        <span class="skill">Adobe Illustrator</span>
+        <span class="skill">Photoshop</span>
+        <span class="skill">After Effects</span>
+        <span class="skill">Premiere Pro</span>
+        <span class="skill">Animate</span>
+        <span class="skill">Spine</span>
+        <span class="skill">Unity</span>
+        <span class="skill">Blender</span>
+        <span class="skill">Procreate</span>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>40+</b><span>Tamamlanan proje</span></div>
+        <div class="stat"><b>6</b><span>Aktif disiplin</span></div>
+        <div class="stat"><b>3</b><span>Yıllık deneyim</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact wrap" id="contact">
+  <div class="eyebrow">Birlikte çalışalım</div>
+  <h2>Bir proje mi<br>var aklında?</h2>
+  <a class="mail" href="mailto:oncelerbabur@gmail.com" style="font-family:'Unbounded',sans-serif; font-size:18px; margin-top:20px;">oncelerbabur@gmail.com</a>
+  <div class="contact-links">
+    <a href="https://www.artstation.com/babur" target="_blank" rel="noopener">ArtStation</a>
+    <a href="https://www.linkedin.com/in/babur-onceler/" target="_blank" rel="noopener">LinkedIn</a>
+  </div>
+  <footer class="wrap" style="max-width:100%; margin-top:70px;">
+    <span>© 2026 Babür Önceler</span>
+    <span>Tasarım & kod</span>
+  </footer>
+</section>
+
+<script>
+  // ---------- side LED bounce (left/right margins) ----------
+  (function(){
+    const leftCanvas = document.getElementById('sideFlowLeft');
+    const rightCanvas = document.getElementById('sideFlowRight');
+    if (!leftCanvas || !rightCanvas || !leftCanvas.getContext) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mq = window.matchMedia('(min-width:1400px)');
+
+    const palette = ['#ff5a36','#ffd23f','#ff3d81','#3dbbff','#7c5cff','#4be3ac'];
+    const rgbPalette = palette.map(hex => {
+      const v = parseInt(hex.slice(1), 16);
+      return [(v >> 16) & 255, (v >> 8) & 255, v & 255];
+    });
+    function paletteColor(idx, t){
+      const n = rgbPalette.length;
+      const scaled = ((idx + t * 0.15) % 1 + 1) % 1 * n;
+      const i = Math.floor(scaled);
+      const frac = scaled - i;
+      const c1 = rgbPalette[i], c2 = rgbPalette[(i + 1) % n];
+      return [
+        c1[0] + (c2[0] - c1[0]) * frac,
+        c1[1] + (c2[1] - c1[1]) * frac,
+        c1[2] + (c2[2] - c1[2]) * frac
+      ];
+    }
+
+    const cell = 6, gap = 3;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const trailLen = 5;
+
+    function setupSide(canvas){
+      const ctx = canvas.getContext('2d');
+      const state = { ctx, w: 0, h: 0, cols: 0, rows: 0, columns: [] };
+      function resize(){
+        state.w = canvas.clientWidth;
+        state.h = canvas.clientHeight;
+        if (!state.w || !state.h) return;
+        canvas.width = state.w * dpr;
+        canvas.height = state.h * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        state.cols = Math.max(1, Math.ceil(state.w / (cell + gap)));
+        state.rows = Math.max(1, Math.floor(state.h / (cell + gap)));
+        // (re)generate per-column bounce params so the whole strip is covered
+        state.columns = [];
+        for (let i = 0; i < state.cols; i++) {
+          state.columns.push({
+            speed: 0.7 + Math.random() * 0.9,
+            phase: Math.random() * Math.PI * 2,
+            colorSeed: Math.random()
+          });
+        }
+      }
+      window.addEventListener('resize', resize);
+      resize();
+      return { state, resize };
+    }
+
+    const left = setupSide(leftCanvas);
+    const right = setupSide(rightCanvas);
+
+    function drawSide(side, t){
+      const { ctx, w, h, cols, rows, columns } = side.state;
+      if (!w || !h) return;
+      ctx.clearRect(0, 0, w, h);
+      for (let x = 0; x < cols; x++) {
+        const col = columns[x];
+        const f = Math.abs(Math.sin(t * col.speed + col.phase)); // 0 -> 1 -> 0: down then bounces back up
+        const headRow = f * (rows - 1);
+        const [r, g, b] = paletteColor(col.colorSeed, t);
+        for (let k = 0; k < trailLen; k++) {
+          const rowPos = headRow - k;
+          if (rowPos < 0 || rowPos > rows - 1) continue;
+          const rowIdx = Math.round(rowPos);
+          const alpha = Math.max(0, 1 - k / trailLen) * 0.85;
+          ctx.fillStyle = `rgba(${r | 0},${g | 0},${b | 0},${alpha.toFixed(3)})`;
+          ctx.fillRect(x * (cell + gap), rowIdx * (cell + gap), cell, cell);
+        }
+      }
+    }
+
+    let running = mq.matches && !reduceMotion;
+    if (mq.addEventListener) {
+      mq.addEventListener('change', e => {
+        running = e.matches && !reduceMotion;
+        left.resize(); right.resize();
+        if (running) requestAnimationFrame(frame);
+      });
+    }
+
+    if (reduceMotion) {
+      if (mq.matches) { drawSide(left, 0); drawSide(right, 0.5); }
+      return;
+    }
+
+    const t0 = performance.now();
+    function frame(now){
+      if (!running) return;
+      const t = (now - t0) / 1000;
+      drawSide(left, t);
+      drawSide(right, t + 0.5);
+      requestAnimationFrame(frame);
+    }
+    if (running) requestAnimationFrame(frame);
+  })();
+
+  const colors = {
+    grafik:   getComputedStyle(document.documentElement).getPropertyValue('--c-grafik').trim(),
+    animasyon:getComputedStyle(document.documentElement).getPropertyValue('--c-animasyon').trim(),
+    karakter: getComputedStyle(document.documentElement).getPropertyValue('--c-karakter').trim(),
+    "3d":     getComputedStyle(document.documentElement).getPropertyValue('--c-3d').trim(),
+    ui:       getComputedStyle(document.documentElement).getPropertyValue('--c-ui').trim(),
+    poster:   getComputedStyle(document.documentElement).getPropertyValue('--c-poster').trim(),
+    katalog:  getComputedStyle(document.documentElement).getPropertyValue('--c-katalog').trim(),
+  };
+  const labels = {
+    grafik:"Grafik Tasarım", animasyon:"Animasyon", karakter:"Karakter Tasarımı",
+    "3d":"3D Modelleme", ui:"UI Tasarım", poster:"Poster Art", katalog:"Katalog / Kurumsal"
+  };
+
+  // simple icon set per discipline
+  const icons = {
+    grafik: `<path d="M4 44 L34 14 M34 14 L44 4 L52 12 L42 22 M34 14 L42 22" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="10" cy="46" r="3" fill="currentColor"/>`,
+    animasyon: `<circle cx="28" cy="28" r="22" stroke="currentColor" stroke-width="2.4" fill="none"/><path d="M22 18 L40 28 L22 38 Z" fill="currentColor"/>`,
+    karakter: `<circle cx="28" cy="20" r="12" stroke="currentColor" stroke-width="2.4" fill="none"/><path d="M8 50 Q28 30 48 50" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/>`,
+    "3d": `<path d="M28 4 L50 16 V40 L28 52 L6 40 V16 Z" stroke="currentColor" stroke-width="2.2" fill="none"/><path d="M6 16 L28 28 L50 16 M28 28 V52" stroke="currentColor" stroke-width="2.2" fill="none"/>`,
+    ui: `<rect x="6" y="10" width="44" height="34" rx="4" stroke="currentColor" stroke-width="2.4" fill="none"/><path d="M6 20 H50" stroke="currentColor" stroke-width="2.4"/><circle cx="13" cy="15" r="1.6" fill="currentColor"/><circle cx="19" cy="15" r="1.6" fill="currentColor"/>`,
+    poster: `<rect x="10" y="4" width="32" height="44" rx="2" stroke="currentColor" stroke-width="2.4" fill="none"/><path d="M16 34 L24 22 L30 30 L36 18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+    katalog: `<rect x="8" y="6" width="30" height="40" rx="2" stroke="currentColor" stroke-width="2.2" fill="none"/><path d="M16 16 H30 M16 24 H30 M16 32 H24" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><rect x="16" y="6" width="30" height="40" rx="2" stroke="currentColor" stroke-width="2.2" fill="none" opacity="0.5"/>`
+  };
+
+  const projects = [
+    {cat:"katalog", title:"SAF Zemin Mühendislik — Geoteknik Katalog 2025", note:"Grafik tasarım / Katalog", size:"wide",
+      img:"assets/saf-zemin-katalog-1-kapak.jpg",
+      images:[
+        {src:"assets/saf-zemin-katalog-1-kapak.jpg", caption:"Kapak Tasarımı"},
+        {src:"assets/saf-zemin-katalog-2-hakkimizda.jpg", caption:"Hakkımızda & Vizyon"},
+        {src:"assets/saf-zemin-katalog-3-derin-kazilar.jpg", caption:"Derin Kazılar & İksa Sistemi"},
+        {src:"assets/saf-zemin-katalog-4-zemin-iyilestirme.jpg", caption:"Zemin İyileştirme Yöntemleri"},
+        {src:"assets/saf-zemin-katalog-5-makina-parkuru.jpg", caption:"Makina Parkuru"},
+        {src:"assets/saf-zemin-katalog-6-projelerimiz.jpg", caption:"Projelerimiz & Referanslar"}
+      ],
+      desc:"SAF Zemin Mühendislik için hazırlanan, teslim edilmiş 2025 Geoteknik Katalogu. Derin kazı, derin temel, zemin iyileştirme ve şev stabilizesi gibi teknik hizmetlerin numaralı sistemle anlatıldığı; makina parkuru ve metro/GES/karayolu gibi büyük ölçekli referans projelerin sahadan görsellerle desteklendiği çok sayfalı bir kurumsal yayın tasarımı."},
+    {cat:"katalog", title:"İskenderun Beton-Bims — Ürün Kataloğu", note:"Grafik tasarım / Katalog", size:"wide",
+      img:"assets/iskenderun-bims-katalog-1-kapak.jpg",
+      images:[
+        {src:"assets/iskenderun-bims-katalog-1-kapak.jpg", caption:"Kapak Tasarımı"},
+        {src:"assets/iskenderun-bims-katalog-2-hakkimizda.jpg", caption:"Hakkımızda, Misyon & Vizyon"},
+        {src:"assets/iskenderun-bims-katalog-3-urunler.jpg", caption:"Ürün Çeşitleri & Bims Duvar"},
+        {src:"assets/iskenderun-bims-katalog-4-neden-biz.jpg", caption:"Ürün Kalitemiz & Neden Biz"}
+      ],
+      desc:"İskenderun Beton-Bims için hazırlanan, teslim edilmiş kurumsal ürün kataloğu. Firma kimliğine uygun turuncu-mavi gradyan sistemi üzerinden; hakkımızda, ürün çeşitleri (10'luk–30'luk bims ölçüleri) ve teknik avantajların anlatıldığı, izometrik tesis illüstrasyonuyla desteklenen çok sayfalı bir kurumsal tasarım çalışması."},
+    {cat:"katalog", title:"Yeşilyurt Zemin & Roza Enerji — Kurumsal Katalog", note:"Grafik tasarım / Katalog", size:"wide",
+      img:"assets/yesilyurt-roza-katalog-1-kapak.jpg",
+      images:[
+        {src:"assets/yesilyurt-roza-katalog-1-kapak.jpg", caption:"Kapak Tasarımı"},
+        {src:"assets/yesilyurt-roza-katalog-2-icindekiler.jpg", caption:"Biz Kimiz & İçindekiler"},
+        {src:"assets/yesilyurt-roza-katalog-3-projelerimiz.jpg", caption:"Tamamlanan GES Projeleri"},
+        {src:"assets/yesilyurt-roza-katalog-4-ekipmanlar.jpg", caption:"Rok Makinaları & Ekipmanlar"},
+        {src:"assets/yesilyurt-roza-katalog-5-delgi-referans.jpg", caption:"Delgi İşlemleri & Referanslar"},
+        {src:"assets/yesilyurt-roza-katalog-6-mobil-cevre.jpg", caption:"Mobil Beton & Çevre Güvenliği"}
+      ],
+      desc:"Yeşilyurt Zemin İnşaat Makine ve Roza Enerji markalarının ortak kimliğiyle hazırlanan, teslim edilmiş kurumsal tanıtım kataloğu. Jeoteknik zemin çalışmalarından GES (güneş enerjisi santrali) kurulumuna uzanan hizmet yelpazesini; tamamlanmış proje referansları, ekipman detayları ve saha görselleriyle anlatan çok sayfalı bir yayın tasarımı."},
+    {cat:"ui", title:"Sakabank — Mobil Bankacılık Uygulaması", note:"UI tasarım", size:"big",
+      img:"assets/sakabank-2-anasayfa.jpg",
+      images:[
+        {src:"assets/sakabank-1-karsilama.jpg", caption:"Karşılama Ekranı"},
+        {src:"assets/sakabank-2-anasayfa.jpg", caption:"Ana Sayfa"},
+        {src:"assets/sakabank-3-hesap.jpg", caption:"Hesap Hareketleri"},
+        {src:"assets/sakabank-4-fatura.jpg", caption:"Fatura ve Kurum Ödemeleri"},
+        {src:"assets/sakabank-5-kurum.jpg", caption:"Kurum Ödemeleri Menüsü"},
+        {src:"assets/sakabank-6-profil.jpg", caption:"Profil & Ayarlar"}
+      ],
+      desc:"Uçtan uca tasarlanan bir mobil bankacılık uygulaması arayüzü. Karşılama ekranından hesap hareketlerine, fatura ödemelerinden profil yönetimine kadar tutarlı bir tasarım sistemiyle kurulan 6 ekranlık bir akış."},
+    {cat:"ui", title:"Qatar Airways — Uçak İçi Eğlence Sistemi", note:"UI tasarım", size:"wide",
+      img:"assets/qatar-2-anamenu.jpg",
+      images:[
+        {src:"assets/qatar-1-dil.jpg", caption:"Dil Seçim Ekranı"},
+        {src:"assets/qatar-2-anamenu.jpg", caption:"Ana Menü"},
+        {src:"assets/qatar-3-rota.jpg", caption:"Uçuş Rotası & Harita"},
+        {src:"assets/qatar-4-yemek.jpg", caption:"Yemek & İçecek Siparişi"},
+        {src:"assets/qatar-5-eglence.jpg", caption:"Film & Dizi Platformu"}
+      ],
+      desc:"Qatar Airways markası üzerinden kurgulanan, uçtan uca bir uçak içi eğlence sistemi (IFE) arayüz tasarımı. Dil seçiminden uçuş rotası takibine, yemek siparişinden film/dizi platformuna kadar 5 ekranlık tutarlı bir deneyim akışı."},
+    {cat:"karakter", cats:["karakter","3d"], title:"Scout — Karakter Tasarımı", note:"Karakter tasarımı", size:"wide",
+      img:"assets/scout-2-sahne-render.jpg",
+      images:[
+        {src:"assets/scout-1-concept.jpg", caption:"Konsept & Karakter Sayfası"},
+        {src:"assets/scout-3-on.jpg", caption:"3D Model — Ön Görünüm"},
+        {src:"assets/scout-4-yan34.jpg", caption:"3D Model — 3/4 Görünüm"},
+        {src:"assets/scout-5-profil.jpg", caption:"3D Model — Profil"},
+        {src:"assets/scout-6-arka.jpg", caption:"3D Model — Arka Görünüm"},
+        {src:"assets/scout-7-detay.jpg", caption:"Yüz & Aksesuar Detayı"},
+        {src:"assets/scout-2-sahne-render.jpg", caption:"Sahne İçinde Final Render"}
+      ],
+      desc:"\"Scout\" adlı karakterin uçtan uca tasarım süreci: ifade ve el çalışmalarını içeren konsept sayfasından, dört yönlü 3D model geliştirmeye, oradan bir sokak sahnesinde ışıklandırılmış final render'a uzanan tam bir karakter tasarım hikayesi."},
+    {cat:"grafik", cats:["grafik","poster"], title:"Han Erlik", note:"Grafik tasarım", size:"",
+      img:"assets/han-erlik-cover.jpg",
+      images:[
+        {src:"assets/han-erlik-cover.jpg", caption:"Kapak Tasarımı"},
+        {src:"assets/han-erlik-mockup.jpg", caption:"Baskı Sunumu"}
+      ],
+      desc:"Türk mitolojisinden yola çıkan bir çizgi roman kapağı çalışması. Han Erlik karakteri, propaganda posteri estetiğinde güneş motifleri ve boynuz detaylarıyla işlendi; ISBN, barkod ve fiyat etiketi gibi gerçek bir kapağın tüm katmanlarıyla tasarlandı."},
+    {cat:"poster", title:"Konstrüktivizm — Geçmişteki Gücü Kullan", note:"Poster art", size:"",
+      img:"assets/konstruktivizm-poster.jpg",
+      desc:"Sovyet konstrüktivizminden ilham alan, güneş motifi ve yumruk imgesiyle kurulu bir tipografi posteri. \"Geçmişteki gücü kullanarak geleceği inşa et\" mesajını keskin renk kontrastı ve blok tipografiyle aktarıyor."},
+    {cat:"karakter", cats:["karakter","poster"], series:"Eğri Büğrü Serisi", title:"Eğri Büğrü — Göğem", note:"Karakter tasarımı", size:"",
+      img:"assets/gogem-poster.jpg",
+      desc:"\"Eğri Büğrü\" karakter serisinin bir parçası. Tek renk, kalın çizgi ve tarama tekniğiyle kurulmuş, ahşap baskı (woodcut) estetiğinde bir karakter posteri. Defne dalı motifleriyle çerçevelenen yüz illüstrasyonu, kontrollü bir çizgi işçiliğini öne çıkarıyor."},
+    {cat:"karakter", cats:["karakter","poster"], series:"Eğri Büğrü Serisi", title:"Eğri Büğrü — Işkın", note:"Karakter tasarımı", size:"",
+      img:"assets/iskin-poster.jpg",
+      desc:"\"Eğri Büğrü\" karakter serisinin bir parçası. Canlı renkler ve kalın dış çizgilerle kurulmuş, çizgi film diline yakın enerjik bir karakter posteri. Abartılı ifade ve dekoratif kurdele/yaprak motifleriyle eğlenceli bir görsel dil kuruyor."},
+    {cat:"karakter", cats:["karakter","poster"], series:"Eğri Büğrü Serisi", title:"Eğri Büğrü — Köy Göçüren", note:"Karakter tasarımı", size:"",
+      img:"assets/koygoceren-poster.jpg",
+      desc:"\"Eğri Büğrü\" karakter serisinin bir parçası. Çarpık anatomi ve tek göz imgesiyle kurulu, sürreal ve rahatsız edici bir karakter illüstrasyonu. Yumuşak gölgeleme ve çapraz kompozisyonla gerilim hissi yaratan bir çalışma."},
+    {cat:"karakter", cats:["karakter","poster"], series:"Eğri Büğrü Serisi", title:"Eğri Büğrü — Sırçalı", note:"Karakter tasarımı", size:"",
+      img:"assets/sircali-poster.jpg",
+      desc:"\"Eğri Büğrü\" karakter serisinin bir parçası. Tek göz ve gaga formunun S kıvrımına dönüştüğü, canlı turuncu-sarı-yeşil renk paletiyle kurulu bir kuş/canavar illüstrasyonu. Süsleme köşe motifleri ve kalın outline diliyle serinin genel estetiğini sürdürüyor."},
+    {cat:"karakter", cats:["karakter","poster"], series:"Eğri Büğrü Serisi", title:"Eğri Büğrü — Bürük", note:"Karakter tasarımı", size:"",
+      img:"assets/buruk-poster.jpg",
+      desc:"\"Eğri Büğrü\" karakter serisinin bir parçası. İki ayrı göz etrafında kıvrılan tek bir organik forma dayanan, monokrom turuncu tonlarda sürreal bir yaratık illüstrasyonu. Simetrik olmayan kompozisyonu ve dekoratif köşe süslemeleriyle serinin diline bağlı kalan bir karakter çalışması."},
+    {cat:"grafik", title:"Moğollar — Bir Şey Yapmalı", note:"Grafik tasarım", size:"wide",
+      img:"assets/mogollar-plak-kapak.jpg",
+      images:[
+        {src:"assets/mogollar-plak-kapak.jpg", caption:"Plak Kapağı & Etiket"},
+        {src:"assets/mogollar-akordiyon.jpg", caption:"İç Katlamalı Sayfa"},
+        {src:"assets/mogollar-sticker-1.png", caption:"Sticker Tasarımı — Karakter"},
+        {src:"assets/mogollar-sticker-2.png", caption:"Sticker Tasarımı — Enstrümanlar"},
+        {src:"assets/mogollar-bilet.png", caption:"Etkinlik Bileti"}
+      ],
+      desc:"Moğollar için tasarlanan \"Bir Şey Yapmalı\" plak kapağı ve akordiyon katlamalı iç kitapçık çalışması. Kimliğin devamında sticker'lar ve etkinlik bileti de aynı tek renkli çizgi dilinde tasarlandı, grubun sahne enerjisini panel panel anlatan bütünlüklü bir görsel kimlik kuruldu."},
+    {cat:"grafik", title:"Moğollar — İç Kitapçık Tasarımı", note:"Grafik tasarım", size:"wide",
+      img:"assets/mogollar-kitapcik-2.jpg",
+      images:[
+        {src:"assets/mogollar-kitapcik-1.jpg", caption:"Sayfa 1 — İç Kapak & Grup Bilgisi"},
+        {src:"assets/mogollar-kitapcik-2.jpg", caption:"Sayfa 2 — Hikaye Başlangıcı"},
+        {src:"assets/mogollar-kitapcik-3.jpg", caption:"Sayfa 3 — Gelişme"},
+        {src:"assets/mogollar-kitapcik-4.jpg", caption:"Sayfa 4 — Sonuç"}
+      ],
+      desc:"A6 ebadında tasarlanan albüm iç kitapçığı. Moğollar'ın 1967'den bu yana Anadolu rock'ına öncülük eden hikayesini ve \"Bir Şey Yapmalı\" şarkısının umut, dayanışma ve harekete geçme temasını, panel panel ilerleyen illüstratif bir anlatımla aktarıyor."},
+    {cat:"poster", title:"Yalnız Yumurta", note:"Poster art", size:"",
+      img:"assets/yalniz-yumurta-poster.jpg",
+      images:[
+        {src:"assets/yalniz-yumurta-poster.jpg", caption:"Poster Tasarımı"},
+        {src:"assets/yalniz-yumurta-mockup.jpg", caption:"Baskı Sunumu"}
+      ],
+      desc:"\"Her yumurta ait olduğu yeri bulamaz.\" Linol baskı dokusu ve retro afiş diliyle kurulmuş, bir penguen yavrusu ve yumurtası üzerinden aidiyet temasını işleyen bir poster çalışması."},
+    {cat:"grafik", cats:["grafik","karakter"], title:"Peanutman — Karakter & Ambalaj Tasarımı", note:"Grafik tasarım", size:"wide",
+      img:"assets/peanutman-final.jpg",
+      images:[
+        {src:"assets/peanutman-trace.jpg", caption:"Çizim Taslağı (Trace)"},
+        {src:"assets/peanutman-final.jpg", caption:"Final Tasarım & Ambalaj Mockup'ı"}
+      ],
+      desc:"\"Fıstıkçı\" markası için tasarlanan maskot karakter ve ambalaj çalışması. Çizgi taslaktan renkli final illüstrasyona, oradan ürün ambalajı mockup'ına uzanan tam bir tasarım süreci."},
+    {cat:"grafik", title:"New-tecH International — Banner & Logo Tasarımı", note:"Grafik tasarım", size:"ultrawide",
+      img:"assets/newtech-banner.jpg",
+      images:[
+        {src:"assets/newtech-banner.jpg", caption:"Marka Banner Tasarımı"},
+        {src:"assets/newtech-logo.jpg", caption:"Logo Tasarımı"}
+      ],
+      desc:"New-tecH International markası için alınan gerçek bir iş — aynı konsept üzerinden ilerleyen, teslim edilmiş banner ve logo tasarımı. Banner, \"Experience from the Past, Innovation for the Future\" mesajıyla markanın yeni vizyonunu dinamik bir dille anlatırken; logo tasarımı, 1972'den bu yana süregelen tecrübeyi yeniliğe çağıran ve uluslararası bir açılımı işaret eden bir kimlik kuruyor."},
+    {cat:"grafik", cats:["grafik","animasyon"], title:"New-tecH — Logo Dönüşümü Marka Filmi", note:"Grafik tasarım", size:"wide",
+      img:"assets/newtech-transformation-cover.jpg",
+      video:"assets/newtech-transformation.mp4",
+      videoCaption:"Logo Dönüşümü / Marka Filmi",
+      desc:"New-tecH Sewing Systems Group için hazırlanan, markanın 1972'den bugüne uzanan hikayesini anlatan tanıtım filmi. Dönen dünya haritası üzerinde beliren logo ve tarih bilgilerinden, ışıldayan bağlantı noktalarıyla örülü küresel bir ağ görselleştirmesine uzanan bir marka dönüşüm anlatısı."},
+    {cat:"grafik", title:"Olips — Ambalaj Tasarımı (2D → 3D)", note:"Grafik tasarım", size:"wide",
+      img:"assets/olips-kutu.jpg",
+      desc:"2D bir ambalaj tasarımını detaylı bir 3D illüstrasyona dönüştürdüğüm bir çalışma. Süreç, düz başlangıç tasarımını üç boyutlu uzaya taşımayı; derinlik, doku ve gerçekçi ışıklandırma eklemeyi kapsadı. Sonuç, basit bir 2D konseptin nasıl görsel olarak dinamik ve sürükleyici bir 3D temsile dönüşebileceğini gösteriyor."},
+    {cat:"grafik", cats:["grafik","animasyon"], title:"Çikolata — Bilgi Grafiği", note:"Grafik tasarım", size:"wide",
+      img:"assets/cikolata-cover.jpg",
+      video:"assets/cikolata-infografik.mp4",
+      videoCaption:"Bilgi Grafiği Animasyonu",
+      desc:"Çikolatanın türlerini, üretici ülkelerin hacmini ve sağlık üzerindeki etkilerini anlatan, karakter illüstrasyonları ve veri görselleştirmeyle desteklenmiş animasyonlu bir bilgi grafiği (infografik) çalışması."},
+    {cat:"grafik", cats:["grafik","animasyon"], title:"Anyong — Acne Clear Serum Reklam Filmi", note:"Grafik tasarım", size:"",
+      img:"assets/anyong-cover.jpg",
+      video:"assets/anyong-video.mp4",
+      videoCaption:"Ürün Reklam Filmi",
+      desc:"Anyong markasının Acne Clear Serum ürünü için hazırlanan dikey format reklam filmi. Ürün şişesinin stüdyo çekimi, damlalıktan akan serum detay planı ve cilt bakımı anını birleştiren, sosyal medya reklamına uygun kısa bir tanıtım kurgusu."},
+    {cat:"animasyon", title:"2D Karakter Yürüyüş Döngüsü", note:"Animasyon", size:"",
+      img:"assets/walk-cycle-cover.jpg",
+      video:"assets/walk-cycle-video.mp4",
+      videoCaption:"Yürüyüş Döngüsü — After Effects",
+      desc:"After Effects'te kare kare oluşturulan 2D karakter yürüyüş döngüsü (walk cycle) çalışması. Ağırlık aktarımı, zamanlama ve abartı gibi animasyon temel prensipleri üzerine kurulu bir egzersiz."},
+    {cat:"animasyon", title:"2D Parallax Animasyon", note:"Animasyon", size:"wide",
+      img:"assets/parallax-cover.jpg",
+      video:"assets/parallax-video.mp4",
+      videoCaption:"Parallax Sahne — After Effects",
+      desc:"After Effects'te katmanlı illüstrasyon öğeleri kullanılarak oluşturulan bir 2D parallax animasyon çalışması. Ön plan, orta plan ve arka plan katmanlarının farklı hızlarda hareketiyle derinlik hissi yaratılan bir sahne kurgusu."},
+    {cat:"3d", cats:["3d","animasyon"], title:"3D Animasyon Egzersizleri", note:"3D modelleme", size:"wide",
+      img:"assets/reel-cover.jpg",
+      video:"assets/3d-exercises-reel.mp4",
+      videoCaption:"Timing, Yay Hareketi, Form Değişimi & Kamera Takibi",
+      desc:"Zıplayan top, form değişimi ve dinamik kamera takibi üzerine kurulu temel 3D animasyon egzersizleri. Ağırlık, zamanlama, yay hareketi (arc), squash & stretch ve hareketli bir nesneyi kamerayla takip etme gibi temel prensipleri pekiştirmek için yapılan çalışmalardan bir derleme."},
+    {cat:"karakter", cats:["karakter","animasyon"], title:"Sembiyotik Yaratık — Spine Animasyonu", note:"Karakter tasarımı", size:"wide",
+      img:"assets/symbiotic-cover.jpg",
+      video:"assets/symbiotic-video.mp4",
+      videoCaption:"Rigleme & Yürüyüş Döngüsü — Spine",
+      desc:"İllüstrasyonu çizilen sembiyotik/yaratık karakterin Spine uygulamasında kemik tabanlı rigleme (skeletal rig) ile hareketlendirilmesi. Çene, uzuvlar ve kuyruk ayrı ayrı riglenerek döngüsel bir yürüyüş animasyonu (walk cycle) oluşturuldu."},
+    {cat:"3d", title:"Deniz Feneri — Gece Sahnesi", note:"3D modelleme", size:"wide",
+      img:"assets/deniz-feneri-render.jpg",
+      desc:"Blender'da modellenen, low-poly bir ada üzerinde deniz feneri ve küçük ev grubunu konu alan gece sahnesi. Sıcak/soğuk ışık kontrastı, fenerin ve pencerelerin sıcak ışığıyla gece mavisi zemin arasında kurulan atmosfer üzerine odaklanan bir render çalışması."},
+    {cat:"3d", title:"Riglenmiş Bisiklet — Maya", note:"3D modelleme", size:"wide",
+      img:"assets/bisiklet-2-perspektif.jpg",
+      images:[
+        {src:"assets/bisiklet-2-perspektif.jpg", caption:"Perspektif Görünüm"},
+        {src:"assets/bisiklet-1-yan.jpg", caption:"Yan Görünüm"},
+        {src:"assets/bisiklet-3-detay.jpg", caption:"Detay Görünüm"}
+      ],
+      desc:"Maya'da modellenen ve mekanik olarak riglenen bir bisiklet çalışması. Pedal mekaniği zincirle eşgüdümlü çalışacak, iki tekerlek de birbiriyle senkronize dönecek şekilde riglendi — gerçek bir bisikletin hareket mantığını birebir simüle eden bir rig sistemi."},
+    {cat:"3d", cats:["3d","karakter"], series:"ZBrush Karakterleri", title:"Gargalius — ZBrush Karakter", note:"3D modelleme", size:"big",
+      img:"assets/gargalius-cover.jpg",
+      video:"assets/gargalius-video.mp4",
+      videoCaption:"360° Görünüm — ZBrush",
+      desc:"ZBrush'ta heykellenen, iki başlı ve dört kollu bir savaşçı yaratık karakteri. Deri dokusu, kürk (fiber) detayları ve zincir/silah aksesuarlarıyla desteklenmiş yüksek detaylı bir karakter sculpt çalışması."},
+    {cat:"3d", cats:["3d","karakter"], series:"ZBrush Karakterleri", title:"Alien — ZBrush Karakter", note:"3D modelleme", size:"big",
+      img:"assets/alien-1-on.jpg",
+      images:[
+        {src:"assets/alien-1-on.jpg", caption:"Ön Görünüm"},
+        {src:"assets/alien-2-on-studio.jpg", caption:"Stüdyo Işıklandırma"},
+        {src:"assets/alien-3-yan.jpg", caption:"Yan Görünüm"},
+        {src:"assets/alien-4-arka.jpg", caption:"Arka Görünüm"},
+        {src:"assets/alien-5-detay.jpg", caption:"Detay Görünüm"}
+      ],
+      desc:"ZBrush'ta heykellenen, ince uzuvlu ve antenli bir uzaylı karakter tasarımı. Yumuşak organik formlar ile kauçuk dokulu eldiven/antenlerin kontrastı üzerine kurulu bir karakter çalışması."},
+  ];
+
+  const gridContainer = document.getElementById('gridContainer');
+
+  function createCard(p, i) {
+    const card = document.createElement('div');
+    card.className = 'card' + (p.size ? ' ' + p.size : '');
+    card.dataset.cat = p.cat;
+    card.dataset.cats = (p.cats || [p.cat]).join(',');
+    card.style.setProperty('--card-color', colors[p.cat]);
+    const hue = colors[p.cat];
+
+    if (p.img) {
+      card.innerHTML = `
+        <div class="card-art" style="background-image:url('${p.img}'); background-size:cover; background-position:center;"></div>
+        ${p.video ? `<div class="card-play"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>` : ''}
+        <div class="card-tag"><span class="sw" style="background:${hue}"></span>${labels[p.cat]}</div>
+        <div class="card-info">
+          <h3>${p.title}</h3>
+          <span>${p.note}</span>
+        </div>
+      `;
+    } else {
+      card.innerHTML = `
+        <div class="card-art" style="background:
+          radial-gradient(circle at ${20 + (i*13)%60}% ${20 + (i*29)%60}%, ${hue}33, transparent 60%),
+          conic-gradient(from ${i*47}deg at 50% 50%, ${hue}22, transparent 40%, ${hue}18);
+          color:${hue};">
+          <svg viewBox="0 0 56 56" fill="none">${icons[p.cat]}</svg>
+        </div>
+        <div class="card-tag"><span class="sw" style="background:${hue}"></span>${labels[p.cat]}</div>
+        <div class="card-info">
+          <h3>${p.title}</h3>
+          <span>${p.note}</span>
+        </div>
+      `;
+    }
+
+    if (p.img || p.video) {
+      card.addEventListener('click', () => openLightbox(p));
+    }
+    return card;
+  }
+
+  const catOrder = ['grafik', 'animasyon', 'karakter', '3d', 'ui', 'poster', 'katalog'];
+
+  function appendItemsGrouped(container, items) {
+    const seriesMap = {};
+    const seriesOrder = [];
+    const loose = [];
+    items.forEach(p => {
+      if (p.series) {
+        if (!seriesMap[p.series]) { seriesMap[p.series] = []; seriesOrder.push(p.series); }
+        seriesMap[p.series].push(p);
+      } else {
+        loose.push(p);
+      }
+    });
+
+    seriesOrder.forEach(seriesName => {
+      const block = document.createElement('div');
+      block.className = 'series-block';
+      const head = document.createElement('div');
+      head.className = 'series-block-head';
+      head.innerHTML = `<span>${seriesName}</span>`;
+      block.appendChild(head);
+
+      const grid = document.createElement('div');
+      grid.className = 'grid series-grid';
+      seriesMap[seriesName].forEach((p, i) => grid.appendChild(createCard(p, i)));
+      block.appendChild(grid);
+
+      container.appendChild(block);
+    });
+
+    if (loose.length) {
+      const grid = document.createElement('div');
+      grid.className = 'grid';
+      loose.forEach((p, i) => {
+        const slot = document.createElement('div');
+        slot.className = 'card-slot' + (p.size ? ' ' + p.size : '');
+
+        const label = document.createElement('div');
+        label.className = 'card-slot-label';
+        label.innerHTML = `<span class="sw" style="background:${colors[p.cat]}"></span>${p.title}`;
+        slot.appendChild(label);
+
+        const card = createCard(p, i);
+        if (p.size) card.classList.remove(p.size);
+        slot.appendChild(card);
+
+        grid.appendChild(slot);
+      });
+      container.appendChild(grid);
+    }
+  }
+
+  function renderAll() {
+    gridContainer.innerHTML = '';
+    catOrder.forEach(catKey => {
+      const items = projects.filter(p => p.cat === catKey);
+      if (!items.length) return;
+
+      const section = document.createElement('div');
+      section.className = 'cat-section';
+
+      const head = document.createElement('div');
+      head.className = 'cat-section-head';
+      head.innerHTML = `
+        <span class="dot" style="background:${colors[catKey]}"></span>
+        <h3>${labels[catKey]}</h3>
+        <span class="count">${items.length}</span>
+      `;
+      section.appendChild(head);
+
+      appendItemsGrouped(section, items);
+
+      gridContainer.appendChild(section);
+    });
+  }
+
+  function renderFiltered(filter) {
+    gridContainer.innerHTML = '';
+    const items = projects.filter(p => (p.cats || [p.cat]).includes(filter));
+    appendItemsGrouped(gridContainer, items);
+  }
+
+  renderAll();
+
+  // İçerik koruması: sağ tık ile "görseli kaydet" ve sürükle-kaydet engeli
+  document.addEventListener('contextmenu', (e) => {
+    if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO' || e.target.closest('.card-art')) {
+      e.preventDefault();
+    }
+  });
+  document.addEventListener('dragstart', (e) => {
+    if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') {
+      e.preventDefault();
+    }
+  });
+
+  // lightbox
+  const lightbox = document.getElementById('lightbox');
+  const lightboxMedia = document.getElementById('lightboxMedia');
+  const lightboxTag = document.getElementById('lightboxTag');
+  const lightboxCounter = document.getElementById('lightboxCounter');
+  const lightboxTitle = document.getElementById('lightboxTitle');
+  const lightboxDesc = document.getElementById('lightboxDesc');
+  const lightboxClose = document.getElementById('lightboxClose');
+  const lightboxPrev = document.getElementById('lightboxPrev');
+  const lightboxNext = document.getElementById('lightboxNext');
+
+  let currentMedia = [];
+  let currentIndex = 0;
+
+  function buildMedia(p) {
+    const items = [];
+    if (p.video) items.push({ type: 'video', src: p.video, poster: (p.images && p.images[0] && p.images[0].src) || p.img || '', caption: p.videoCaption || '' });
+    if (p.images && p.images.length) {
+      p.images.forEach(im => items.push({ type: 'image', src: im.src, caption: im.caption || '' }));
+    } else if (p.img && !p.video) {
+      items.push({ type: 'image', src: p.img, caption: '' });
+    }
+    return items;
+  }
+
+  function renderMedia() {
+    const item = currentMedia[currentIndex];
+    if (!item) return;
+    if (item.type === 'video') {
+      lightboxMedia.innerHTML = `<video src="${item.src}" controls autoplay controlsList="nodownload noremoteplayback" disablePictureInPicture oncontextmenu="return false" poster="${item.poster || ''}"></video>`;
+    } else {
+      lightboxMedia.innerHTML = `<img src="${item.src}" alt="">`;
+    }
+    const multi = currentMedia.length > 1;
+    lightboxPrev.classList.toggle('show', multi);
+    lightboxNext.classList.toggle('show', multi);
+    if (multi || item.caption) {
+      const parts = [];
+      if (multi) parts.push(`${currentIndex + 1} / ${currentMedia.length}`);
+      if (item.caption) parts.push(item.caption);
+      lightboxCounter.textContent = parts.join(' — ');
+      lightboxCounter.style.display = 'block';
+    } else {
+      lightboxCounter.textContent = '';
+      lightboxCounter.style.display = 'none';
+    }
+  }
+
+  function openLightbox(p) {
+    lightboxTag.textContent = labels[p.cat];
+    lightboxTitle.textContent = p.title;
+    lightboxDesc.textContent = p.desc || '';
+    currentMedia = buildMedia(p);
+    currentIndex = 0;
+    renderMedia();
+    lightbox.classList.add('open');
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    lightboxMedia.innerHTML = '';
+    currentMedia = [];
+  }
+
+  function showPrev() {
+    if (currentMedia.length < 2) return;
+    currentIndex = (currentIndex - 1 + currentMedia.length) % currentMedia.length;
+    renderMedia();
+  }
+
+  function showNext() {
+    if (currentMedia.length < 2) return;
+    currentIndex = (currentIndex + 1) % currentMedia.length;
+    renderMedia();
+  }
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightboxPrev.addEventListener('click', showPrev);
+  lightboxNext.addEventListener('click', showNext);
+
+  // game jam trailer
+  const jamData = {
+    cat: null,
+    title: "Lexicon",
+    desc: "GOAT Jam 2025 kapsamında 48 saatte geliştirilen Lexicon'dan oynanış görüntüleri.",
+    img: "assets/lexicon-cover.jpg",
+    video: "assets/lexicon-video.mp4"
+  };
+  function openJamLightbox(e) {
+    e.preventDefault();
+    lightboxTag.textContent = "Game Jam";
+    lightboxTitle.textContent = jamData.title;
+    lightboxDesc.textContent = jamData.desc;
+    currentMedia = buildMedia(jamData);
+    currentIndex = 0;
+    renderMedia();
+    lightbox.classList.add('open');
+  }
+  document.getElementById('jamArt').addEventListener('click', openJamLightbox);
+  document.getElementById('jamTrailerBtn').addEventListener('click', openJamLightbox);
+
+  const jamData2 = {
+    cat: null,
+    title: "Shattered",
+    desc: "Isometric bir hastane/laboratuvar ortamında geçen psikolojik korku kaçış oyunu Shattered'dan oynanış görüntüleri.",
+    img: "assets/shattered-1.jpg",
+    images: [
+      {src:"assets/shattered-1.jpg", caption:"Koridor — kapı etkileşimi"},
+      {src:"assets/shattered-2.jpg", caption:"Bekleme alanı ve hasta odaları"},
+      {src:"assets/shattered-3.jpg", caption:"Gerçeklik kayması — kanlı koridor"},
+      {src:"assets/shattered-4.jpg", caption:"Kabus hali — bozulmuş ortam"},
+      {src:"assets/shattered-5.jpg", caption:"Deney #1 başarıyla kaçtı"}
+    ]
+  };
+  function openJamLightbox2(e) {
+    e.preventDefault();
+    lightboxTag.textContent = "Game Dev";
+    lightboxTitle.textContent = jamData2.title;
+    lightboxDesc.textContent = jamData2.desc;
+    currentMedia = buildMedia(jamData2);
+    currentIndex = 0;
+    renderMedia();
+    lightbox.classList.add('open');
+  }
+  document.getElementById('jamArt2').addEventListener('click', openJamLightbox2);
+  document.getElementById('jamTrailerBtn2').addEventListener('click', openJamLightbox2);
+
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  window.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') showPrev();
+    if (e.key === 'ArrowRight') showNext();
+  });
+
+  // tabs
+  const tabs = document.querySelectorAll('.tab');
+  const root = document.documentElement;
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const filter = tab.dataset.filter;
+
+      if (filter === 'all') {
+        renderAll();
+      } else {
+        renderFiltered(filter);
+      }
+
+      const newAccent = filter === 'all' ? '#ff5a36' : colors[filter];
+      root.style.setProperty('--accent', newAccent);
+    });
+  });
+
+  // hero letter reveal
+  const name = "BABÜR ÖNCELER";
+  const row = document.querySelector('#heroTitle .row');
+  const accentCycle = ['#ff5a36','#ffd23f','#ff3d81','#3dbbff','#7c5cff','#4be3ac'];
+  [...name].forEach((ch, i) => {
+    const span = document.createElement('span');
+    span.textContent = ch === " " ? "\u00A0" : ch;
+    span.style.animationDelay = (i * 0.035) + 's';
+    if (ch !== " ") span.style.color = accentCycle[i % accentCycle.length];
+    row.appendChild(span);
+  });
+
+  // cursor blob
+  const blob = document.getElementById('blob');
+  window.addEventListener('pointermove', e => {
+    blob.style.left = e.clientX + 'px';
+    blob.style.top = e.clientY + 'px';
+  });
+</script>
+
+</body>
+</html>
