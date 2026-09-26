@@ -207,7 +207,7 @@
     font-family:'Unbounded', sans-serif;
     font-size:15px;
     font-weight:500;
-    opacity:0.5;
+    opacity:0.85;
     display:flex; align-items:center; gap:48px;
   }
   .marquee-track span::after{
@@ -701,6 +701,22 @@
     *{ animation:none !important; transition:none !important; }
   }
 
+  /* ---------- side LED bounce (left/right margins) ---------- */
+  .side-flow{
+    position:fixed;
+    top:0;
+    height:100vh;
+    width:70px;
+    z-index:0;
+    pointer-events:none;
+    display:none;
+  }
+  .side-flow.left{ left:0; }
+  .side-flow.right{ right:0; }
+  @media (min-width:1400px){
+    .side-flow{ display:block; }
+  }
+
   :focus-visible{
     outline:2px solid var(--accent);
     outline-offset:3px;
@@ -708,6 +724,9 @@
 </style>
 </head>
 <body>
+
+<canvas class="side-flow left" id="sideFlowLeft" aria-hidden="true"></canvas>
+<canvas class="side-flow right" id="sideFlowRight" aria-hidden="true"></canvas>
 
 <div class="blob" id="blob"></div>
 
@@ -922,6 +941,111 @@
 </section>
 
 <script>
+  // ---------- side LED bounce (left/right margins) ----------
+  (function(){
+    const leftCanvas = document.getElementById('sideFlowLeft');
+    const rightCanvas = document.getElementById('sideFlowRight');
+    if (!leftCanvas || !rightCanvas || !leftCanvas.getContext) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mq = window.matchMedia('(min-width:1400px)');
+
+    const palette = ['#ff5a36','#ffd23f','#ff3d81','#3dbbff','#7c5cff','#4be3ac'];
+    const rgbPalette = palette.map(hex => {
+      const v = parseInt(hex.slice(1), 16);
+      return [(v >> 16) & 255, (v >> 8) & 255, v & 255];
+    });
+    function paletteColor(idx, t){
+      const n = rgbPalette.length;
+      const scaled = ((idx + t * 0.15) % 1 + 1) % 1 * n;
+      const i = Math.floor(scaled);
+      const frac = scaled - i;
+      const c1 = rgbPalette[i], c2 = rgbPalette[(i + 1) % n];
+      return [
+        c1[0] + (c2[0] - c1[0]) * frac,
+        c1[1] + (c2[1] - c1[1]) * frac,
+        c1[2] + (c2[2] - c1[2]) * frac
+      ];
+    }
+
+    const cell = 6, gap = 3;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const trailLen = 5;
+
+    function setupSide(canvas){
+      const ctx = canvas.getContext('2d');
+      const state = { ctx, w: 0, h: 0, cols: 0, rows: 0, columns: [] };
+      function resize(){
+        state.w = canvas.clientWidth;
+        state.h = canvas.clientHeight;
+        if (!state.w || !state.h) return;
+        canvas.width = state.w * dpr;
+        canvas.height = state.h * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        state.cols = Math.max(1, Math.ceil(state.w / (cell + gap)));
+        state.rows = Math.max(1, Math.floor(state.h / (cell + gap)));
+        // (re)generate per-column bounce params so the whole strip is covered
+        state.columns = [];
+        for (let i = 0; i < state.cols; i++) {
+          state.columns.push({
+            speed: 0.7 + Math.random() * 0.9,
+            phase: Math.random() * Math.PI * 2,
+            colorSeed: Math.random()
+          });
+        }
+      }
+      window.addEventListener('resize', resize);
+      resize();
+      return { state, resize };
+    }
+
+    const left = setupSide(leftCanvas);
+    const right = setupSide(rightCanvas);
+
+    function drawSide(side, t){
+      const { ctx, w, h, cols, rows, columns } = side.state;
+      if (!w || !h) return;
+      ctx.clearRect(0, 0, w, h);
+      for (let x = 0; x < cols; x++) {
+        const col = columns[x];
+        const f = Math.abs(Math.sin(t * col.speed + col.phase)); // 0 -> 1 -> 0: down then bounces back up
+        const headRow = f * (rows - 1);
+        const [r, g, b] = paletteColor(col.colorSeed, t);
+        for (let k = 0; k < trailLen; k++) {
+          const rowPos = headRow - k;
+          if (rowPos < 0 || rowPos > rows - 1) continue;
+          const rowIdx = Math.round(rowPos);
+          const alpha = Math.max(0, 1 - k / trailLen) * 0.85;
+          ctx.fillStyle = `rgba(${r | 0},${g | 0},${b | 0},${alpha.toFixed(3)})`;
+          ctx.fillRect(x * (cell + gap), rowIdx * (cell + gap), cell, cell);
+        }
+      }
+    }
+
+    let running = mq.matches && !reduceMotion;
+    if (mq.addEventListener) {
+      mq.addEventListener('change', e => {
+        running = e.matches && !reduceMotion;
+        left.resize(); right.resize();
+        if (running) requestAnimationFrame(frame);
+      });
+    }
+
+    if (reduceMotion) {
+      if (mq.matches) { drawSide(left, 0); drawSide(right, 0.5); }
+      return;
+    }
+
+    const t0 = performance.now();
+    function frame(now){
+      if (!running) return;
+      const t = (now - t0) / 1000;
+      drawSide(left, t);
+      drawSide(right, t + 0.5);
+      requestAnimationFrame(frame);
+    }
+    if (running) requestAnimationFrame(frame);
+  })();
+
   const colors = {
     grafik:   getComputedStyle(document.documentElement).getPropertyValue('--c-grafik').trim(),
     animasyon:getComputedStyle(document.documentElement).getPropertyValue('--c-animasyon').trim(),
@@ -1077,6 +1201,11 @@
         {src:"assets/newtech-logo.jpg", caption:"Logo Tasarımı"}
       ],
       desc:"New-tecH International markası için alınan gerçek bir iş — aynı konsept üzerinden ilerleyen, teslim edilmiş banner ve logo tasarımı. Banner, \"Experience from the Past, Innovation for the Future\" mesajıyla markanın yeni vizyonunu dinamik bir dille anlatırken; logo tasarımı, 1972'den bu yana süregelen tecrübeyi yeniliğe çağıran ve uluslararası bir açılımı işaret eden bir kimlik kuruyor."},
+    {cat:"grafik", cats:["grafik","animasyon"], title:"New-tecH — Logo Dönüşümü Marka Filmi", note:"Grafik tasarım", size:"wide",
+      img:"assets/newtech-transformation-cover.jpg",
+      video:"assets/newtech-transformation.mp4",
+      videoCaption:"Logo Dönüşümü / Marka Filmi",
+      desc:"New-tecH Sewing Systems Group için hazırlanan, markanın 1972'den bugüne uzanan hikayesini anlatan tanıtım filmi. Dönen dünya haritası üzerinde beliren logo ve tarih bilgilerinden, ışıldayan bağlantı noktalarıyla örülü küresel bir ağ görselleştirmesine uzanan bir marka dönüşüm anlatısı."},
     {cat:"grafik", title:"Olips — Ambalaj Tasarımı (2D → 3D)", note:"Grafik tasarım", size:"wide",
       img:"assets/olips-kutu.jpg",
       desc:"2D bir ambalaj tasarımını detaylı bir 3D illüstrasyona dönüştürdüğüm bir çalışma. Süreç, düz başlangıç tasarımını üç boyutlu uzaya taşımayı; derinlik, doku ve gerçekçi ışıklandırma eklemeyi kapsadı. Sonuç, basit bir 2D konseptin nasıl görsel olarak dinamik ve sürükleyici bir 3D temsile dönüşebileceğini gösteriyor."},
@@ -1180,7 +1309,7 @@
     return card;
   }
 
-  const catOrder = ['grafik', 'animasyon', 'karakter', '3d', 'ui', 'poster'];
+  const catOrder = ['grafik', 'animasyon', 'karakter', '3d', 'ui', 'poster', 'katalog'];
 
   function appendItemsGrouped(container, items) {
     const seriesMap = {};
