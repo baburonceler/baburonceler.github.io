@@ -107,6 +107,27 @@
   .navlinks{ display:flex; gap:36px; font-size:14px; font-weight:500; }
   .navlinks a{ opacity:0.75; transition:opacity .2s ease, color .2s ease; position:relative;}
   .navlinks a:hover{ opacity:1; color:var(--accent); }
+  .nav-toggle{
+    display:none;
+    flex-direction:column;
+    align-items:center; justify-content:center;
+    gap:5px;
+    width:38px; height:38px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:transparent;
+    cursor:pointer;
+    flex-shrink:0;
+  }
+  .nav-toggle span{
+    width:16px; height:2px;
+    background:var(--paper);
+    border-radius:2px;
+    transition: transform .25s ease, opacity .2s ease;
+  }
+  .nav-toggle.open span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+  .nav-toggle.open span:nth-child(2){ opacity:0; }
+  .nav-toggle.open span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
   .nav-cta{
     font-family:'JetBrains Mono', monospace;
     font-size:12.5px;
@@ -148,7 +169,7 @@
     letter-spacing:-0.01em;
     display:flex; flex-wrap:wrap;
   }
-  h1.title .row{ display:flex; }
+  h1.title .row{ display:flex; flex-wrap:wrap; row-gap:0.05em; }
   h1.title span{
     display:inline-block;
     opacity:0;
@@ -686,7 +707,30 @@
     .card.big{ grid-row:span 1; aspect-ratio:4/5; }
     .card-slot.wide{ grid-column:span 2; }
     .card-slot.big{ grid-row:span 1; aspect-ratio:4/5; }
-    .navlinks{ display:none; }
+    .nav-toggle{ display:flex; }
+    .navlinks{
+      position:absolute;
+      top:100%; left:0; right:0;
+      flex-direction:column;
+      gap:0;
+      background:var(--ink);
+      border-bottom:1px solid var(--line);
+      max-height:0;
+      overflow:hidden;
+      opacity:0;
+      pointer-events:none;
+      transition: max-height .3s ease, opacity .25s ease;
+    }
+    .navlinks.open{
+      max-height:320px;
+      opacity:1;
+      pointer-events:auto;
+    }
+    .navlinks a{
+      padding:16px 24px;
+      border-top:1px solid var(--line);
+      opacity:0.85;
+    }
     .work-head p{ text-align:left; }
     .blob{ display:none; }
   }
@@ -733,13 +777,18 @@
 <header>
   <nav class="wrap">
     <div class="logo"><span class="dot" id="navdot"></span>BABÜR ÖNCELER</div>
-    <div class="navlinks">
+    <div class="navlinks" id="navLinks">
       <a href="#work">İşler</a>
       <a href="#gamejam">Game Jam</a>
       <a href="#about">Hakkımda</a>
       <a href="#contact">İletişim</a>
     </div>
-    <a href="#contact" class="nav-cta">İş birliği →</a>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <a href="#contact" class="nav-cta">İş birliği →</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menü" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </nav>
 </header>
 
@@ -1575,6 +1624,24 @@
     blob.style.left = e.clientX + 'px';
     blob.style.top = e.clientY + 'px';
   });
+
+  // mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinksEl = document.getElementById('navLinks');
+  if (navToggle && navLinksEl) {
+    navToggle.addEventListener('click', () => {
+      const isOpen = navLinksEl.classList.toggle('open');
+      navToggle.classList.toggle('open', isOpen);
+      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    navLinksEl.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        navLinksEl.classList.remove('open');
+        navToggle.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
 </script>
 
 </body>
