@@ -521,6 +521,13 @@
     object-fit:contain;
     display:block;
   }
+  .lightbox-media iframe{
+    width:100%;
+    height:70vh;
+    border:0;
+    display:block;
+    background:#050409;
+  }
   .lightbox-info{ padding:28px 32px 32px; }
   .lightbox-info .tag{
     font-family:'JetBrains Mono', monospace;
@@ -913,6 +920,35 @@
       </div>
     </div>
   </div>
+
+  <div class="jam-card" style="margin-top:24px;">
+    <div class="jam-art" id="jamArt3" style="cursor:pointer; background-image:url('assets/shapelock-cover.jpg'); background-size:cover; background-position:center; position:relative;">
+      <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(18,16,22,0.55), rgba(18,16,22,0.1));"></div>
+      <div style="position:relative; z-index:1; width:64px; height:64px; border-radius:50%; background:rgba(18,16,22,0.55); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="white" style="width:22px; height:22px;"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </div>
+    <div class="jam-content">
+      <div class="jam-theme">Boğaziçi Game Jam — 48 Saat</div>
+      <h2>ShapeLock</h2>
+      <p>Rengarenk, oyuncak temalı bir limanda geçen bir şekil-değiştirme
+      bulmacası. Yumuşak, jöle kıvamındaki ana karakter sıkışıp genişleyerek
+      dar aralıklardan geçiyor, eğimli yüzeylerde yuvarlanıyor ve platformlar
+      arasında ilerleyerek taşıdığı küçük tekneyi eve götürmeye çalışıyor.
+      Ekipte <b style="color:var(--paper);">3D Generalist / Ortam ve Karakter Tasarımı</b>
+      olarak yer aldım.</p>
+      <div class="skills jam-tags">
+        <span class="skill">Game Jam — 48 Saat</span>
+        <span class="skill">Puzzle / Platformer</span>
+        <span class="skill">3D & Karakter — Babür Önceler</span>
+        <span class="skill">Unity</span>
+      </div>
+      <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:28px;">
+        <a href="https://baburonceler.itch.io/shapelock" target="_blank" rel="noopener" class="btn-primary">Oyunu oyna ↗</a>
+        <a href="#" id="jamTrailerBtn3" class="btn-primary" style="background:transparent; border:1px solid var(--line); color:var(--paper);">Fragmanı izle ▶</a>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="about wrap" id="about">
@@ -1166,6 +1202,10 @@
         {src:"assets/qatar-5-eglence.jpg", caption:"Film & Dizi Platformu"}
       ],
       desc:"Qatar Airways markası üzerinden kurgulanan, uçtan uca bir uçak içi eğlence sistemi (IFE) arayüz tasarımı. Dil seçiminden uçuş rotası takibine, yemek siparişinden film/dizi platformuna kadar 5 ekranlık tutarlı bir deneyim akışı."},
+    {cat:"ui", cats:["ui","3d"], title:"ShapeLock — Sıvı Duraklatma Menüsü", note:"UI tasarım / 3D", size:"wide",
+      img:"assets/shapelock-liquid-menu-cover.jpg",
+      iframe:"assets/shapelock-liquid-menu.html",
+      desc:"ShapeLock için tasarlanan, Three.js ile kodlanmış interaktif bir duraklatma menüsü konsepti. Menü sıvı bir malzeme gibi davranıyor: üstüne gelince dalgalanıyor, \"Devam et\"e basınca akarak kapanıyor. Görseldeki canlı demoyu fare ile deneyebilir, alt çubuktan arka planı ve 3D imleci değiştirebilirsin."},
     {cat:"karakter", cats:["karakter","3d"], title:"Scout — Karakter Tasarımı", note:"Karakter tasarımı", size:"wide",
       img:"assets/scout-2-sahne-render.jpg",
       images:[
@@ -1503,6 +1543,7 @@
 
   function buildMedia(p) {
     const items = [];
+    if (p.iframe) items.push({ type: 'iframe', src: p.iframe, caption: p.iframeCaption || '' });
     if (p.video) items.push({ type: 'video', src: p.video, poster: (p.images && p.images[0] && p.images[0].src) || p.img || '', caption: p.videoCaption || '' });
     if (p.images && p.images.length) {
       p.images.forEach(im => items.push({ type: 'image', src: im.src, caption: im.caption || '' }));
@@ -1515,7 +1556,9 @@
   function renderMedia() {
     const item = currentMedia[currentIndex];
     if (!item) return;
-    if (item.type === 'video') {
+    if (item.type === 'iframe') {
+      lightboxMedia.innerHTML = `<iframe src="${item.src}" loading="lazy" allow="autoplay" title="Canlı demo"></iframe>`;
+    } else if (item.type === 'video') {
       lightboxMedia.innerHTML = `<video src="${item.src}" controls autoplay controlsList="nodownload noremoteplayback" disablePictureInPicture oncontextmenu="return false" poster="${item.poster || ''}"></video>`;
     } else {
       lightboxMedia.innerHTML = `<img src="${item.src}" alt="">`;
@@ -1613,6 +1656,26 @@
   }
   document.getElementById('jamArt2').addEventListener('click', openJamLightbox2);
   document.getElementById('jamTrailerBtn2').addEventListener('click', openJamLightbox2);
+
+  const jamData3 = {
+    cat: null,
+    title: "ShapeLock",
+    desc: "Boğaziçi Game Jam kapsamında 48 saatte geliştirilen ShapeLock'tan oynanış görüntüleri.",
+    img: "assets/shapelock-cover.jpg",
+    video: "assets/shapelock-video.mp4"
+  };
+  function openJamLightbox3(e) {
+    e.preventDefault();
+    lightboxTag.textContent = "Game Jam";
+    lightboxTitle.textContent = jamData3.title;
+    lightboxDesc.textContent = jamData3.desc;
+    currentMedia = buildMedia(jamData3);
+    currentIndex = 0;
+    renderMedia();
+    lightbox.classList.add('open');
+  }
+  document.getElementById('jamArt3').addEventListener('click', openJamLightbox3);
+  document.getElementById('jamTrailerBtn3').addEventListener('click', openJamLightbox3);
 
   lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
   window.addEventListener('keydown', (e) => {
