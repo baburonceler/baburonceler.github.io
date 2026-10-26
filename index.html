@@ -42,7 +42,7 @@
 
   ::selection{ background:var(--accent); color:var(--ink); }
 
-  img, video{
+  img, video, canvas, .card-art, .jam-art{
     -webkit-user-drag:none;
     user-drag:none;
     -webkit-touch-callout:none;
@@ -975,21 +975,26 @@
         </div>
         <div class="exp-item">
           <span class="exp-tag">Deneyim</span>
-          <h4>Grafik Tasarım — Reklam Ajansı & Medya</h4>
-          <p>Stajla başladığım grafik tasarım sürecim, bir reklam
-          ajansı ve medya kuruluşunda bir yılı aşkın süredir devam
-          ediyor.</p>
+          <h4>Grafik Tasarım — Bıyık Medya Prodüksiyon</h4>
+          <p>Stajla başlayan grafik tasarım sürecim bir yılı aşkın süredir
+          devam ediyor. Enerji, inşaat, mühendislik ve kozmetik
+          sektöründen markalar için logo, katalog ve sosyal medya
+          tasarımı üretiyor; reklam filmi ve yapay zekâ destekli video
+          içerikleri için çekim ve kurgu da üstleniyorum.</p>
         </div>
         <div class="exp-item">
           <span class="exp-tag">Deneyim</span>
-          <h4>Oyun Geliştirme — 3D & Animasyon</h4>
-          <p>Bir oyun stüdyosundaki stajımda 3D modelleme, 3D animasyon
-          ve Spine ile 2D karakter animasyonuna katkı verdim.</p>
+          <h4>2D & 3D Animasyon — Virtual Projects Oyun Yazılım</h4>
+          <p>Oyun stüdyosundaki stajımda Spine ile 2D karakter rig'i ve
+          animasyonu, Maya'da 3D karakter rig'i ve yürüyüş döngüsü,
+          ayrıca top sıçrama animasyonları ürettim.</p>
         </div>
       </div>
 
       <div class="skills">
         <span class="skill">Maya</span>
+        <span class="skill">ZBrush</span>
+        <span class="skill">Blender</span>
         <span class="skill">Adobe Illustrator</span>
         <span class="skill">Photoshop</span>
         <span class="skill">After Effects</span>
@@ -997,8 +1002,8 @@
         <span class="skill">Animate</span>
         <span class="skill">Spine</span>
         <span class="skill">Unity</span>
-        <span class="skill">Blender</span>
         <span class="skill">Procreate</span>
+        <span class="skill">Midjourney</span>
       </div>
     </div>
   </div>
@@ -1517,12 +1522,24 @@
 
   // İçerik koruması: sağ tık ile "görseli kaydet" ve sürükle-kaydet engeli
   document.addEventListener('contextmenu', (e) => {
-    if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO' || e.target.closest('.card-art')) {
+    if (
+      e.target.tagName === 'IMG' ||
+      e.target.tagName === 'VIDEO' ||
+      e.target.tagName === 'CANVAS' ||
+      e.target.closest('.card-art') ||
+      e.target.closest('.jam-art') ||
+      e.target.closest('.lightbox-media')
+    ) {
       e.preventDefault();
     }
   });
   document.addEventListener('dragstart', (e) => {
-    if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') {
+    if (
+      e.target.tagName === 'IMG' ||
+      e.target.tagName === 'VIDEO' ||
+      e.target.closest('.card-art') ||
+      e.target.closest('.jam-art')
+    ) {
       e.preventDefault();
     }
   });
