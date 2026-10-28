@@ -3,7 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Babür Önceler — Görsel Tasarım Stüdyosu</title>
+<title>Babür Önceler — 2D/3D Animatör & Grafik Tasarımcı</title>
+<meta name="description" content="Babür Önceler'in portfolyosu: grafik tasarım, 2D/3D animasyon, karakter ve ortam tasarımı, UI tasarım ve game jam projeleri.">
+<link rel="canonical" href="https://baburonceler.github.io/">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://baburonceler.github.io/">
+<meta property="og:title" content="Babür Önceler — 2D/3D Animatör & Grafik Tasarımcı">
+<meta property="og:description" content="Grafik tasarımdan karakter tasarımına, 3D modellemeden UI tasarıma — game jam projelerinden gerçek marka işlerine uzanan bir portfolyo.">
+<meta property="og:image" content="https://baburonceler.github.io/assets/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="tr_TR">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Babür Önceler — 2D/3D Animatör & Grafik Tasarımcı">
+<meta name="twitter:description" content="Grafik tasarımdan karakter tasarımına, 3D modellemeden UI tasarıma — game jam projelerinden gerçek marka işlerine uzanan bir portfolyo.">
+<meta name="twitter:image" content="https://baburonceler.github.io/assets/og-cover.jpg">
+
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-180.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -647,6 +669,16 @@
     border:1px solid var(--line);
     border-radius:8px;
   }
+  .skill-groups{ margin-top:28px; display:flex; flex-direction:column; gap:18px; }
+  .skill-group-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:rgba(244,241,234,0.5);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin-bottom:8px;
+  }
+  .skill-group .skills{ margin-top:0; }
 
   .stats{
     display:grid; grid-template-columns:repeat(3,1fr);
@@ -818,7 +850,7 @@
   </div>
 </section>
 
-<div class="marquee">
+<div class="marquee" aria-hidden="true">
   <div class="marquee-track">
     <span>Grafik Tasarım<span>Animasyon<span>Karakter Tasarımı<span>3D Modelleme<span>UI Tasarım<span>Poster Art
     <span>Grafik Tasarım<span>Animasyon<span>Karakter Tasarımı<span>3D Modelleme<span>UI Tasarım<span>Poster Art
@@ -846,9 +878,9 @@
 </section>
 
 <div class="lightbox" id="lightbox">
-  <button class="lightbox-close" id="lightboxClose">✕</button>
-  <button class="lightbox-nav lightbox-prev" id="lightboxPrev">‹</button>
-  <button class="lightbox-nav lightbox-next" id="lightboxNext">›</button>
+  <button class="lightbox-close" id="lightboxClose" aria-label="Kapat">✕</button>
+  <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Önceki görsel">‹</button>
+  <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Sonraki görsel">›</button>
   <div class="lightbox-box">
     <div class="lightbox-media" id="lightboxMedia"></div>
     <div class="lightbox-info">
@@ -862,7 +894,7 @@
 
 <section class="jam wrap" id="gamejam">
   <div class="jam-card">
-    <div class="jam-art" id="jamArt" style="cursor:pointer; background-image:url('assets/lexicon-cover.jpg'); background-size:cover; background-position:center; position:relative;">
+    <div class="jam-art" id="jamArt" role="button" tabindex="0" aria-label="Lexicon fragmanını izle" style="cursor:pointer; background-image:url('assets/lexicon-cover.jpg'); background-size:cover; background-position:center; position:relative;">
       <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(18,16,22,0.55), rgba(18,16,22,0.1));"></div>
       <div style="position:relative; z-index:1; width:64px; height:64px; border-radius:50%; background:rgba(18,16,22,0.55); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center;">
         <svg viewBox="0 0 24 24" fill="white" style="width:22px; height:22px;"><path d="M8 5v14l11-7z"/></svg>
@@ -892,7 +924,7 @@
   </div>
 
   <div class="jam-card" style="margin-top:24px;">
-    <div class="jam-art" id="jamArt2" style="cursor:pointer; background-image:url('assets/shattered-1.jpg'); background-size:cover; background-position:center; position:relative;">
+    <div class="jam-art" id="jamArt2" role="button" tabindex="0" aria-label="Shattered görsellerini gör" style="cursor:pointer; background-image:url('assets/shattered-1.jpg'); background-size:cover; background-position:center; position:relative;">
       <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(18,16,22,0.55), rgba(18,16,22,0.1));"></div>
       <div style="position:relative; z-index:1; width:64px; height:64px; border-radius:50%; background:rgba(18,16,22,0.55); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center;">
         <svg viewBox="0 0 24 24" fill="white" style="width:22px; height:22px;"><path d="M8 5v14l11-7z"/></svg>
@@ -921,7 +953,7 @@
   </div>
 
   <div class="jam-card" style="margin-top:24px;">
-    <div class="jam-art" id="jamArt3" style="cursor:pointer; background-image:url('assets/shapelock-cover.jpg'); background-size:cover; background-position:center; position:relative;">
+    <div class="jam-art" id="jamArt3" role="button" tabindex="0" aria-label="ShapeLock fragmanını izle" style="cursor:pointer; background-image:url('assets/shapelock-cover.jpg'); background-size:cover; background-position:center; position:relative;">
       <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(18,16,22,0.55), rgba(18,16,22,0.1));"></div>
       <div style="position:relative; z-index:1; width:64px; height:64px; border-radius:50%; background:rgba(18,16,22,0.55); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center;">
         <svg viewBox="0 0 24 24" fill="white" style="width:22px; height:22px;"><path d="M8 5v14l11-7z"/></svg>
@@ -990,19 +1022,51 @@
         </div>
       </div>
 
-      <div class="skills">
-        <span class="skill">Maya</span>
-        <span class="skill">ZBrush</span>
-        <span class="skill">Blender</span>
-        <span class="skill">Adobe Illustrator</span>
-        <span class="skill">Photoshop</span>
-        <span class="skill">After Effects</span>
-        <span class="skill">Premiere Pro</span>
-        <span class="skill">Animate</span>
-        <span class="skill">Spine</span>
-        <span class="skill">Unity</span>
-        <span class="skill">Procreate</span>
-        <span class="skill">Midjourney</span>
+      <div class="skill-groups">
+        <div class="skill-group">
+          <div class="skill-group-label">3D</div>
+          <div class="skills">
+            <span class="skill">Maya</span>
+            <span class="skill">Blender</span>
+            <span class="skill">ZBrush</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-label">2D & Grafik Tasarım</div>
+          <div class="skills">
+            <span class="skill">Adobe Illustrator</span>
+            <span class="skill">Photoshop</span>
+            <span class="skill">Procreate</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-label">Animasyon & Rigging</div>
+          <div class="skills">
+            <span class="skill">After Effects</span>
+            <span class="skill">Animate</span>
+            <span class="skill">Spine</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-label">Video & Post-Prodüksiyon</div>
+          <div class="skills">
+            <span class="skill">Premiere Pro</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-label">Oyun Motoru</div>
+          <div class="skills">
+            <span class="skill">Unity</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-label">Yapay Zekâ Destekli Araçlar</div>
+          <div class="skills">
+            <span class="skill">Midjourney</span>
+            <span class="skill">Kling</span>
+            <span class="skill">Google Flow</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1334,7 +1398,7 @@
       video:"assets/cikolata-infografik.mp4",
       videoCaption:"Bilgi Grafiği Animasyonu",
       desc:"Çikolatanın türlerini, üretici ülkelerin hacmini ve sağlık üzerindeki etkilerini anlatan, karakter illüstrasyonları ve veri görselleştirmeyle desteklenmiş animasyonlu bir bilgi grafiği (infografik) çalışması."},
-    {cat:"grafik", cats:["grafik","animasyon"], title:"Anyong — Acne Clear Serum Reklam Filmi", note:"Grafik tasarım", size:"",
+    {cat:"grafik", cats:["grafik","animasyon"], title:"Anyong — Acne Clear Serum Reklam Filmi", note:"Grafik tasarım", size:"big",
       img:"assets/anyong-cover.jpg",
       video:"assets/anyong-video.mp4",
       videoCaption:"Ürün Reklam Filmi",
@@ -1429,7 +1493,16 @@
     }
 
     if (p.img || p.video) {
+      card.setAttribute('role', 'button');
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('aria-label', `${p.title} — büyük görseli aç`);
       card.addEventListener('click', () => openLightbox(p));
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openLightbox(p);
+        }
+      });
     }
     return card;
   }
@@ -1577,7 +1650,8 @@
     } else if (item.type === 'video') {
       lightboxMedia.innerHTML = `<video src="${item.src}" controls autoplay controlsList="nodownload noremoteplayback" disablePictureInPicture oncontextmenu="return false" poster="${item.poster || ''}"></video>`;
     } else {
-      lightboxMedia.innerHTML = `<img src="${item.src}" alt="">`;
+      const altText = item.caption || lightboxTitle.textContent || '';
+      lightboxMedia.innerHTML = `<img src="${item.src}" alt="${altText.replace(/"/g, '&quot;')}">`;
     }
     const multi = currentMedia.length > 1;
     lightboxPrev.classList.toggle('show', multi);
@@ -1644,8 +1718,14 @@
     renderMedia();
     lightbox.classList.add('open');
   }
+  function enterActivates(el, handler) {
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') handler(e);
+    });
+  }
   document.getElementById('jamArt').addEventListener('click', openJamLightbox);
   document.getElementById('jamTrailerBtn').addEventListener('click', openJamLightbox);
+  enterActivates(document.getElementById('jamArt'), openJamLightbox);
 
   const jamData2 = {
     cat: null,
@@ -1672,6 +1752,7 @@
   }
   document.getElementById('jamArt2').addEventListener('click', openJamLightbox2);
   document.getElementById('jamTrailerBtn2').addEventListener('click', openJamLightbox2);
+  enterActivates(document.getElementById('jamArt2'), openJamLightbox2);
 
   const jamData3 = {
     cat: null,
@@ -1692,6 +1773,7 @@
   }
   document.getElementById('jamArt3').addEventListener('click', openJamLightbox3);
   document.getElementById('jamTrailerBtn3').addEventListener('click', openJamLightbox3);
+  enterActivates(document.getElementById('jamArt3'), openJamLightbox3);
 
   lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
   window.addEventListener('keydown', (e) => {
